@@ -344,7 +344,11 @@ $ git clone https://github.com/lupyuen/nuttx-tinyemu
 $ simple-http-server nuttx-tinyemu/docs
 ```
 
-Then browse to `http://0.0.0.0:8000/index.html`
+Then browse to...
+
+```text
+http://0.0.0.0:8000/index.html
+```
 
 To do Console Input, we need VirtIO...
 
