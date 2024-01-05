@@ -6,6 +6,12 @@ Apache NuttX RTOS is a tiny operating system for 64-bit RISC-V Machines and many
 
 Can we boot NuttX in a Web Browser, with a little help from TinyEMU? Let's find out!
 
+_Why are we doing this?_
+
+We might run NuttX in a Web Browser and emulate the Ox64 BL808 RISC-V SBC, for quicker testing.
+
+(QEMU Emulator is a bit too complex to customise for Ox64)
+
 # Install TinyEMU
 
 To install TinyEMU on macOS:
