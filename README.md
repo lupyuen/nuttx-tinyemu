@@ -56,7 +56,7 @@ Thus we shall compile NuttX Kernel to boot at 0x8000_0000. (We'll borrow the Nut
 
 We configure a Virtual Machine for TinyEMU like this: [buildroot-riscv64.cfg](https://bellard.org/jslinux/buildroot-riscv64.cfg)
 
-```json
+```text
 /* VM configuration file */
 {
   version: 1,
