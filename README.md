@@ -361,8 +361,6 @@ http://0.0.0.0:8000/index.html
 
 To do Console Input, we need VirtIO...
 
-TODO: Boot NuttX with OSTest
-
 # VirtIO
 
 TODO
