@@ -203,11 +203,11 @@ static void htif_handle_cmd(RISCVMachine *s)
 
 So to print `1` (ASCII 0x31) to the HTIF Console...
 
-- device = (htif_tohost >> 56) <br> = 1
+- device <br> = (htif_tohost >> 56) <br> = 1
 
-- cmd = (htif_tohost >> 48) <br> = 1
+- cmd <br> = (htif_tohost >> 48) <br> = 1
 
-- char = (htif_tohost & 0xff) <br> = 0x31
+- buf <br> = (htif_tohost & 0xff) <br> = 0x31
 
 Which means we write this value to htif_tohost...
 
