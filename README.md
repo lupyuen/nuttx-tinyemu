@@ -261,8 +261,6 @@ $ temu nuttx.cfg
 123
 ```
 
-Let's fix the NuttX Console Output in C...
-
 Let's fix the NuttX UART Driver...
 
 # Fix the NuttX UART Driver for TinyEMU
