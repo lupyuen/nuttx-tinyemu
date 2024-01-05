@@ -257,7 +257,9 @@ sd  t1, 0(t0)
 
 We insert the above code into the NuttX Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61)
 
-Now NuttX prints to the HTIF Console yay!
+_Does it work?_
+
+NuttX prints to the HTIF Console yay! Now we know that NuttX Boot Code is actually running on TinyEMU...
 
 ```text
 $ temu nuttx.cfg
@@ -284,8 +286,6 @@ static void u16550_putc(FAR struct u16550_s *priv, int ch) {
   // u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
 }
 ```
-
-(Yeah the UART Buffer might overflow, we'll fix later)
 
 We skip the reading and writing of other UART Registers, because we'll patch them later: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L604-L635)
 
@@ -377,6 +377,14 @@ VirtIO for TinyEMU:
 
 https://bellard.org/tinyemu/readme.txt
 
-knetnsh64:
+NuttX Config knetnsh64 supports VirtIO:
 
 https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52
+
+But let's create a simple VirtIO Console Driver for NuttX.
+
+_Can NuttX run in Kernel Mode on TinyEMU?_
+
+NuttX Kernel Mode requires [RISC-V Semihosting](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
+
+But we can [Append the Initial RAM Disk](https://lupyuen.github.io/articles/app#initial-ram-disk) to the NuttX Kernel. So yes it's possible to run NuttX in Kernel Mode with TinyEMU, with some additional [Mounting Code](https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk).
