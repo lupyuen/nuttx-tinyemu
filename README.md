@@ -344,6 +344,8 @@ The other files were provided by [TinyEMU](https://bellard.org/tinyemu/)...
 
 - [jslinux-2019-12-21.tar.gz](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz): Precompiled JSLinux demo
 
+_How to test this locally?_
+
 To test on our computer, we need to install a Local Web Server (because our Web Browser won't load WebAssembly Files from the File System)...
 
 ```bash
@@ -359,7 +361,9 @@ Then browse to...
 http://0.0.0.0:8000/index.html
 ```
 
-To do Console Input, we need VirtIO...
+_But there's no Console Input?_
+
+To do Console Input, we need to implement VirtIO in our UART Driver...
 
 # VirtIO
 
