@@ -205,11 +205,9 @@ Which means we write this value to htif_tohost...
 
 _Where is htif_tohost?_
 
-TODO
+According to [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L913-L927) and [htif_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L154-L178), htif_tohost is at [DEFAULT_HTIF_BASE_ADDR](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82): 0x4000_8000
 
-htif_write:
-
-https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L154-L178
+Let's write to 0x4000_8000...
 
 # Print in RISC-V Assembly
 
