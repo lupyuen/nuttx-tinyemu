@@ -199,9 +199,9 @@ So to print `0` (ASCII 0x30) to the HTIF Console...
 
 - char = (htif_tohost & 0xff) = 0x30
 
-TODO
+Which means we write this value to htif_tohost...
 
-Which means we write ??? to htif_tohost.
+- (1 << 56) | (1 << 48) | 0x30 <br> = 0x1010030
 
 _Where is htif_tohost?_
 
@@ -210,6 +210,10 @@ TODO
 htif_write:
 
 https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L154-L178
+
+# Print in RISC-V Assembly
+
+TODO
 
 # VirtIO
 
