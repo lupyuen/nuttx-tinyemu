@@ -106,7 +106,12 @@ tools/configure.sh rv-virt:nsh64
 make menuconfig
 ## Build Setup > Debug Options >
 ##   Enable Debug Features
-##   Scheduler Debug Features > Scheduler Error, Warnings and Info
+##   Enable "Scheduler Debug Features > Scheduler Error, Warnings and Info"
+## Application Configuration > Testing >
+##   Enable "OS Test Example"
+## RTOS Features > Tasks and Scheduling >
+##   Set "Application Entry Point" to "ostest_main"
+##   Set "Application Entry Name" to "ostest_main"
 ## Save and exit menuconfig
 
 ## Build NuttX
