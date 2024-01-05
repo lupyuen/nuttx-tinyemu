@@ -326,6 +326,22 @@ Easy to install precompiled JSLinux demo:
 
 https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz
 
+https://github.com/http-party/http-server
+
+```bash
+$ brew install http-server
+
+$ http-server $HOME/jslinux-2019-12-21
+```
+
+https://github.com/TheWaWaR/simple-http-server
+
+```bash
+$ cargo install simple-http-server
+$ rehash
+$ simple-http-server $HOME/jslinux-2019-12-21
+```
+
 To do Console Input, we need VirtIO...
 
 # VirtIO
