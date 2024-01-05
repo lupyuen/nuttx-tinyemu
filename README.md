@@ -259,7 +259,7 @@ Let's fix the NuttX UART Driver...
 
 _NuttX on TinyEMU has been awfully quiet. How to fix the UART Driver so that NuttX can print things?_
 
-NuttX is still running on the QEMU UART Driver (16550). Let's make a quick patch so that we will see something in the TinyEMU HTIF Console: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716)
+NuttX is still running on the QEMU UART Driver (16550). Let's make a quick patch so that we will see something in the TinyEMU HTIF Console: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
 
 ```c
 // Write one character to the UART (polled)
@@ -276,7 +276,7 @@ static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
 (Yeah the UART Buffer might overflow, we'll fix later)
 
-We skip the reading and writing of other UART Registers, because we'll patch them later: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632)
+We skip the reading and writing of other UART Registers, because we'll patch them later: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L604-L635)
 
 ```c
 // Read UART Register
@@ -291,7 +291,7 @@ static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_
 }
 ```
 
-And we won't wait for UART Ready, since we're not accessing the Line Control Register: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670)
+And we won't wait for UART Ready, since we're not accessing the Line Control Register: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L635-L673)
 
 ```c
 // Wait until UART is not busy. This is needed before writing to Line Control Register.
@@ -313,6 +313,18 @@ nx_start_application: Starting init thread
 task_spawn: name=nsh_main entry=0x8000660e file_actions=0 attr=0x8002e930 argv=0x8002e928
 nx_start: CPU0: Beginning Idle Loop
 ```
+
+Let's boot NuttX in the Web Browser...
+
+# Boot NuttX in the Web Browser
+
+TODO
+
+https://bellard.org/tinyemu/
+
+Easy to install precompiled JSLinux demo:
+
+https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz
 
 To do Console Input, we need VirtIO...
 
