@@ -106,7 +106,11 @@ tools/configure.sh rv-virt:nsh64
 make menuconfig
 ## Build Setup > Debug Options >
 ##   Enable Debug Features
-##   Enable "Scheduler Debug Features > Scheduler Error, Warnings and Info"
+##   Enable "Memory Manager Debug Features > Errors, Warnings, Info"
+##   Enable "Scheduler Debug Features > Errors, Warnings, Info"
+##   Enable "Timer Debug Features > Errors, Warnings, Info"
+##   Enable "IPC Debug Features > Errors, Warnings, Info"
+
 ## Application Configuration > Testing >
 ##   Enable "OS Test Example"
 ## RTOS Features > Tasks and Scheduling >
