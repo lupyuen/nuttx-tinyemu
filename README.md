@@ -191,17 +191,17 @@ static void htif_handle_cmd(RISCVMachine *s)
 }
 ```
 
-So to print `0` (ASCII 0x30) to the HTIF Console...
+So to print `1` (ASCII 0x31) to the HTIF Console...
 
-- device = (htif_tohost >> 56) = 1
+- device = (htif_tohost >> 56) <br> = 1
 
-- cmd = (htif_tohost >> 48) = 1
+- cmd = (htif_tohost >> 48) <br> = 1
 
-- char = (htif_tohost & 0xff) = 0x30
+- char = (htif_tohost & 0xff) <br> = 0x31
 
 Which means we write this value to htif_tohost...
 
-- (1 << 56) | (1 << 48) | 0x30 <br> = 0x1010030
+- (1 << 56) | (1 << 48) | 0x31 <br> = 0x0101_0000_0000_0031
 
 _Where is htif_tohost?_
 
@@ -209,7 +209,44 @@ According to [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/ma
 
 Let's write to 0x4000_8000...
 
-# Print in RISC-V Assembly
+# Print in NuttX Boot Code
+
+_How to print to HTIF Console in the NuttX Boot Code? (RISC-V Assembly)_
+
+[Based on Star64 Debug Code](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console), we code this in RISC-V Assembly...
+
+```text
+/* Load HTIF Base Address to Register t0 */
+li  t0, 0x40008000
+
+/* Load to Register t1 the HTIF Command to print `1` */
+li  t1, 0x0101000000000031
+/* Store 64-bit double-word from Register t1 to HTIF Base Address, Offset 0 */
+sd  t1, 0(t0)
+
+/* Load to Register t1 the HTIF Command to print `2` */
+li  t1, 0x0101000000000032
+/* Store 64-bit double-word from Register t1 to HTIF Base Address, Offset 0 */
+sd  t1, 0(t0)
+
+/* Load to Register t1 the HTIF Command to print `3` */
+li  t1, 0x0101000000000033
+/* Store 64-bit double-word from Register t1 to HTIF Base Address, Offset 0 */
+sd  t1, 0(t0)
+```
+
+We insert the above code into the NuttX Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61)
+
+Now NuttX prints to the HTIF Console yay!
+
+```text
+$ temu nuttx.cfg
+123
+```
+
+Let's fix the NuttX Console Output in C...
+
+# Fix the NuttX Console Output
 
 TODO
 
