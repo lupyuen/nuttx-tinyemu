@@ -310,7 +310,7 @@ static int u16550_wait(FAR struct u16550_s *priv) {
 }
 ```
 
-Now NuttX boots OK on TinyEMU yay!
+Now we see NuttX booting OK on TinyEMU yay!
 
 ```text
 $ temu nuttx.cfg
