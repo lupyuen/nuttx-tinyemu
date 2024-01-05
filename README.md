@@ -86,9 +86,9 @@ How do tohost and fromhost work?
 
 https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754
 
-HTIF Handle Command:
+Handle HTIF Command:
 
-https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L130
+https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L129-L153
 
 htif_write:
 
