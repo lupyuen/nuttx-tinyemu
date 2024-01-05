@@ -145,17 +145,67 @@ $ temu nuttx.cfg
 
 TinyEMU hangs, nothing happens. Let's print something to TinyEMU HTIF Console...
 
-# HTIF Console
+# Print to HTIF Console
+
+_What's HTIF?_
+
+From [RISC-V Spike Emulator](https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754)...
+
+> HTIF is a tether between a simulation host and target, not something that's supposed to resemble a real hardware device. It's not a RISC-V standard; it's a UC Berkeley standard. 
+
+> Bits 63:56 indicate the "device".
+
+> Bits 55:48 indicate the "command".
+
+> Device 1 is the blocking character device.
+
+> Command 0 reads a character
+
+> Command 1 writes a character from the 8 LSBs of tohost
+
+TinyEMU handles HTIF Commands like this: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L129-L153)
+
+```c
+static void htif_handle_cmd(RISCVMachine *s)
+{
+    uint32_t device, cmd;
+
+    device = s->htif_tohost >> 56;
+    cmd = (s->htif_tohost >> 48) & 0xff;
+    if (s->htif_tohost == 1) {
+        /* shuthost */
+        printf("\nPower off.\n");
+        exit(0);
+    } else if (device == 1 && cmd == 1) {
+        uint8_t buf[1];
+        buf[0] = s->htif_tohost & 0xff;
+        s->common.console->write_data(s->common.console->opaque, buf, 1);
+        s->htif_tohost = 0;
+        s->htif_fromhost = ((uint64_t)device << 56) | ((uint64_t)cmd << 48);
+    } else if (device == 1 && cmd == 0) {
+        /* request keyboard interrupt */
+        s->htif_tohost = 0;
+    } else {
+        printf("HTIF: unsupported tohost=0x%016" PRIx64 "\n", s->htif_tohost);
+    }
+}
+```
+
+So to print `0` (ASCII 0x30) to the HTIF Console...
+
+- device = (htif_tohost >> 56) = 1
+
+- cmd = (htif_tohost >> 48) = 1
+
+- char = (htif_tohost & 0xff) = 0x30
 
 TODO
 
-How do tohost and fromhost work?
+Which means we write ??? to htif_tohost.
 
-https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754
+_Where is htif_tohost?_
 
-Handle HTIF Command:
-
-https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L129-L153
+TODO
 
 htif_write:
 
