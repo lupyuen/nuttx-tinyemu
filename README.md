@@ -106,6 +106,9 @@ tools/configure.sh rv-virt:nsh64
 make menuconfig
 ## Build Setup > Debug Options >
 ##   Enable Debug Features
+##   Enable "Binary Loader Debug Features > Errors, Warnings, Info"
+##   Enable "File System Debug Features > Errors, Warnings, Info"
+##   Enable "C Library Debug Features > Errors, Warnings, Info"
 ##   Enable "Memory Manager Debug Features > Errors, Warnings, Info"
 ##   Enable "Scheduler Debug Features > Errors, Warnings, Info"
 ##   Enable "Timer Debug Features > Errors, Warnings, Info"
@@ -335,9 +338,10 @@ WebAssembly Files are located here: [nuttx-tinyemu/docs](https://github.com/lupy
 We copied the TinyEMU Config and NuttX Kernel to the Web Server...
 
 ```bash
-## Copy to Web Server
+## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
 cp nuttx.cfg ../nuttx-tinyemu/docs/root-riscv64.cfg
 cp nuttx.bin ../nuttx-tinyemu/docs/
+cp nuttx.S ../nuttx-tinyemu/docs/
 ```
 
 The other files were provided by [TinyEMU](https://bellard.org/tinyemu/)...
