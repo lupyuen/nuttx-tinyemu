@@ -88,7 +88,6 @@ NuttX for QEMU RISC-V is already configured to boot at 0x8000_0000: [ld.script](
 SECTIONS
 {
   . = 0x80000000;
-
   .text :
     {
       _stext = . ;
@@ -348,6 +347,8 @@ $ simple-http-server nuttx-tinyemu/docs
 Then browse to `http://0.0.0.0:8000/index.html`
 
 To do Console Input, we need VirtIO...
+
+TODO: Boot NuttX with OSTest
 
 # VirtIO
 
