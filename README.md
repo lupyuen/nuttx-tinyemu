@@ -78,6 +78,73 @@ Thus we put NuttX Kernel into `bios` and leave `kernel` empty.
 
 [copy_bios](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L753-L812) will load NuttX Kernel at RAM_BASE_ADDR (0x8000_0000).
 
+# Build NuttX for TinyEMU
+
+NuttX for QEMU RISC-V is already configured to boot at 0x8000_0000: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
+
+```text
+SECTIONS
+{
+  . = 0x80000000;
+
+  .text :
+    {
+      _stext = . ;
+```
+
+So we build NuttX for QEMU RISC-V (64-bit, Flat Mode)...
+
+```bash
+## Download WIP NuttX
+git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
+git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps apps
+
+## Configure NuttX for QEMU RISC-V (64-bit, Flat Mode)
+cd nuttx
+tools/configure.sh rv-virt:nsh64
+make menuconfig
+## Build Setup > Debug Options >
+##   Enable Debug Features
+##   Scheduler Debug Features > Scheduler Error, Warnings and Info
+## Save and exit menuconfig
+
+## Build NuttX
+make
+
+## Export the Binary Image to nuttx.bin
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+```
+
+# Run NuttX on TinyEMU
+
+We create a TinyEMU Config for NuttX and run it...
+
+```bash
+$ cat nuttx.cfg
+/* VM configuration file */
+{
+  version: 1,
+  machine: "riscv64",
+  memory_size: 256,
+  bios: "nuttx.bin",
+}
+
+$ temu nuttx.cfg
+```
+
+TinyEMU hangs, nothing happens. Let's print something to TinyEMU HTIF Console...
+
 # HTIF Console
 
 TODO
