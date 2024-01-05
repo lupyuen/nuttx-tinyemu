@@ -57,14 +57,14 @@ We configure a Virtual Machine for TinyEMU like this: [buildroot-riscv64.cfg](ht
 ```json
 /* VM configuration file */
 {
-    version: 1,
-    machine: "riscv64",
-    memory_size: 256,
-    bios: "bbl64.bin",
-    kernel: "kernel-riscv64.bin",
-    cmdline: "loglevel=3 swiotlb=1 console=hvc0 root=root rootfstype=9p rootflags=trans=virtio ro TZ=${TZ}",
-    fs0: { file: "https://vfsync.org/u/os/buildroot-riscv64" },
-    eth0: { driver: "user" },
+  version: 1,
+  machine: "riscv64",
+  memory_size: 256,
+  bios: "bbl64.bin",
+  kernel: "kernel-riscv64.bin",
+  cmdline: "loglevel=3 swiotlb=1 console=hvc0 root=root rootfstype=9p rootflags=trans=virtio ro TZ=${TZ}",
+  fs0: { file: "https://vfsync.org/u/os/buildroot-riscv64" },
+  eth0: { driver: "user" },
 }
 ```
 
