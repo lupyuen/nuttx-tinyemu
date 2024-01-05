@@ -363,9 +363,9 @@ http://0.0.0.0:8000/index.html
 
 _But there's no Console Input?_
 
-To do Console Input, we need to implement VirtIO in our UART Driver...
+To do Console Input, we need to implement VirtIO Console in our NuttX UART Driver...
 
-# VirtIO
+# VirtIO Console
 
 TODO
 
