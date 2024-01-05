@@ -318,35 +318,42 @@ Let's boot NuttX in the Web Browser...
 
 # Boot NuttX in the Web Browser
 
-TODO
+WebAssembly Demo is here: [NuttX on TinyEMU Demo](https://lupyuen.github.io/nuttx-tinyemu/)
 
-https://bellard.org/tinyemu/
+WebAssembly Files are located here: [nuttx-tinyemu/docs](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
 
-Easy to install precompiled JSLinux demo:
-
-https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz
-
-https://github.com/http-party/http-server
+We copied the TinyEMU Config and NuttX Kernel to the Web Server...
 
 ```bash
-$ brew install http-server
-
-$ http-server $HOME/jslinux-2019-12-21
+## Copy to Web Server
+cp nuttx.cfg ../nuttx-tinyemu/docs/root-riscv64.cfg
+cp nuttx.bin ../nuttx-tinyemu/docs/
 ```
 
-https://github.com/TheWaWaR/simple-http-server
+The other files were provided by [TinyEMU](https://bellard.org/tinyemu/)...
+
+- [jslinux-2019-12-21.tar.gz](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz): Precompiled JSLinux demo
+
+To test on our computer, we need to install a Local Web Server (because our Web Browser won't load WebAssembly Files from the File System)...
 
 ```bash
+## Based on https://github.com/TheWaWaR/simple-http-server
 $ cargo install simple-http-server
-$ rehash
-$ simple-http-server $HOME/jslinux-2019-12-21
+$ git clone https://github.com/lupyuen/nuttx-tinyemu
+$ simple-http-server nuttx-tinyemu/docs
 ```
+
+Then browse to `http://0.0.0.0:8000/index.html`
 
 To do Console Input, we need VirtIO...
 
 # VirtIO
 
 TODO
+
+VirtIO for TinyEMU:
+
+https://bellard.org/tinyemu/readme.txt
 
 knetnsh64:
 
