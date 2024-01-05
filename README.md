@@ -253,9 +253,68 @@ $ temu nuttx.cfg
 
 Let's fix the NuttX Console Output in C...
 
-# Fix the NuttX Console Output
+Let's fix the NuttX UART Driver...
 
-TODO
+# Fix the NuttX UART Driver for TinyEMU
+
+_NuttX on TinyEMU has been awfully quiet. How to fix the UART Driver so that NuttX can print things?_
+
+NuttX is still running on the QEMU UART Driver (16550). Let's make a quick patch so that we will see something in the TinyEMU HTIF Console: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716)
+
+```c
+// Write one character to the UART (polled)
+static void u16550_putc(FAR struct u16550_s *priv, int ch) {
+
+  // Hardcode the HTIF Base Address
+  *(volatile uint64_t *) 0x40008000 = 0x0101000000000000ul | ch;
+
+  // Previously:
+  // while ((u16550_serialin(priv, UART_LSR_OFFSET) & UART_LSR_THRE) == 0);
+  // u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
+}
+```
+
+(Yeah the UART Buffer might overflow, we'll fix later)
+
+We skip the reading and writing of other UART Registers, because we'll patch them later: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632)
+
+```c
+// Read UART Register
+static inline uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
+  return 0; ////
+  // Commented out the rest
+}
+
+// Write UART Register
+static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t value) {
+  // Commented out the rest
+}
+```
+
+And we won't wait for UART Ready, since we're not accessing the Line Control Register: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670)
+
+```c
+// Wait until UART is not busy. This is needed before writing to Line Control Register.
+// Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
+static int u16550_wait(FAR struct u16550_s *priv) {
+  // Nopez! No waiting for now
+  return OK; ////
+}
+```
+
+Now NuttX boots OK on TinyEMU yay!
+
+```text
+$ temu nuttx.cfg
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+nx_start_application: Starting init thread
+task_spawn: name=nsh_main entry=0x8000660e file_actions=0 attr=0x8002e930 argv=0x8002e928
+nx_start: CPU0: Beginning Idle Loop
+```
+
+To do Console Input, we need VirtIO...
 
 # VirtIO
 
