@@ -383,6 +383,10 @@ https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/config
 
 But let's create a simple VirtIO Console Driver for NuttX.
 
+## NuttX VirtIO Driver
+
+TODO
+
 virtio_serial_dmasend:
 
 https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315
@@ -391,13 +395,9 @@ virtio_serial_send:
 
 https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245
 
-virtio_console_write_data:
+## TinyEMU VirtIO
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1318
-
-console device:
-
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261
+TODO
 
 VIRTIO_MMIO_MAGIC_VALUE:
 
@@ -411,6 +411,18 @@ MMIO addresses:
 
 https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37
 
+## TinyEMU VirtIO Console
+
+TODO
+
+virtio_console_write_data:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1318
+
+console device:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261
+
 console device:
 
 https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108
@@ -418,6 +430,22 @@ https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108
 virtio console:
 
 https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952
+
+## TinyEMU VirtIO Queue
+
+TODO
+
+VIRTIO_MMIO_QUEUE_NOTIFY:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781
+
+VIRTIO_MMIO_QUEUE_SEL:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741
+
+VIRTIO_MMIO_QUEUE_SEL:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645
 
 _Can NuttX run in Kernel Mode on TinyEMU?_
 
