@@ -373,19 +373,23 @@ To do Console Input, we need to implement VirtIO Console in our NuttX UART Drive
 
 TODO
 
-VirtIO for TinyEMU:
+[VirtIO for TinyEMU](https://bellard.org/tinyemu/readme.txt)
 
-https://bellard.org/tinyemu/readme.txt
+[Virtio - OSDev Wiki](https://wiki.osdev.org/Virtio)
 
-NuttX Config knetnsh64 supports VirtIO:
+[Virtual I/O Device (VIRTIO) Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
 
-https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52
+[virtio console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
+
+[NuttX Config knetnsh64 supports VirtIO](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52)
 
 But let's create a simple VirtIO Console Driver for NuttX.
 
 ## NuttX VirtIO Driver
 
 TODO: Based on OpenAMP with MMIO
+
+To send data to VirtIO Console:
 
 [virtio_serial_send](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245) calls...
 
@@ -399,13 +403,19 @@ TODO: Based on OpenAMP with MMIO
 
   [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
 
+To create a VirtIO Queue:
+
+[virtio_mmio_create_virtqueues](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L419) calls...
+
+- [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L355) which calls...
+
+- [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)
+
+TODO: How to call [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)?
+
 ## TinyEMU VirtIO
 
 TODO
-
-[Virtio - OSDev Wiki](https://wiki.osdev.org/Virtio)
-
-[Virtual I/O Device (VIRTIO) Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
 
 [MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
 
@@ -438,9 +448,9 @@ TODO: Device ID 3
 
 [console device impl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261)
 
-[virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1318)
+[virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1318) calls...
 
-[More about virtio console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
+- [memcpy_to_from_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L380)
 
 ## TinyEMU VirtIO MMIO Queue
 
