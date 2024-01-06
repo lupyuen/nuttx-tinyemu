@@ -385,67 +385,70 @@ But let's create a simple VirtIO Console Driver for NuttX.
 
 ## NuttX VirtIO Driver
 
-TODO
+TODO: Based on OpenAMP with MMIO
 
-virtio_serial_dmasend:
+[virtio_serial_send](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245) calls...
 
-https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315
+- [virtio_serial_dmatxavail](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L345-L357) which calls...
 
-virtio_serial_send:
+- [uart_xmitchars_dma](https://github.com/apache/nuttx/blob/master/drivers/serial/serial_dma.c#L86-L125) which calls...
 
-https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245
+- [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315) which calls...
+
+- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) and...
+
+  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
 
 ## TinyEMU VirtIO
 
 TODO
 
-VIRTIO_MMIO_MAGIC_VALUE:
+[MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617
+[PCI registers](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66)
 
-PCI registers:
+Check [VIRTIO_MMIO_MAGIC_VALUE](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617)
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66
+Device IDs: [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297)
 
-MMIO addresses:
-
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37
+```c
+switch(device_id) {
+case 1: /* net */ ...
+case 2: /* block */ ...
+case 3: /* console */ ...
+case 9: /* use new device ID */ ...
+case 18: /* use new device ID */ ...
+```
 
 ## TinyEMU VirtIO Console
 
-TODO
+TODO: Device ID 3
 
-virtio_console_write_data:
+[riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1318
+- [virtio_console_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1347-L1361) which calls...
 
-console device:
+- [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297) with Device ID 3
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261
+[console device decl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108)
 
-console device:
+[console device impl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261)
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108
+[virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1318)
 
-virtio console:
-
-https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952
+[More about virtio console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
 
 ## TinyEMU VirtIO Queue
 
 TODO
 
-VIRTIO_MMIO_QUEUE_NOTIFY:
+[VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781
+[VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741)
 
-VIRTIO_MMIO_QUEUE_SEL:
+[VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
 
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741
-
-VIRTIO_MMIO_QUEUE_SEL:
-
-https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645
+# TODO
 
 _Can NuttX run in Kernel Mode on TinyEMU?_
 
