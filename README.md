@@ -389,6 +389,14 @@ But let's create a simple VirtIO Console Driver for NuttX.
 
 TODO: Based on OpenAMP with MMIO
 
+To create a VirtIO Queue for VirtIO Console:
+
+[virtio_serial_probe](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L530) calls...
+
+- [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) which calls...
+
+- [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (OpenAMP)
+
 To send data to VirtIO Console:
 
 [virtio_serial_send](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245) calls...
@@ -403,11 +411,7 @@ To send data to VirtIO Console:
 
   [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
 
-To create a VirtIO Queue:
-
-[virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) calls...
-
-- [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (OpenAMP)
+TODO: What is this?
 
 [virtio_mmio_create_virtqueues](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L419) calls...
 
