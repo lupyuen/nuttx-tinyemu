@@ -383,6 +383,42 @@ https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/config
 
 But let's create a simple VirtIO Console Driver for NuttX.
 
+virtio_serial_dmasend:
+
+https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315
+
+virtio_serial_send:
+
+https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245
+
+virtio_console_write_data:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1318
+
+console device:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261
+
+VIRTIO_MMIO_MAGIC_VALUE:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617
+
+PCI registers:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66
+
+MMIO addresses:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37
+
+console device:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108
+
+virtio console:
+
+https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952
+
 _Can NuttX run in Kernel Mode on TinyEMU?_
 
 NuttX Kernel Mode requires [RISC-V Semihosting](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
