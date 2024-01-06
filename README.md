@@ -462,25 +462,33 @@ case 18: /* use new device ID */ ...
 
 ## TinyEMU VirtIO Console
 
-TODO: Device ID 3
+VirtIO Console is Device ID 3.
 
-[riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
+At TinyEMU Startup: [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
 
 - [virtio_console_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1347-L1361) which calls...
 
 - [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297) with Device ID 3
 
-[console device decl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108)
-
-[console device impl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261)
-
-[virt_machine_run (js)](https://github.com/fernandotcl/TinyEMU/blob/master/jsemu.c#L304-L348) and [virt_machine_run (temu)](https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L545-L610) call...
+To print to VirtIO Console: [virt_machine_run (js)](https://github.com/fernandotcl/TinyEMU/blob/master/jsemu.c#L304-L348) and [virt_machine_run (temu)](https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L545-L610) call...
 
 - [virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1317-L1337) which calls...
 
 - [memcpy_to_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L451-L459) which calls...
 
 - [memcpy_to_from_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L380)
+
+Which will access...
+
+- [QueueState](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L97-L107): For desc_addr, avail_addr, used_addr
+
+- [VIRTIODesc](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L111-L118): For [VirtualQueue::Buffers[QueueSize]](https://wiki.osdev.org/Virtio#Virtual_Queue_Descriptor)
+
+Console Device:
+
+- [console device decl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108)
+
+- [console device impl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261)
 
 ## TinyEMU VirtIO MMIO Queue
 
