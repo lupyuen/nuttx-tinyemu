@@ -440,7 +440,7 @@ TODO: Device ID 3
 
 ## TinyEMU VirtIO MMIO Queue
 
-TODO
+TODO: Queue Desc / Avail / Used
 
 [Read from VirtIO MMIO Queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
 
