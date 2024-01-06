@@ -401,6 +401,10 @@ But let's create a simple VirtIO Console Driver for NuttX, based on OpenAMP...
 
 NuttX VirtIO Driver is based on OpenAMP with MMIO.
 
+- [Running NuttX with VirtIO on QEMU](https://www.youtube.com/watch?v=_8CpLNEWxfo)
+
+- [NuttX VirtIO Framework and Future Works](https://www.youtube.com/watch?v=CYMkAv-WjQg)
+
 At NuttX Startup: [board_app_initialize](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L76-L121) calls...
 
 - [qemu_virtio_register_mmio_devices](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L53-L72) which calls...
