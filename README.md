@@ -405,13 +405,17 @@ To send data to VirtIO Console:
 
 To create a VirtIO Queue:
 
+[virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) calls...
+
+- [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (OpenAMP)
+
 [virtio_mmio_create_virtqueues](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L419) calls...
 
 - [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L355) which calls...
 
 - [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49) (OpenAMP)
 
-TODO: How to call [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)?
+TODO: How to call [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)? See [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142)
 
 ## TinyEMU VirtIO
 
