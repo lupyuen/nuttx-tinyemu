@@ -373,17 +373,29 @@ To do Console Input, we need to implement VirtIO Console in our NuttX UART Drive
 
 TODO
 
-[VirtIO for TinyEMU](https://bellard.org/tinyemu/readme.txt)
+[TinyEMU supports VirtIO](https://bellard.org/tinyemu/readme.txt)
 
 [Virtio - OSDev Wiki](https://wiki.osdev.org/Virtio)
 
-[Virtual I/O Device (VIRTIO) Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
+[Virtual I/O Device (VIRTIO) Spec, Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
 
-[virtio console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
+[About virtio console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
 
 [NuttX Config knetnsh64 supports VirtIO](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52)
 
-But let's create a simple VirtIO Console Driver for NuttX.
+But let's create a simple VirtIO Console Driver for NuttX, based on OpenAMP...
+
+- Call OpenAMP [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)
+
+  (See [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142))
+
+- Call OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138)
+
+  (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315))
+
+- Call OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
+
+  (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315))
 
 ## NuttX VirtIO Driver
 
@@ -422,8 +434,6 @@ To send data to VirtIO Console: [virtio_serial_send](https://github.com/apache/n
 - [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (OpenAMP) and...
 
   [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
-
-How to call OpenAMP [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)? See OpenAMP [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142)
 
 ## TinyEMU VirtIO
 
