@@ -395,13 +395,17 @@ TODO: Based on OpenAMP with MMIO
 
 - [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315) which calls...
 
-- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) and...
+- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (OpenAMP) and...
 
-  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
+  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
 
 ## TinyEMU VirtIO
 
 TODO
+
+[Virtio - OSDev Wiki](https://wiki.osdev.org/Virtio)
+
+[Virtual I/O Device (VIRTIO) Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
 
 [MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
 
