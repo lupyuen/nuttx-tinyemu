@@ -399,7 +399,7 @@ But let's create a simple VirtIO Console Driver for NuttX, based on OpenAMP...
 
 ## NuttX VirtIO Driver
 
-NuttX VirtIO Driver is based on OpenAMP with MMIO.
+NuttX VirtIO Driver is based on OpenAMP with MMIO...
 
 - [Running NuttX with VirtIO on QEMU](https://www.youtube.com/watch?v=_8CpLNEWxfo)
 
