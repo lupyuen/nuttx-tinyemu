@@ -438,15 +438,47 @@ TODO: Device ID 3
 
 [More about virtio console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
 
-## TinyEMU VirtIO Queue
+## TinyEMU VirtIO MMIO Queue
 
 TODO
 
-[VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
+[Read from VirtIO MMIO Queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
+
+```c
+case VIRTIO_MMIO_QUEUE_SEL:
+    val = s->queue_sel;
+    break;
+case VIRTIO_MMIO_QUEUE_NUM_MAX:
+    val = MAX_QUEUE_NUM;
+    break;
+case VIRTIO_MMIO_QUEUE_NUM:
+    val = s->queue[s->queue_sel].num;
+    break;
+case VIRTIO_MMIO_QUEUE_DESC_LOW:
+    val = s->queue[s->queue_sel].desc_addr;
+    break;
+case VIRTIO_MMIO_QUEUE_AVAIL_LOW:
+    val = s->queue[s->queue_sel].avail_addr;
+    break;
+case VIRTIO_MMIO_QUEUE_USED_LOW:
+    val = s->queue[s->queue_sel].used_addr;
+    break;
+#if VIRTIO_ADDR_BITS == 64
+case VIRTIO_MMIO_QUEUE_DESC_HIGH:
+    val = s->queue[s->queue_sel].desc_addr >> 32;
+    break;
+case VIRTIO_MMIO_QUEUE_AVAIL_HIGH:
+    val = s->queue[s->queue_sel].avail_addr >> 32;
+    break;
+case VIRTIO_MMIO_QUEUE_USED_HIGH:
+    val = s->queue[s->queue_sel].used_addr >> 32;
+    break;
+#endif
+```
 
 [VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741)
 
-[VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
+[VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
 
 # TODO
 
