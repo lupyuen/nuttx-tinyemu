@@ -54,7 +54,9 @@ TinyEMU is hardcoded to run at these RISC-V Addresses (yep it's really barebones
                            10 MHz frequency */
 ```
 
-Thus we shall compile NuttX Kernel to boot at 0x8000_0000. (We'll borrow the NuttX Port for QEMU 64-bit RISC-V)
+Thus we shall compile NuttX Kernel to boot at 0x8000_0000.
+
+We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
 # TinyEMU Config
 
@@ -446,6 +448,10 @@ TinyEMU supports VirtIO for proper Console Input and Output...
 
 And NuttX supports VirtIO, based on OpenAMP...
 
+- [Running NuttX with VirtIO on QEMU](https://www.youtube.com/watch?v=_8CpLNEWxfo)
+
+- [NuttX VirtIO Framework and Future Works](https://www.youtube.com/watch?v=CYMkAv-WjQg)
+
 - [Intro to OpenAMP](https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf)
 
 - [knetnsh64: NuttX for QEMU RISC-V with VirtIO](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52)
@@ -456,13 +462,15 @@ But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
 
   (See [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L349-L414) or [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142))
 
-- Add Buffer: Call OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138)
+- Send Data: Call OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138)
 
   (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345))
 
 - Start Processing: Call OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
 
   (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345))
+
+This will help us understand the inner workings of VirtIO and OpenAMP!
 
 # Enable VirtIO in NuttX
 
@@ -504,7 +512,7 @@ Previously we saw the TinyEMU config: [riscv_machine.c](https://github.com/ferna
 #define VIRTIO_IRQ       1
 ```
 
-Now We set the VirtIO Parameters for TinyEMU in NuttX: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L41-L49)
+Now we set the VirtIO Parameters for TinyEMU in NuttX: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L41-L49)
 
 ```c
 #define QEMU_VIRTIO_MMIO_BASE    0x40010000 // VIRTIO_BASE_ADDR. Previously: 0x10001000
@@ -517,7 +525,7 @@ Now We set the VirtIO Parameters for TinyEMU in NuttX: [qemu_rv_appinit.c](https
 #define QEMU_VIRTIO_MMIO_NUM     1  // Number of VirtIO Devices. Previously: 8
 ```
 
-VirtIO and OpenAMP start OK on NuttX yay!
+With these settings, VirtIO and OpenAMP will start OK on NuttX yay!
 
 ```text
 virtio_mmio_init_device: VIRTIO version: 2 device: 3 vendor: ffff
@@ -561,8 +569,8 @@ Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lu
   vqnames[VIRTIO_SERIAL_TX]   = "virtio_serial_tx";
 
   vq_callback callbacks[VIRTIO_SERIAL_NUM];
-  callbacks[VIRTIO_SERIAL_RX] = NULL; //// TODO: virtio_serial_rxready;
-  callbacks[VIRTIO_SERIAL_TX] = NULL; //// TODO: virtio_serial_txdone;
+  callbacks[VIRTIO_SERIAL_RX] = NULL; // TODO: virtio_serial_rxready;
+  callbacks[VIRTIO_SERIAL_TX] = NULL; // TODO: virtio_serial_txdone;
   ret = virtio_create_virtqueues(vdev, 0, VIRTIO_SERIAL_NUM, vqnames,
                                  callbacks);
   DEBUGASSERT(ret >= 0);
@@ -668,25 +676,6 @@ Let's look inside the implementation of VirtIO in TinyEMU.
 
 ## TinyEMU VirtIO
 
-TODO
-
-[MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
-
-[PCI registers](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66)
-
-Check [VIRTIO_MMIO_MAGIC_VALUE](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617)
-
-Device IDs: [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297)
-
-```c
-switch(device_id) {
-case 1: /* net */ ...
-case 2: /* block */ ...
-case 3: /* console */ ...
-case 9: /* Network Device */ ...
-case 18: /* Input Device */ ...
-```
-
 TinyEMU supports these VirtIO Devices:
 
 - Console Device
@@ -699,9 +688,28 @@ TinyEMU supports these VirtIO Devices:
 
 - [9P Filesystem Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1645-L2649)
 
+The Device IDs are: [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297)
+
+```c
+switch(device_id) {
+case 1: /* net */ ...
+case 2: /* block */ ...
+case 3: /* console */ ...
+case 9: /* Network Device */ ...
+case 18: /* Input Device */ ...
+```
+
+TinyEMU supports VirtIO over MMIO and PCI:
+
+- [MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
+
+- [PCI registers](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66)
+
+TinyEMU Guests (like NuttX) are required to check the [VIRTIO_MMIO_MAGIC_VALUE](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617) that's returned by the TinyEMU Host.
+
 ## TinyEMU VirtIO Console
 
-VirtIO Console is Device ID 3.
+From above: VirtIO Console is Device ID 3.
 
 At TinyEMU Startup: [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
 
@@ -723,7 +731,7 @@ Which will access...
 
 - [VIRTIODesc](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L111-L118): For [VirtualQueue::Buffers[QueueSize]](https://wiki.osdev.org/Virtio#Virtual_Queue_Descriptor)
 
-Console Device:
+TinyEMU Console Device:
 
 - [console device decl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108)
 
@@ -731,9 +739,9 @@ Console Device:
 
 ## TinyEMU VirtIO MMIO Queue
 
-TODO: Queue Desc / Avail / Used
+TinyEMU Guest (like NuttX) is required to set the VirtIO Queue Desc / Avail / Used.
 
-[Read from VirtIO MMIO Queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
+This is how TinyEMU accesses the VirtIO MMIO Queue: [virtio.c](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
 
 ```c
 case VIRTIO_MMIO_QUEUE_SEL:
@@ -767,11 +775,15 @@ case VIRTIO_MMIO_QUEUE_USED_HIGH:
 #endif
 ```
 
-[VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741)
+To Select and Notify the Queue:
 
-[VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
+- [VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741)
 
-# TODO
+- [VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
+
+# NuttX in Kernel Mode
+
+_Right now we're running NuttX in Flat Mode..._
 
 _Can NuttX run in Kernel Mode on TinyEMU?_
 
