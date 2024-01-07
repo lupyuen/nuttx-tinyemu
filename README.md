@@ -1,3 +1,5 @@
+![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
+
 # Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
 
 [__NuttX on TinyEMU Demo__](https://lupyuen.github.io/nuttx-tinyemu/)
@@ -392,6 +394,8 @@ Yep! WebAssembly Demo is here: [NuttX on TinyEMU Demo](https://lupyuen.github.io
 
 WebAssembly Files are located here: [nuttx-tinyemu/docs](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
 
+![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
+
 We copied the TinyEMU Config and NuttX Kernel to the Web Server...
 
 ```bash
@@ -746,6 +750,8 @@ virtio_mmio_init_device: VIRTIO version: 2 device: 3 vendor: ffff
 Hello VirtIO from NuttX!
 nx_start: CPU0: Beginning Idle Loop
 ```
+
+![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
 
 # TODO
 
