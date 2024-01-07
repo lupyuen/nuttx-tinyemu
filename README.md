@@ -427,19 +427,23 @@ To do Console Input, we need to implement VirtIO Console in our NuttX UART Drive
 
 # VirtIO Console
 
-TODO
+TinyEMU supports VirtIO for proper Console Input and Output...
 
-[TinyEMU supports VirtIO](https://bellard.org/tinyemu/readme.txt)
+- [TinyEMU support for VirtIO](https://bellard.org/tinyemu/readme.txt)
 
-[Virtio - OSDev Wiki](https://wiki.osdev.org/Virtio)
+- [Virtio - OSDev Wiki](https://wiki.osdev.org/Virtio)
 
-[Virtual I/O Device (VIRTIO) Spec, Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
+- [Virtual I/O Device (VIRTIO) Spec, Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
 
-[About virtio console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
+- [About VirtIO Console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
 
-[NuttX Config knetnsh64 supports VirtIO](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52)
+And NuttX supports VirtIO, based on OpenAMP...
 
-But let's create a simple VirtIO Console Driver for NuttX, based on OpenAMP...
+- [Intro to OpenAMP](https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf)
+
+- [knetnsh64: NuttX for QEMU RISC-V with VirtIO](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52)
+
+But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
 
 - Create Queue: Call OpenAMP [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)
 
