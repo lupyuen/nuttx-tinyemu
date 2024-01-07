@@ -623,11 +623,17 @@ riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
 ```
 
-# Test our VirtIO Console
+# Configure NuttX VirtIO for TinyEMU
 
-TODO
+Previously we saw the TinyEMU config: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
-We set the VirtIO Parameters for TinyEMU in NuttX: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L41-L49)
+```c
+#define VIRTIO_BASE_ADDR 0x40010000
+#define VIRTIO_SIZE      0x1000
+#define VIRTIO_IRQ       1
+```
+
+Now We set the VirtIO Parameters for TinyEMU in NuttX: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L41-L49)
 
 ```c
 #define QEMU_VIRTIO_MMIO_BASE    0x40010000 // VIRTIO_BASE_ADDR. Previously: 0x10001000
@@ -650,7 +656,15 @@ mm_malloc: Allocated 0x80046ac0, size 848
 nx_start: CPU0: Beginning Idle Loop
 ```
 
+# Test our VirtIO Console
+
 TODO: Test the VirtIO Console
+
+[virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315) calls...
+
+- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (OpenAMP) and...
+
+  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
 
 # TODO
 
