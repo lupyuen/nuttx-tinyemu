@@ -436,6 +436,8 @@ To do Console Input, we need to implement VirtIO Console in our NuttX UART Drive
 
 # VirtIO Console in TinyEMU
 
+_How will we implement Console Input / Output in NuttX TinyEMU?_
+
 TinyEMU supports VirtIO for proper Console Input and Output...
 
 - [TinyEMU support for VirtIO](https://bellard.org/tinyemu/readme.txt)
@@ -470,9 +472,11 @@ But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
 
   (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345))
 
-This will help us understand the inner workings of VirtIO and OpenAMP!
+This will help us understand the inner workings of VirtIO and OpenAMP! But first we enable VirtIO and OpenAMP in NuttX...
 
-# Enable VirtIO in NuttX
+# Enable VirtIO and OpenAMP in NuttX
+
+_How do we call VirtIO and OpenAMP?_
 
 To enable VirtIO and OpenAMP in NuttX:
 
@@ -502,7 +506,11 @@ riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
 ```
 
+Now we configure NuttX VirtIO...
+
 # Configure NuttX VirtIO for TinyEMU
+
+_How to make NuttX VirtIO talk to TinyEMU?_
 
 Previously we saw the TinyEMU config: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
@@ -535,6 +543,8 @@ mm_malloc: Allocated 0x80046ac0, size 848
 nx_start: CPU0: Beginning Idle Loop
 ```
 
+Which means NuttX VirtIO + OpenAMP has successfully validated the Magic Number from TinyEMU. (Otherwise NuttX will halt)
+
 _How does it work?_
 
 At NuttX Startup: [board_app_initialize](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L77-L123) calls...
@@ -548,7 +558,7 @@ Let's create a VirtIO Queue for the VirtIO Console and send some data...
 
 # Test TinyEMU VirtIO Console with NuttX
 
-_NuttX has started VirtIO and OpenAMP. What next?_
+_NuttX has started VirtIO and OpenAMP and they talk nicely to TinyEMU. What next?_
 
 We dig around NuttX and we see NuttX creating a VirtIO Queue for VirtIO Console: [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) calls...
 
@@ -645,9 +655,13 @@ nx_start: CPU0: Beginning Idle Loop
 
 Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
 
+But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
+
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
 
 # Inside the VirtIO Driver for NuttX
+
+_How does VirtIO Guest work in NuttX?_
 
 NuttX VirtIO Driver is based on OpenAMP with MMIO...
 
@@ -692,7 +706,9 @@ To send data to VirtIO Console: [virtio_serial_send](https://github.com/apache/n
 
 # Inside the VirtIO Host for TinyEMU
 
-Let's look inside the implementation of VirtIO in TinyEMU.
+_How does VirtIO Host work in TinyEMU?_
+
+Let's look inside the implementation of VirtIO in TinyEMU...
 
 ## TinyEMU VirtIO
 
@@ -729,7 +745,7 @@ TinyEMU Guests (like NuttX) are required to check the [VIRTIO_MMIO_MAGIC_VALUE](
 
 ## TinyEMU VirtIO Console
 
-From above: VirtIO Console is Device ID 3.
+From above: VirtIO Console is Device ID 3. Here's how it works...
 
 At TinyEMU Startup: [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
 
