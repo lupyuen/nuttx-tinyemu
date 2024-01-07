@@ -14,7 +14,7 @@ _Why are we doing this?_
 
 We might run NuttX in a Web Browser and emulate the Ox64 BL808 RISC-V SBC. Which is great for testing NuttX Apps like [Nim Blinky LED](https://lupyuen.github.io/articles/nim)! Or even LVGL Apps with VirtIO Framebuffer?
 
-Also imagine: A NuttX Dashboard that lights up in Real-Time as the various NuttX Modules are activated! This is all possible when NuttX runs in a Web Browser!
+Also imagine: A NuttX Dashboard that lights up in Real-Time, as the various NuttX Modules are activated! This is all possible when NuttX runs in a Web Browser!
 
 (Sorry QEMU Emulator is a bit too complex to customise)
 
@@ -464,141 +464,6 @@ But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
 
   (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345))
 
-## NuttX VirtIO Driver
-
-NuttX VirtIO Driver is based on OpenAMP with MMIO...
-
-- [Running NuttX with VirtIO on QEMU](https://www.youtube.com/watch?v=_8CpLNEWxfo)
-
-- [NuttX VirtIO Framework and Future Works](https://www.youtube.com/watch?v=CYMkAv-WjQg)
-
-At NuttX Startup: [board_app_initialize](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L76-L121) calls...
-
-- [qemu_virtio_register_mmio_devices](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L53-L72) which calls...
-
-- [virtio_register_mmio_device](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L809-L880) which calls...
-
-- [virtio_mmio_init_device](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L740-L805) which passes...
-
-- [g_virtio_mmio_dispatch](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L234-L254) which contains...
-
-- [virtio_mmio_create_virtqueues](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L419) which calls...
-
-- [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L349-L414) which calls...
-
-- [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49) (OpenAMP)
-
-To create a VirtIO Queue for VirtIO Console: [virtio_serial_probe](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L530) calls...
-
-- [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) which calls...
-
-- [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (OpenAMP)
-
-To send data to VirtIO Console: [virtio_serial_send](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245) calls...
-
-- [virtio_serial_dmatxavail](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L345-L357) which calls...
-
-- [uart_xmitchars_dma](https://github.com/apache/nuttx/blob/master/drivers/serial/serial_dma.c#L86-L125) which calls...
-
-- [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345) which calls...
-
-- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (OpenAMP) and...
-
-  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
-
-## TinyEMU VirtIO
-
-TODO
-
-[MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
-
-[PCI registers](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66)
-
-Check [VIRTIO_MMIO_MAGIC_VALUE](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617)
-
-Device IDs: [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297)
-
-```c
-switch(device_id) {
-case 1: /* net */ ...
-case 2: /* block */ ...
-case 3: /* console */ ...
-case 9: /* use new device ID */ ...
-case 18: /* use new device ID */ ...
-```
-
-## TinyEMU VirtIO Console
-
-VirtIO Console is Device ID 3.
-
-At TinyEMU Startup: [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
-
-- [virtio_console_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1347-L1361) which calls...
-
-- [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297) with Device ID 3
-
-To print to VirtIO Console: [virt_machine_run (js)](https://github.com/fernandotcl/TinyEMU/blob/master/jsemu.c#L304-L348) and [virt_machine_run (temu)](https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L545-L610) call...
-
-- [virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1317-L1337) which calls...
-
-- [memcpy_to_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L451-L459) which calls...
-
-- [memcpy_to_from_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L380)
-
-Which will access...
-
-- [QueueState](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L97-L107): For desc_addr, avail_addr, used_addr
-
-- [VIRTIODesc](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L111-L118): For [VirtualQueue::Buffers[QueueSize]](https://wiki.osdev.org/Virtio#Virtual_Queue_Descriptor)
-
-Console Device:
-
-- [console device decl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108)
-
-- [console device impl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261)
-
-## TinyEMU VirtIO MMIO Queue
-
-TODO: Queue Desc / Avail / Used
-
-[Read from VirtIO MMIO Queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
-
-```c
-case VIRTIO_MMIO_QUEUE_SEL:
-    val = s->queue_sel;
-    break;
-case VIRTIO_MMIO_QUEUE_NUM_MAX:
-    val = MAX_QUEUE_NUM;
-    break;
-case VIRTIO_MMIO_QUEUE_NUM:
-    val = s->queue[s->queue_sel].num;
-    break;
-case VIRTIO_MMIO_QUEUE_DESC_LOW:
-    val = s->queue[s->queue_sel].desc_addr;
-    break;
-case VIRTIO_MMIO_QUEUE_AVAIL_LOW:
-    val = s->queue[s->queue_sel].avail_addr;
-    break;
-case VIRTIO_MMIO_QUEUE_USED_LOW:
-    val = s->queue[s->queue_sel].used_addr;
-    break;
-#if VIRTIO_ADDR_BITS == 64
-case VIRTIO_MMIO_QUEUE_DESC_HIGH:
-    val = s->queue[s->queue_sel].desc_addr >> 32;
-    break;
-case VIRTIO_MMIO_QUEUE_AVAIL_HIGH:
-    val = s->queue[s->queue_sel].avail_addr >> 32;
-    break;
-case VIRTIO_MMIO_QUEUE_USED_HIGH:
-    val = s->queue[s->queue_sel].used_addr >> 32;
-    break;
-#endif
-```
-
-[VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741)
-
-[VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
-
 # Enable VirtIO in NuttX
 
 To enable VirtIO and OpenAMP in NuttX:
@@ -754,6 +619,157 @@ nx_start: CPU0: Beginning Idle Loop
 ```
 
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
+
+# Inside the VirtIO Driver for NuttX
+
+NuttX VirtIO Driver is based on OpenAMP with MMIO...
+
+- [Running NuttX with VirtIO on QEMU](https://www.youtube.com/watch?v=_8CpLNEWxfo)
+
+- [NuttX VirtIO Framework and Future Works](https://www.youtube.com/watch?v=CYMkAv-WjQg)
+
+At NuttX Startup: [board_app_initialize](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L76-L121) calls...
+
+- [qemu_virtio_register_mmio_devices](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L53-L72) which calls...
+
+- [virtio_register_mmio_device](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L809-L880) which calls...
+
+- [virtio_mmio_init_device](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L740-L805) which passes...
+
+- [g_virtio_mmio_dispatch](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L234-L254) which contains...
+
+- [virtio_mmio_create_virtqueues](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L419) which calls...
+
+- [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L349-L414) which calls...
+
+- [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49) (OpenAMP)
+
+To create a VirtIO Queue for VirtIO Console: [virtio_serial_probe](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L530) calls...
+
+- [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) which calls...
+
+- [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (OpenAMP)
+
+To send data to VirtIO Console: [virtio_serial_send](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245) calls...
+
+- [virtio_serial_dmatxavail](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L345-L357) which calls...
+
+- [uart_xmitchars_dma](https://github.com/apache/nuttx/blob/master/drivers/serial/serial_dma.c#L86-L125) which calls...
+
+- [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345) which calls...
+
+- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (OpenAMP) and...
+
+  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
+
+# Inside the VirtIO Host for TinyEMU
+
+Let's look inside the implementation of VirtIO in TinyEMU.
+
+## TinyEMU VirtIO
+
+TODO
+
+[MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
+
+[PCI registers](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66)
+
+Check [VIRTIO_MMIO_MAGIC_VALUE](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617)
+
+Device IDs: [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297)
+
+```c
+switch(device_id) {
+case 1: /* net */ ...
+case 2: /* block */ ...
+case 3: /* console */ ...
+case 9: /* Network Device */ ...
+case 18: /* Input Device */ ...
+```
+
+TinyEMU supports these VirtIO Devices:
+
+- Console Device
+
+- [Block Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L979-L1133)
+
+- [Network Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1133-L1259)
+
+- [Input Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1361-L1645)
+
+- [9P Filesystem Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1645-L2649)
+
+## TinyEMU VirtIO Console
+
+VirtIO Console is Device ID 3.
+
+At TinyEMU Startup: [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
+
+- [virtio_console_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1347-L1361) which calls...
+
+- [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297) with Device ID 3
+
+To print to VirtIO Console: [virt_machine_run (js)](https://github.com/fernandotcl/TinyEMU/blob/master/jsemu.c#L304-L348) and [virt_machine_run (temu)](https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L545-L610) call...
+
+- [virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1317-L1337) which calls...
+
+- [memcpy_to_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L451-L459) which calls...
+
+- [memcpy_to_from_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L380)
+
+Which will access...
+
+- [QueueState](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L97-L107): For desc_addr, avail_addr, used_addr
+
+- [VIRTIODesc](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L111-L118): For [VirtualQueue::Buffers[QueueSize]](https://wiki.osdev.org/Virtio#Virtual_Queue_Descriptor)
+
+Console Device:
+
+- [console device decl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108)
+
+- [console device impl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261)
+
+## TinyEMU VirtIO MMIO Queue
+
+TODO: Queue Desc / Avail / Used
+
+[Read from VirtIO MMIO Queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
+
+```c
+case VIRTIO_MMIO_QUEUE_SEL:
+    val = s->queue_sel;
+    break;
+case VIRTIO_MMIO_QUEUE_NUM_MAX:
+    val = MAX_QUEUE_NUM;
+    break;
+case VIRTIO_MMIO_QUEUE_NUM:
+    val = s->queue[s->queue_sel].num;
+    break;
+case VIRTIO_MMIO_QUEUE_DESC_LOW:
+    val = s->queue[s->queue_sel].desc_addr;
+    break;
+case VIRTIO_MMIO_QUEUE_AVAIL_LOW:
+    val = s->queue[s->queue_sel].avail_addr;
+    break;
+case VIRTIO_MMIO_QUEUE_USED_LOW:
+    val = s->queue[s->queue_sel].used_addr;
+    break;
+#if VIRTIO_ADDR_BITS == 64
+case VIRTIO_MMIO_QUEUE_DESC_HIGH:
+    val = s->queue[s->queue_sel].desc_addr >> 32;
+    break;
+case VIRTIO_MMIO_QUEUE_AVAIL_HIGH:
+    val = s->queue[s->queue_sel].avail_addr >> 32;
+    break;
+case VIRTIO_MMIO_QUEUE_USED_HIGH:
+    val = s->queue[s->queue_sel].used_addr >> 32;
+    break;
+#endif
+```
+
+[VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741)
+
+[VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
 
 # TODO
 
