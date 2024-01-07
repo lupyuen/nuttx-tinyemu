@@ -627,22 +627,7 @@ nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addr
 
 TODO
 
-Let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
-
-- Create Queue: Call OpenAMP [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)
-
-  (See [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L349-L414) or [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142))
-
-- Add Buffer: Call OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138)
-
-  (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315))
-
-- Start Processing: Call OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
-
-  (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315))
-
-
-TODO
+We set the VirtIO Parameters for TinyEMU in NuttX: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L41-L49)
 
 ```c
 #define QEMU_VIRTIO_MMIO_BASE    0x40010000 // VIRTIO_BASE_ADDR. Previously: 0x10001000
@@ -652,46 +637,20 @@ TODO
 #else
 #  define QEMU_VIRTIO_MMIO_IRQ   28 // TODO: Should this be 1? (VIRTIO_IRQ)
 #endif
-#define QEMU_VIRTIO_MMIO_NUM     8
+#define QEMU_VIRTIO_MMIO_NUM     1  // Number of VirtIO Devices. Previously: 8
 ```
 
-TODO
+VirtIO starts OK on NuttX yay!
 
 ```text
 virtio_mmio_init_device: VIRTIO version: 2 device: 3 vendor: ffff
-mm_malloc: Allocated 0x80046ab0, size 48
-mm_malloc: Allocated 0x80046ae0, size 336
-virtio_mmio_init_device: Bad magic value 37
-virtio_register_mmio_device: virtio_mmio_device_init failed, ret=-22
-mm_free: Freeing 0x80046ae0
-mm_malloc: Allocated 0x80046ae0, size 336
-virtio_mmio_init_device: Bad magic value 37
-virtio_register_mmio_device: virtio_mmio_device_init failed, ret=-22
-mm_free: Freeing 0x80046ae0
-mm_malloc: Allocated 0x80046ae0, size 336
-virtio_mmio_init_device: Bad magic value 37
-virtio_register_mmio_device: virtio_mmio_device_init failed, ret=-22
-mm_free: Freeing 0x80046ae0
-mm_malloc: Allocated 0x80046ae0, size 336
-virtio_mmio_init_device: Bad magic value 37
-virtio_register_mmio_device: virtio_mmio_device_init failed, ret=-22
-mm_free: Freeing 0x80046ae0
-mm_malloc: Allocated 0x80046ae0, size 336
-virtio_mmio_init_device: Bad magic value 37
-virtio_register_mmio_device: virtio_mmio_device_init failed, ret=-22
-mm_free: Freeing 0x80046ae0
-mm_malloc: Allocated 0x80046ae0, size 336
-virtio_mmio_init_device: Bad magic value 37
-virtio_register_mmio_device: virtio_mmio_device_init failed, ret=-22
-mm_free: Freeing 0x80046ae0
-mm_malloc: Allocated 0x80046ae0, size 336
-virtio_mmio_init_device: Bad magic value 37
-virtio_register_mmio_device: virtio_mmio_device_init failed, ret=-22
-mm_free: Freeing 0x80046ae0
+mm_malloc: Allocated 0x80046a90, size 48
 test_virtio: 
-mm_malloc: Allocated 0x80046ae0, size 848
+mm_malloc: Allocated 0x80046ac0, size 848
 nx_start: CPU0: Beginning Idle Loop
 ```
+
+TODO: Test the VirtIO Console
 
 # TODO
 
