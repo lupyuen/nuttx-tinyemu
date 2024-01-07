@@ -706,7 +706,7 @@ Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lu
   DEBUGASSERT(vq != NULL);
 
   /* Set the virtqueue buffer */
-  static char *HELLO_MSG = "Hello VirtIO from NuttX!\n";
+  static char *HELLO_MSG = "Hello VirtIO from NuttX!\r\n";
   struct virtqueue_buf vb[2];
   vb[0].buf = HELLO_MSG;
   vb[0].len = strlen(HELLO_MSG);
