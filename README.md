@@ -727,7 +727,7 @@ Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lu
   //     num = 2;
   //   }
 
-  /* Add buffer to TX virtiqueue and notify the other size */
+  /* Add buffer to TX virtiqueue and notify the VirtIO Host */
   virtqueue_add_buffer(vq, vb, num, 0, (FAR void *)len);
   virtqueue_kick(vq);  
   // End of Testing
