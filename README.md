@@ -626,6 +626,10 @@ Hello VirtIO from NuttX!
 nx_start: CPU0: Beginning Idle Loop
 ```
 
+[(See the Complete Log)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
+
+TODO: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
+
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
 
 # Inside the VirtIO Driver for NuttX
