@@ -548,15 +548,17 @@ Let's create a VirtIO Queue for the VirtIO Console and send some data...
 
 # Test TinyEMU VirtIO Console with NuttX
 
-Earlier we saw NuttX creating a VirtIO Queue for VirtIO Console: [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) calls...
+_NuttX has started VirtIO and OpenAMP. What next?_
 
-- [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (OpenAMP)
+We dig around NuttX and we see NuttX creating a VirtIO Queue for VirtIO Console: [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) calls...
 
-And we saw NuttX sending data to VirtIO Console: [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345) calls...
+- OpenAMP [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (create data queues, explained below)
 
-- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (OpenAMP) and...
+Also we see NuttX sending data to VirtIO Console: [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345) calls...
 
-  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
+- OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (send data to queue) and...
+
+  OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (start queue processing, explained below)
 
 Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
 
@@ -619,7 +621,9 @@ Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lu
   // End of Testing
 ```
 
-And NuttX prints correctly to TinyEMU's VirtIO Console yay!
+_Does it work?_
+
+Yep NuttX prints correctly to TinyEMU's VirtIO Console yay!
 
 [__Demo of NuttX on TinyEMU: lupyuen.github.io/nuttx-tinyemu__](https://lupyuen.github.io/nuttx-tinyemu/)
 
@@ -639,7 +643,7 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
 
-TODO: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
+Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
 
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
 
