@@ -20,7 +20,9 @@ Also imagine: A NuttX Dashboard that lights up in Real-Time, as the various Nutt
 
 # Install TinyEMU
 
-To install TinyEMU on macOS:
+_How to run TinyEMU in the Command Line?_
+
+We begin with TinyEMU in the Command Line, then move to WebAssembly. To install TinyEMU on macOS:
 
 ```bash
 brew tap fernandotcl/homebrew-fernandotcl
@@ -33,6 +35,8 @@ Or build TinyEMU on Ubuntu and macOS [with these steps](https://github.com/lupyu
 TODO: Generate the Emscripten JavaScript via [GitHub Actions](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml)
 
 # RISC-V Addresses for TinyEMU
+
+_Where in RAM will NuttX boot?_
 
 TinyEMU is hardcoded to run at these RISC-V Addresses (yep it's really barebones): [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
@@ -60,7 +64,9 @@ We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
 # TinyEMU Config
 
-We configure a Virtual Machine for TinyEMU like this: [buildroot-riscv64.cfg](https://bellard.org/jslinux/buildroot-riscv64.cfg)
+_What's inside a TinyEMU Config?_
+
+RISC-V Virtual Machines for TinyEMU are configured like this: [buildroot-riscv64.cfg](https://bellard.org/jslinux/buildroot-riscv64.cfg)
 
 ```text
 /* VM configuration file */
@@ -87,6 +93,8 @@ Thus we put NuttX Kernel into `bios` and leave `kernel` empty.
 [copy_bios](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L753-L812) will load NuttX Kernel at RAM_BASE_ADDR (0x8000_0000).
 
 # Build NuttX for TinyEMU
+
+_Will NuttX boot on TinyEMU?_
 
 NuttX for QEMU RISC-V is already configured to boot at 0x8000_0000: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
 
@@ -157,7 +165,9 @@ riscv64-unknown-elf-objdump \
 
 # Run NuttX on TinyEMU
 
-We create a TinyEMU Config for NuttX and run it...
+_How to boot NuttX on TinyEMU?_
+
+We create a TinyEMU Config for NuttX and run it: [root-riscv64.cfg](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
 
 ```bash
 $ cat nuttx.cfg
