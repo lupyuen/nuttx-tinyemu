@@ -14,7 +14,9 @@ _Why are we doing this?_
 
 We might run NuttX in a Web Browser and emulate the Ox64 BL808 RISC-V SBC. Which is great for testing NuttX Apps like [Nim Blinky LED](https://lupyuen.github.io/articles/nim)! Or even LVGL Apps with VirtIO Framebuffer?
 
-(Sorry QEMU Emulator is a bit too complex to customise for Ox64)
+Also imagine: A NuttX Dashboard that lights up in Real-Time as the various NuttX Modules are activated! This is all possible when NuttX runs in a Web Browser!
+
+(Sorry QEMU Emulator is a bit too complex to customise)
 
 # Install TinyEMU
 
