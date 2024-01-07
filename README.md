@@ -731,6 +731,8 @@ Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lu
 
 And NuttX prints correctly to TinyEMU's VirtIO Console yay!
 
+[__NuttX on TinyEMU Demo: lupyuen.github.io/nuttx-tinyemu__](https://lupyuen.github.io/nuttx-tinyemu/)
+
 ```text
 + temu nuttx.cfg
 123ABCnx_start: Entry
