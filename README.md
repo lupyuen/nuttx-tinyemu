@@ -104,6 +104,9 @@ git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps 
 cd nuttx
 tools/configure.sh rv-virt:nsh64
 make menuconfig
+## Device Drivers > Virtio Device Support
+##   Enable "Virtio MMIO Device Support"
+
 ## Build Setup > Debug Options >
 ##   Enable Debug Features
 ##   Enable "Binary Loader Debug Features > Errors, Warnings, Info"
@@ -113,6 +116,7 @@ make menuconfig
 ##   Enable "Scheduler Debug Features > Errors, Warnings, Info"
 ##   Enable "Timer Debug Features > Errors, Warnings, Info"
 ##   Enable "IPC Debug Features > Errors, Warnings, Info"
+##   Enable "Virtio Debug Features > Error, Warnings, Info"
 
 ## Application Configuration > Testing >
 ##   Enable "OS Test Example"
@@ -396,6 +400,30 @@ But let's create a simple VirtIO Console Driver for NuttX, based on OpenAMP...
 - Start Processing: Call OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
 
   (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L315))
+
+To enable VirtIO and OpenAMP in NuttX:
+
+```text
+make menuconfig
+## Device Drivers > Virtio Device Support
+##   Enable "Virtio MMIO Device Support"
+
+## Build Setup > Debug Options >
+##   Enable "Virtio Debug Features > Error, Warnings, Info"
+```
+
+If we see this...
+
+```text
+riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_phys_to_offset_':
+nuttx/openamp/libmetal/lib/system/nuttx/io.c:105: undefined reference to `up_addrenv_pa_to_va'
+riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_offset_to_phys_':
+nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
+make[1]: *** [Makefile:178: nuttx] Error 1
+make: *** [tools/Unix.mk:546: nuttx] Error 2
+```
+
+TODO: Fix up_addrenv_va_to_pa
 
 ## NuttX VirtIO Driver
 
