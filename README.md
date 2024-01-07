@@ -2,7 +2,7 @@
 
 # Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
 
-[__NuttX on TinyEMU Demo__](https://lupyuen.github.io/nuttx-tinyemu/)
+[__Demo of NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu/)
 
 Apache NuttX RTOS is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, ...)
 
@@ -392,7 +392,7 @@ Let's boot NuttX in the Web Browser...
 
 _Will NuttX boot in the Web Browser?_
 
-Yep! WebAssembly Demo is here: [NuttX on TinyEMU Demo](https://lupyuen.github.io/nuttx-tinyemu/)
+Yep! WebAssembly Demo is here: [Demo of NuttX on TinyEMU](https://lupyuen.github.io/nuttx-tinyemu/)
 
 WebAssembly Files are located here: [nuttx-tinyemu/docs](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
 
@@ -602,7 +602,7 @@ Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lu
 
 And NuttX prints correctly to TinyEMU's VirtIO Console yay!
 
-[__NuttX on TinyEMU Demo: lupyuen.github.io/nuttx-tinyemu__](https://lupyuen.github.io/nuttx-tinyemu/)
+[__Demo of NuttX on TinyEMU: lupyuen.github.io/nuttx-tinyemu__](https://lupyuen.github.io/nuttx-tinyemu/)
 
 ```text
 + temu nuttx.cfg
