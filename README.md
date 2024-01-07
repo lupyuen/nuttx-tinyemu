@@ -104,6 +104,10 @@ git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps 
 cd nuttx
 tools/configure.sh rv-virt:nsh64
 make menuconfig
+## Device Drivers
+##   Enable "Simple AddrEnv"
+##   Enable "Virtio Device Support"
+
 ## Device Drivers > Virtio Device Support
 ##   Enable "Virtio MMIO Device Support"
 
@@ -120,6 +124,7 @@ make menuconfig
 
 ## Application Configuration > Testing >
 ##   Enable "OS Test Example"
+
 ## RTOS Features > Tasks and Scheduling >
 ##   Set "Application Entry Point" to "ostest_main"
 ##   Set "Application Entry Name" to "ostest_main"
@@ -320,12 +325,59 @@ static int u16550_wait(FAR struct u16550_s *priv) {
 Now we see NuttX booting OK on TinyEMU yay!
 
 ```text
-$ temu nuttx.cfg
++ temu nuttx.cfg
 123ABCnx_start: Entry
+mm_initialize: Heap: name=Umem, start=0x80035700 size=33335552
+mm_addregion: [Umem] Region 1: base=0x800359a8 size=33334864
+mm_malloc: Allocated 0x800359d0, size 48
+mm_malloc: Allocated 0x80035a00, size 288
+mm_malloc: Allocated 0x80035b20, size 32
+mm_malloc: Allocated 0x80035b40, size 720
+mm_malloc: Allocated 0x80035e10, size 80
+mm_malloc: Allocated 0x80035e60, size 64
+mm_malloc: Allocated 0x80035ea0, size 240
+mm_malloc: Allocated 0x80035f90, size 464
+mm_malloc: Allocated 0x80036160, size 176
+mm_malloc: Allocated 0x80036210, size 336
+mm_malloc: Allocated 0x80036360, size 464
+mm_malloc: Allocated 0x80036530, size 464
+mm_malloc: Allocated 0x80036700, size 528
+builtin_initialize: Registering Builtin Loader
+elf_initialize: Registering ELF
 uart_register: Registering /dev/console
+mm_malloc: Allocated 0x80036910, size 80
+mm_malloc: Allocated 0x80036960, size 80
 uart_register: Registering /dev/ttyS0
+mm_malloc: Allocated 0x800369b0, size 80
+mm_malloc: Allocated 0x80036a00, size 80
+mm_malloc: Allocated 0x80036a50, size 80
+mm_malloc: Allocated 0x80036aa0, size 32
+mm_malloc: Allocated 0x80036ac0, size 160
+mm_malloc: Allocated 0x80036b60, size 32
+mm_malloc: Allocated 0x80036b80, size 32
+mm_malloc: Allocated 0x80036ba0, size 32
 nx_start_application: Starting init thread
-task_spawn: name=nsh_main entry=0x8000660e file_actions=0 attr=0x8002e930 argv=0x8002e928
+task_spawn: name=ostest_main entry=0x80006fde file_actions=0 attr=0x80035670 argv=0x80035668
+mm_malloc: Allocated 0x80036bc0, size 272
+mm_malloc: Allocated 0x80036cd0, size 288
+mm_malloc: Allocated 0x80036df0, size 32
+mm_malloc: Allocated 0x80036e10, size 720
+mm_malloc: Allocated 0x800370e0, size 32
+mm_malloc: Allocated 0x80037100, size 32
+mm_malloc: Allocated 0x80037120, size 32
+mm_malloc: Allocated 0x80037140, size 32
+mm_malloc: Allocated 0x80037160, size 160
+mm_malloc: Allocated 0x80037200, size 3088
+mm_free: Freeing 0x80036b60
+mm_free: Freeing 0x80036ba0
+mm_free: Freeing 0x80036b80
+mm_malloc: Allocated 0x80036b60, size 32
+mm_malloc: Allocated 0x80036b80, size 32
+mm_malloc: Allocated 0x80037e10, size 48
+mm_free: Freeing 0x800370e0
+mm_free: Freeing 0x80036b60
+mm_free: Freeing 0x80036b80
+mm_malloc: Allocated 0x800370e0, size 32
 nx_start: CPU0: Beginning Idle Loop
 ```
 
@@ -405,6 +457,10 @@ To enable VirtIO and OpenAMP in NuttX:
 
 ```text
 make menuconfig
+## Device Drivers
+##   Enable "Simple AddrEnv"
+##   Enable "Virtio Device Support"
+
 ## Device Drivers > Virtio Device Support
 ##   Enable "Virtio MMIO Device Support"
 
@@ -412,18 +468,18 @@ make menuconfig
 ##   Enable "Virtio Debug Features > Error, Warnings, Info"
 ```
 
-If we see this...
+_Why "Simple AddrEnv"?_
+
+`up_addrenv_va_to_pa` is defined in [drivers/misc/addrenv.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/misc/addrenv.c#L89-L112). So we need `CONFIG_DEV_SIMPLE_ADDRENV` (Simple AddrEnv)
+
+Otherwise we see this...
 
 ```text
 riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_phys_to_offset_':
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:105: undefined reference to `up_addrenv_pa_to_va'
 riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_offset_to_phys_':
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
-make[1]: *** [Makefile:178: nuttx] Error 1
-make: *** [tools/Unix.mk:546: nuttx] Error 2
 ```
-
-TODO: Fix up_addrenv_va_to_pa
 
 ## NuttX VirtIO Driver
 
