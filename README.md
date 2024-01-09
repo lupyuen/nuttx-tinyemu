@@ -691,6 +691,8 @@ NuttShell (NSH) NuttX-12.3.0-RC1
 nx_start: CPU0: Beginning Idle Loop
 ```
 
+TODO: Check the PLIC Interrupt for VirtIO Console
+
 But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
 
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
