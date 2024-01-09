@@ -665,6 +665,14 @@ nx_start: CPU0: Beginning Idle Loop
 
 Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
 
+```text
+Device Drivers > Virtio Device Support
+  Enable "Virtio Serial Support"
+
+Device Drivers > Serial Driver Support
+  Disable "16550 UART Chip support"
+```
+
 But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
 
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
