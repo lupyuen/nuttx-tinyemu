@@ -663,6 +663,8 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
 
+## Enable the VirtIO Serial Driver
+
 Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
 
 [See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
