@@ -673,6 +673,24 @@ Device Drivers > Serial Driver Support
   Disable "16550 UART Chip support"
 ```
 
+Which will start a tiny bit of NuttX Shell...
+
+```text
++ temu nuttx.cfg
+123Ariscv_earlyserialinit: 
+BCnx_start: Entry
+riscv_serialinit: 
+virtio_mmio_init_device: VIRTIO version: 2 device: 3 vendor: ffff
+uart_register: Registering /dev/console
+virtio_register_serial_driver: ret1=0
+virtio_register_serial_driver: ret2=0
+nx_start_application: Starting init thread
+task_spawn: name=nsh_main entry=0x80008874 file_actions=0 attr=0x80044b30 argv=0x80044b28
+
+NuttShell (NSH) NuttX-12.3.0-RC1
+nx_start: CPU0: Beginning Idle Loop
+```
+
 But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
 
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
