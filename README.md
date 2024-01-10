@@ -863,23 +863,139 @@ To Select and Notify the Queue:
 
 # VirtIO Console Input in TinyEMU
 
-TODO
+_How does TinyEMU handle VirtIO Console Input?_
 
+Suppose we press a key in TinyEMU. From the [VirtIO Console Input Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646)...
 
+```text
+virtio_console_get_write_len
+virtio_console_write_data: ready=1
+virtio_console_write_data: last_avail_idx=0, avail_idx=1
+```
+
+TinyEMU [virt_machine_run](https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L545-L603) calls...
+
+- [virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1317-L1337) to write the key pressed into the VirtIO Console's RX Queue
+
+TinyEMU triggers an Interrupt...
+
+```text
+plic_set_irq: irq_num=1, state=1
+plic_update_mip: set_mip, pending=0x1, served=0x0
+raise_exception: cause=-2147483639
+raise_exception2: cause=-2147483639, tval=0x0
+```
+
+[virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1317-L1337) calls...
+
+- [virtio_consume_desc](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L459-L479) (to notify the queue) which calls...
+
+- [plic_set_irq](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L303-L316) (to set the PLIC Interrupt) which calls...
+
+- [plic_update_mip](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L241C1-L253) (to set the Machine-Mode Interrupt Pending Register) which...
+
+- [Triggers an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) which calls...
+
+  ```c
+    /* check pending interrupts */
+  if (unlikely((s->mip & s->mie) != 0)) {
+      if (raise_interrupt(s)) {
+          s->n_cycles--; 
+          goto done_interp;
+      }
+  }
+  ```
+
+- [raise_interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu.c#L1185C1-L1198) which calls...
+
+- [raise_exception](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu.c#L1121C1-L1126) which calls...
+
+- [raise_exception2](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu.c#L1041C1-L1121)
+
+This invokes the NuttX Exception Handler: [riscv_dispatch_irq](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92)
+
+[NuttX Exception Handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92) handles the Interrupt...
+
+```text
+plic_read: offset=0x200004
+plic_update_mip: reset_mip, pending=0x1, served=0x1
+plic_set_irq: irq_num=1, state=0
+plic_update_mip: reset_mip, pending=0x0, served=0x1
+```
+
+NuttX [riscv_dispatch_irq](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92) reads the PLIC Interrupt Claim Register at PLIC Offset 0x200004, which calls...
+
+- TinyEMU [plic_read](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L253-L284) (to read the PLIC Interrupt Claim Register at PLIC Offset 0x200004) which calls...
+
+- [plic_set_irq](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L303-L316) (to clear the PLIC Interrupt) which calls...
+
+- [plic_update_mip](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L241C1-L253) (to clear the Machine-Mode Interrupt Pending Register)
+
+[NuttX Exception Handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92) calls the VirtIO Serial Driver...
+
+```text
+virtio_serial_rxready: 
+virtio_serial_dmareceive:
+```
+
+NuttX [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) calls...
+
+- [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386) (to read the key pressed)
+
+To finish up, [NuttX Exception Handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92) Completes the Interrupt by writing to PLIC Interrupt Claim Register at PLIC Offset 0x200004...
+
+```text
+plic_write: offset=0x200004, val=0x1
+plic_update_mip: reset_mip, pending=0x0, served=0x0
+raise_exception2: cause=11, tval=0x0
+```
+
+TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L284-L303)  writes to PLIC Interrupt Claim Register at PLIC Offset 0x200004, and calls...
+
+- [plic_update_mip](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L241C1-L253) (to clear the Machine-Mode Interrupt Pending Register)
+
+TODO: Fix [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) and [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386) so that it reads the key pressed correctly
 
 # TinyEMU can't enable Machine-Mode Software Interrupts
 
-TODO
+From the previous section, we saw that TinyEMU's VirtIO Console will [Trigger an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) like so...
 
-https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222
+```c
+  /* check pending interrupts */
+if (unlikely((s->mip & s->mie) != 0)) {
+    if (raise_interrupt(s)) {
+        s->n_cycles--; 
+        goto done_interp;
+    }
+}
+```
+
+This means that MIP (Machine-Mode Interrupt Pending Register) must have the same bits set as MIE (Machine-Mode Interrupt Enable Register).
+
+But we have a problem: TinyEMU won't let us set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIE Register!
+
+From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222):
 
 ```c
   /* Enable external interrupts (mie/sie) */
-
+  // TODO: TinyEMU won't let us set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIP!
   { uint64_t mie = READ_CSR(mie); _info("Before mie: %p\n", mie); }////
   SET_CSR(CSR_IE, IE_EIE);
   { uint64_t mie = READ_CSR(mie); _info("After mie: %p\n", mie); }////
+```
 
+Which shows that MEIE Bit in MIE Register is not set: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
+
+```text
+up_irq_enable: Before mie: 0
+up_irq_enable: After mie: 0
+```
+
+Our workaround is to use the SEIE Bit (Supervisor-Mode Externel Interrupt Enable) in MIE Register...
+
+From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222):
+
+```c
   // TODO: TinyEMU supports SEIE but not MEIE!
   uint64_t mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
 
@@ -893,7 +1009,25 @@ https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qe
   mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
 ```
 
-https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646
+Which shows that SEIE Bit in MIE Register is set correctly: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
+
+```text
+up_irq_enable: mie: 0
+up_irq_enable: mie: 0x200
+```
+
+Then we patch the NuttX Exception Handler to map Supervisor-Mode Interrupts into Machine-Mode Interrupts: [riscv_dispatch_irq](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92)
+
+```c
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
+{
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+
+  ////TODO: TinyEMU works only with SEIE, not MEIE
+  if (irq == RISCV_IRQ_SEXT) { irq = RISCV_IRQ_MEXT; }
+```
+
+TODO: Find out why TinyEMU can't set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIE
 
 # NuttX in Kernel Mode
 
