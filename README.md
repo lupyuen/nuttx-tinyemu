@@ -861,6 +861,40 @@ To Select and Notify the Queue:
 
 - [VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
 
+# VirtIO Console Input in TinyEMU
+
+TODO
+
+
+
+# TinyEMU can't enable Machine-Mode Software Interrupts
+
+TODO
+
+https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222
+
+```c
+  /* Enable external interrupts (mie/sie) */
+
+  { uint64_t mie = READ_CSR(mie); _info("Before mie: %p\n", mie); }////
+  SET_CSR(CSR_IE, IE_EIE);
+  { uint64_t mie = READ_CSR(mie); _info("After mie: %p\n", mie); }////
+
+  // TODO: TinyEMU supports SEIE but not MEIE!
+  uint64_t mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
+
+  // TODO: This doesn't work
+  // Enable MEIE: Machine-Mode External Interrupt  
+  // WRITE_CSR(mie, mie | (1 << 11));
+
+  // TODO: This works, but we need MEIE, not SEIE. We patch this in riscv_dispatch_irq()
+  // Enable SEIE: Supervisor-Mode External Interrupt
+  WRITE_CSR(mie, mie | (1 << 9));
+  mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
+```
+
+https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646
+
 # NuttX in Kernel Mode
 
 _Right now we're running NuttX in Flat Mode..._
