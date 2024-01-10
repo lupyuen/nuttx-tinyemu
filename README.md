@@ -663,13 +663,15 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
 
+![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
+
 ## Enable the VirtIO Serial Driver
 
-Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
+Now we implement Console Input / Output with the NuttX Serial Driver for VirtIO:
 
-[See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+- [See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-[See the Work-In-Progress Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+- [See the Work-In-Progress Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
 
 ```text
 Device Drivers > Virtio Device Support
@@ -701,7 +703,9 @@ TODO: Check the PLIC Interrupt for VirtIO Console
 
 But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
 
-![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
+![Live Demo of Upcoming NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+
+> [_Live Demo of Upcoming NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
 
 # Inside the VirtIO Driver for NuttX
 
@@ -955,6 +959,14 @@ TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_ma
 - [plic_update_mip](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L241C1-L253) (to clear the Machine-Mode Interrupt Pending Register)
 
 TODO: Fix [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) and [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386) so that it reads the key pressed correctly
+
+[See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+
+[See the Work-In-Progress Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+
+![Live Demo of Upcoming NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+
+> [_Live Demo of Upcoming NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
 
 # TinyEMU can't enable Machine-Mode Software Interrupts
 
