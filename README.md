@@ -202,6 +202,8 @@ From [RISC-V Spike Emulator](https://github.com/riscv-software-src/riscv-isa-sim
 
 > Command 1 writes a character from the 8 LSBs of tohost
 
+![TinyEMU with HTIF Console](https://lupyuen.github.io/images/tinyemu-htif.jpg) 
+
 TinyEMU handles HTIF Commands like this: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L129-L153)
 
 ```c
@@ -483,6 +485,8 @@ But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
   (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345))
 
 This will help us understand the inner workings of VirtIO and OpenAMP! But first we enable VirtIO and OpenAMP in NuttX...
+
+![TinyEMU with VirtIO Console](https://lupyuen.github.io/images/tinyemu-virtio.jpg) 
 
 # Enable VirtIO and OpenAMP in NuttX
 
