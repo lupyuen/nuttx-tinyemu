@@ -675,7 +675,7 @@ Now we implement Console Input / Output with the NuttX Serial Driver for VirtIO:
 
 - [See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-- [See the Work-In-Progress Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+- [See the Full Demo](https://lupyuen.github.io/nuttx-tinyemu)
 
 ```text
 Device Drivers > Virtio Device Support
@@ -707,9 +707,9 @@ TODO: Check the PLIC Interrupt for VirtIO Console
 
 But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
 
-![Live Demo of Upcoming NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
-> [_Live Demo of Upcoming NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
 
 # Inside the VirtIO Driver for NuttX
 
@@ -989,11 +989,11 @@ When we enable the NuttX Console for VirtIO, NuttX Shell works correctly yay!
 
 [See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-[See the Full Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+[See the Full Demo](https://lupyuen.github.io/nuttx-tinyemu)
 
 ![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
-> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
 
 # TinyEMU can't enable Machine-Mode Software Interrupts
 
