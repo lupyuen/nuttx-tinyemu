@@ -964,6 +964,15 @@ TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_ma
 
 TODO: Fix [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) and [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386) so that it reads the key pressed correctly
 
+TODO: Console Input is OK yay! [virtio-serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L451-L490)
+
+```c
+static int virtio_serial_init(FAR struct virtio_serial_priv_s *priv, FAR struct virtio_device *vdev) {
+  ...
+  //// TinyEMU needs NuttX to echo the keypress and change CR to NL
+  udev->isconsole = true; ////
+```
+
 [See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
 [See the Work-In-Progress Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
