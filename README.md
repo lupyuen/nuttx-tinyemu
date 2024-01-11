@@ -964,9 +964,11 @@ TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_ma
 
 TODO: [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)
 
-TODO: Fix [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) and [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386) so that it reads the key pressed correctly
+# Enable NuttX Console for VirtIO
 
-TODO: Console Input is OK yay! [virtio-serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L451-L490)
+_Nothing appears when we type in NuttX Shell. Why?_
+
+That's because we haven't enabled the Echoing of Keypresses! Here's the fix: [virtio-serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L451-L490)
 
 ```c
 static int virtio_serial_init(FAR struct virtio_serial_priv_s *priv, FAR struct virtio_device *vdev) {
@@ -975,13 +977,23 @@ static int virtio_serial_init(FAR struct virtio_serial_priv_s *priv, FAR struct 
   udev->isconsole = true; ////
 ```
 
+This will...
+
+- Echo all keys pressed
+
+- If the key pressed is Carriage Return `\r`, convert to Line Feed `\n`
+
+- TOOO: What else?
+
+When we enable the NuttX Console for VirtIO, NuttX Shell works correctly yay!
+
 [See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-[See the Work-In-Progress Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+[See the Full Demo](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
 
-![Live Demo of Upcoming NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
-> [_Live Demo of Upcoming NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
 
 # TinyEMU can't enable Machine-Mode Software Interrupts
 
