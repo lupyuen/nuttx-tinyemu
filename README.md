@@ -705,13 +705,147 @@ NuttShell (NSH) NuttX-12.3.0-RC1
 nx_start: CPU0: Beginning Idle Loop
 ```
 
-TODO: Check the PLIC Interrupt for VirtIO Console
+![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
-But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
+> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
+
+# Enable NuttX Console for VirtIO
+
+_Nothing appears when we type in NuttX Shell. Why?_
+
+That's because we haven't enabled the Echoing of Keypresses! Here's the fix: [virtio-serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L451-L490)
+
+```c
+static int virtio_serial_init(FAR struct virtio_serial_priv_s *priv, FAR struct virtio_device *vdev) {
+  ...
+  //// TinyEMU needs NuttX to echo the keypress and change CR to NL
+  udev->isconsole = true; ////
+```
+
+This will...
+
+- Echo all keys pressed
+
+- If the key pressed is Carriage Return `\r`, convert to Line Feed `\n`
+
+- TOOO: What else?
+
+When we enable the NuttX Console for VirtIO, NuttX Shell works correctly yay!
+
+[See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+
+[See the Full Demo](https://lupyuen.github.io/nuttx-tinyemu)
 
 ![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
 > [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
+
+# TinyEMU can't enable Machine-Mode Software Interrupts
+
+From the previous section, we saw that TinyEMU's VirtIO Console will [Trigger an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) like so...
+
+```c
+  /* check pending interrupts */
+if (unlikely((s->mip & s->mie) != 0)) {
+    if (raise_interrupt(s)) {
+        s->n_cycles--; 
+        goto done_interp;
+    }
+}
+```
+
+This means that MIP (Machine-Mode Interrupt Pending Register) must have the same bits set as MIE (Machine-Mode Interrupt Enable Register).
+
+But we have a problem: TinyEMU won't let us set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIE Register!
+
+From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222):
+
+```c
+  /* Enable external interrupts (mie/sie) */
+  // TODO: TinyEMU won't let us set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIP!
+  { uint64_t mie = READ_CSR(mie); _info("Before mie: %p\n", mie); }////
+  SET_CSR(CSR_IE, IE_EIE);
+  { uint64_t mie = READ_CSR(mie); _info("After mie: %p\n", mie); }////
+```
+
+Which shows that MEIE Bit in MIE Register is not set: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
+
+```text
+up_irq_enable: Before mie: 0
+up_irq_enable: After mie: 0
+```
+
+Our workaround is to use the SEIE Bit (Supervisor-Mode Externel Interrupt Enable) in MIE Register...
+
+From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222):
+
+```c
+  // TODO: TinyEMU supports SEIE but not MEIE!
+  uint64_t mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
+
+  // TODO: This doesn't work
+  // Enable MEIE: Machine-Mode External Interrupt  
+  // WRITE_CSR(mie, mie | (1 << 11));
+
+  // TODO: This works, but we need MEIE, not SEIE. We patch this in riscv_dispatch_irq()
+  // Enable SEIE: Supervisor-Mode External Interrupt
+  WRITE_CSR(mie, mie | (1 << 9));
+  mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
+```
+
+Which shows that SEIE Bit in MIE Register is set correctly: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
+
+```text
+up_irq_enable: mie: 0
+up_irq_enable: mie: 0x200
+```
+
+Then we patch the NuttX Exception Handler to map Supervisor-Mode Interrupts into Machine-Mode Interrupts: [riscv_dispatch_irq](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92)
+
+```c
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
+{
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+
+  ////TODO: TinyEMU works only with SEIE, not MEIE
+  if (irq == RISCV_IRQ_SEXT) { irq = RISCV_IRQ_MEXT; }
+```
+
+TODO: Find out why TinyEMU can't set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIE
+
+# TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices
+
+_We've done VirtIO Console with TinyEMU. What other VirtIO Devices are supported in Web Browser TinyEMU?_
+
+TinyEMU supports these VirtIO Devices:
+
+- [Console Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1259-L1361)
+
+- [Block Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L979-L1133)
+
+- [Network Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1133-L1259)
+
+- [Input Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1361-L1645)
+
+- [9P Filesystem Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1645-L2649)
+
+More details in the [TinyEMU Doc](https://bellard.org/tinyemu/readme.txt). (Are all these devices supported in the Web Browser?)
+
+The Network Device is explained in the [JSLinux FAQ](https://bellard.org/jslinux/faq.html)...
+
+> Can I access to the network from the virtual machine ?
+
+> Yes it is possible. It uses the websocket VPN offered by Benjamin Burns [(see his blog)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html). The bandwidth is capped to 40 kB/s and at most two connections are allowed per public IP address. Please don't abuse the service.
+
+# NuttX in Kernel Mode
+
+_Right now we're running NuttX in Flat Mode..._
+
+_Can NuttX run in Kernel Mode on TinyEMU?_
+
+NuttX Kernel Mode requires [RISC-V Semihosting](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
+
+But we can [Append the Initial RAM Disk](https://lupyuen.github.io/articles/app#initial-ram-disk) to the NuttX Kernel. So yes it's possible to run NuttX in Kernel Mode with TinyEMU, with some additional [Mounting Code](https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk).
 
 # Inside the VirtIO Driver for NuttX
 
@@ -768,7 +902,7 @@ Let's look inside the implementation of VirtIO in TinyEMU...
 
 TinyEMU supports these VirtIO Devices:
 
-- Console Device
+- [Console Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1259-L1361)
 
 - [Block Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L979-L1133)
 
@@ -964,118 +1098,6 @@ TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_ma
 
 - [plic_update_mip](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L241C1-L253) (to clear the Machine-Mode Interrupt Pending Register)
 
+# VirtIO Console Input in NuttX
+
 TODO: [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)
-
-# Enable NuttX Console for VirtIO
-
-_Nothing appears when we type in NuttX Shell. Why?_
-
-That's because we haven't enabled the Echoing of Keypresses! Here's the fix: [virtio-serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L451-L490)
-
-```c
-static int virtio_serial_init(FAR struct virtio_serial_priv_s *priv, FAR struct virtio_device *vdev) {
-  ...
-  //// TinyEMU needs NuttX to echo the keypress and change CR to NL
-  udev->isconsole = true; ////
-```
-
-This will...
-
-- Echo all keys pressed
-
-- If the key pressed is Carriage Return `\r`, convert to Line Feed `\n`
-
-- TOOO: What else?
-
-When we enable the NuttX Console for VirtIO, NuttX Shell works correctly yay!
-
-[See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
-
-[See the Full Demo](https://lupyuen.github.io/nuttx-tinyemu)
-
-![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
-
-> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
-
-# TinyEMU can't enable Machine-Mode Software Interrupts
-
-From the previous section, we saw that TinyEMU's VirtIO Console will [Trigger an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) like so...
-
-```c
-  /* check pending interrupts */
-if (unlikely((s->mip & s->mie) != 0)) {
-    if (raise_interrupt(s)) {
-        s->n_cycles--; 
-        goto done_interp;
-    }
-}
-```
-
-This means that MIP (Machine-Mode Interrupt Pending Register) must have the same bits set as MIE (Machine-Mode Interrupt Enable Register).
-
-But we have a problem: TinyEMU won't let us set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIE Register!
-
-From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222):
-
-```c
-  /* Enable external interrupts (mie/sie) */
-  // TODO: TinyEMU won't let us set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIP!
-  { uint64_t mie = READ_CSR(mie); _info("Before mie: %p\n", mie); }////
-  SET_CSR(CSR_IE, IE_EIE);
-  { uint64_t mie = READ_CSR(mie); _info("After mie: %p\n", mie); }////
-```
-
-Which shows that MEIE Bit in MIE Register is not set: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
-
-```text
-up_irq_enable: Before mie: 0
-up_irq_enable: After mie: 0
-```
-
-Our workaround is to use the SEIE Bit (Supervisor-Mode Externel Interrupt Enable) in MIE Register...
-
-From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204C1-L222):
-
-```c
-  // TODO: TinyEMU supports SEIE but not MEIE!
-  uint64_t mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
-
-  // TODO: This doesn't work
-  // Enable MEIE: Machine-Mode External Interrupt  
-  // WRITE_CSR(mie, mie | (1 << 11));
-
-  // TODO: This works, but we need MEIE, not SEIE. We patch this in riscv_dispatch_irq()
-  // Enable SEIE: Supervisor-Mode External Interrupt
-  WRITE_CSR(mie, mie | (1 << 9));
-  mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
-```
-
-Which shows that SEIE Bit in MIE Register is set correctly: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
-
-```text
-up_irq_enable: mie: 0
-up_irq_enable: mie: 0x200
-```
-
-Then we patch the NuttX Exception Handler to map Supervisor-Mode Interrupts into Machine-Mode Interrupts: [riscv_dispatch_irq](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92)
-
-```c
-void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
-{
-  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
-
-  ////TODO: TinyEMU works only with SEIE, not MEIE
-  if (irq == RISCV_IRQ_SEXT) { irq = RISCV_IRQ_MEXT; }
-```
-
-TODO: Find out why TinyEMU can't set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIE
-
-# NuttX in Kernel Mode
-
-_Right now we're running NuttX in Flat Mode..._
-
-_Can NuttX run in Kernel Mode on TinyEMU?_
-
-NuttX Kernel Mode requires [RISC-V Semihosting](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
-
-But we can [Append the Initial RAM Disk](https://lupyuen.github.io/articles/app#initial-ram-disk) to the NuttX Kernel. So yes it's possible to run NuttX in Kernel Mode with TinyEMU, with some additional [Mounting Code](https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk).
