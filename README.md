@@ -1011,7 +1011,7 @@ To Select and Notify the Queue:
 
 _How does TinyEMU handle VirtIO Console Input?_
 
-Suppose we press a key in TinyEMU. From the [VirtIO Console Input Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646)...
+Suppose we press a key in TinyEMU. From the [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)...
 
 ```text
 virtio_console_get_write_len
@@ -1028,6 +1028,7 @@ TinyEMU triggers an Interrupt...
 ```text
 plic_set_irq: irq_num=1, state=1
 plic_update_mip: set_mip, pending=0x1, served=0x0
+virtio_console_write_data: buf[0]=l, buf_len=1
 raise_exception: cause=-2147483639
 raise_exception2: cause=-2147483639, tval=0x0
 ```
@@ -1080,13 +1081,21 @@ NuttX [riscv_dispatch_irq](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/
 [NuttX Exception Handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92) calls the VirtIO Serial Driver...
 
 ```text
-virtio_serial_rxready: 
-virtio_serial_dmareceive:
+virtio_serial_rxready: buf[0]=l, len=1
+uart_recvchars_done: 
+uart_datareceived: 
+virtio_serial_dmarxfree: length=0
+virtio_serial_dmareceive: buf[0]=, len=254
+virtio_serial_dmareceive: num=1, length=254, nlength=0
+uart_read: ch=l
+virtio_serial_dmarxfree: length=254
+uart_read: buf[0]=l, recvd=1
+readline_common: ch=0x6c
+virtio_serial_dmarxfree: length=254
+virtio_serial_dmarxfree: length=254
 ```
 
-NuttX [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) calls...
-
-- [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386) (to read the key pressed)
+We explain these in the next section.
 
 To finish up, [NuttX Exception Handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92) Completes the Interrupt by writing to PLIC Interrupt Claim Register at PLIC Offset 0x200004...
 
@@ -1100,6 +1109,73 @@ TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_ma
 
 - [plic_update_mip](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L241C1-L253) (to clear the Machine-Mode Interrupt Pending Register)
 
+What happens between [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) and [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386)? Let's find out...
+
 # VirtIO Console Input in NuttX
 
-TODO: [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)
+_Inside NuttX: What happens when we press a key in TinyEMU?_
+
+From the [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)...
+
+```text
+virtio_serial_rxready: buf[0]=l, len=1
+uart_recvchars_done: 
+uart_datareceived: 
+virtio_serial_dmarxfree: length=0
+virtio_serial_dmareceive: buf[0]=, len=254
+virtio_serial_dmareceive: num=1, length=254, nlength=0
+uart_read: ch=l
+virtio_serial_dmarxfree: length=254
+uart_read: buf[0]=l, recvd=1
+readline_common: ch=0x6c
+virtio_serial_dmarxfree: length=254
+virtio_serial_dmarxfree: length=254
+```
+
+TODO
+
+[virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427)
+
+[virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386)
+
+_What about NSH Shell?_
+
+From the [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)
+
+```text
+nsh_main: 
+test_virtio: 
+nsh_consolemain: 
+nsh_session: 
+virtio_console_recv_request
+
+NuttShell (NSH) NuttX-12.3.0-RC1
+plic_set_irq: irq_num=1, state=1
+plic_update_mip: set_mip, pending=0x1, served=0x0
+raise_exception: cause=-2147483639
+raise_exception2: cause=-2147483639, tval=0x0
+plic_read: offset=0x200004
+plic_update_mip: reset_mip, pending=0x1, served=0x1
+plic_set_irq: irq_num=1, state=0
+plic_update_mip: reset_mip, pending=0x0, served=0x1
+virtio_serial_txdone: 
+plic_write: offset=0x200004, val=0x1
+plic_update_mip: reset_mip, pending=0x0, served=0x0
+virtio_console_recv_request
+nsh> plic_set_irq: irq_num=1, state=1
+plic_update_mip: set_mip, pending=0x1, served=0x0
+raise_exception: cause=-2147483639
+raise_exception2: cause=-2147483639, tval=0x0
+plic_read: offset=0x200004
+plic_update_mip: reset_mip, pending=0x1, served=0x1
+plic_set_irq: irq_num=1, state=0
+plic_update_mip: reset_mip, pending=0x0, served=0x1
+virtio_serial_txdone: 
+plic_write: offset=0x200004, val=0x1
+plic_update_mip: reset_mip, pending=0x0, served=0x0
+nsh_session: Before readline_fd
+readline_fd: 
+readline_common: 
+```
+
+TODO
