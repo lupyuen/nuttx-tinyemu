@@ -742,15 +742,15 @@ When we enable the NuttX Console for VirtIO, NuttX Shell works correctly yay!
 
 # TinyEMU can't enable Machine-Mode Software Interrupts
 
-From the previous section, we saw that TinyEMU's VirtIO Console will [Trigger an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) like so...
+[Based on our snooping](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu), we see that TinyEMU's VirtIO Console will [Trigger an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) like so...
 
 ```c
-  /* check pending interrupts */
+/* check pending interrupts */
 if (unlikely((s->mip & s->mie) != 0)) {
-    if (raise_interrupt(s)) {
-        s->n_cycles--; 
-        goto done_interp;
-    }
+  if (raise_interrupt(s)) {
+    s->n_cycles--; 
+    goto done_interp;
+  }
 }
 ```
 
@@ -763,12 +763,14 @@ From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyem
 ```c
   /* Enable external interrupts (mie/sie) */
   // TODO: TinyEMU won't let us set the MEIE Bit (Machine-Mode External Interrupt Enable) in MIP!
-  { uint64_t mie = READ_CSR(mie); _info("Before mie: %p\n", mie); }////
+  { uint64_t mie = READ_CSR(mie); _info("Before mie: %p\n", mie); }
+  // CSR_IE is MIE
+  // IE_EIE is MEIE
   SET_CSR(CSR_IE, IE_EIE);
-  { uint64_t mie = READ_CSR(mie); _info("After mie: %p\n", mie); }////
+  { uint64_t mie = READ_CSR(mie); _info("After mie: %p\n", mie); }
 ```
 
-Which shows that MEIE Bit in MIE Register is not set: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
+Which shows that MEIE Bit in MIE Register is NOT SET correctly: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
 
 ```text
 up_irq_enable: Before mie: 0
@@ -781,7 +783,7 @@ From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyem
 
 ```c
   // TODO: TinyEMU supports SEIE but not MEIE!
-  uint64_t mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
+  uint64_t mie = READ_CSR(mie); _info("mie: %p\n", mie);
 
   // TODO: This doesn't work
   // Enable MEIE: Machine-Mode External Interrupt  
@@ -790,7 +792,7 @@ From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyem
   // TODO: This works, but we need MEIE, not SEIE. We patch this in riscv_dispatch_irq()
   // Enable SEIE: Supervisor-Mode External Interrupt
   WRITE_CSR(mie, mie | (1 << 9));
-  mie = READ_CSR(mie); _info("mie: %p\n", mie); ////
+  mie = READ_CSR(mie); _info("mie: %p\n", mie);
 ```
 
 Which shows that SEIE Bit in MIE Register is set correctly: [NuttX Log](https://gist.github.com/lupyuen/8b342300f03cd4b0758995f0e0c5c646):
@@ -807,7 +809,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 {
   int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
 
-  ////TODO: TinyEMU works only with SEIE, not MEIE
+  // TODO: TinyEMU works only with SEIE, not MEIE
   if (irq == RISCV_IRQ_SEXT) { irq = RISCV_IRQ_MEXT; }
 ```
 
@@ -1041,12 +1043,12 @@ raise_exception2: cause=-2147483639, tval=0x0
 - [Triggers an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) which calls...
 
   ```c
-    /* check pending interrupts */
+  /* check pending interrupts */
   if (unlikely((s->mip & s->mie) != 0)) {
-      if (raise_interrupt(s)) {
-          s->n_cycles--; 
-          goto done_interp;
-      }
+    if (raise_interrupt(s)) {
+      s->n_cycles--; 
+      goto done_interp;
+    }
   }
   ```
 
