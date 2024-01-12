@@ -1,7 +1,7 @@
 /*
  * Javascript terminal
  * 
- * Copyright (c) 2011-2017 Fabrice Bellard
+ * Copyright (c) 2011-2020 Fabrice Bellard
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,40 @@
  */
 "use strict";
 
-function Term(width, height, handler, tot_height)
+function Term(options)
 {
+    var width, height, tot_height, scrollback;
+    
+    function dummy_key_handler()
+    {
+    }
+
+    width = options.cols ? options.cols : 80;
+    height = options.rows ? options.rows : 25;
+    scrollback = options.scrollback ? options.scrollback : 0;
+    this.font_size = options.fontSize ? options.fontSize : 15;
+
     this.w = width;
     this.h = height;
-
     this.cur_h = height; /* current height of the scroll back buffer */
-    if (!tot_height || tot_height < height)
-        tot_height = height;
+    tot_height = height + scrollback;
     this.tot_h = tot_height; /* maximum height of the scroll back buffer */
+
+    /* y_base and y_disp are index in the circular buffer lines of
+       length cur_h. They are defined modulo tot_h, i.e. they wrap
+       when cur_h = tot_h. If cur_h < tot_h, y_base is always equal to
+       cur_h - h. */
     this.y_base = 0; /* position of the current top screen line in the
-                      * scroll back buffer */
+                        scroll back buffer */
     this.y_disp = 0; /* position of the top displayed line in the
-                      * scroll back buffer */
+                        scroll back buffer */
     /* cursor position */
     this.x = 0;
     this.y = 0;
     this.scroll_top = 0;
     this.scroll_bottom = this.h;
     this.cursorstate = 0;
-    this.handler = handler;
+    this.handler = dummy_key_handler;
     this.state = 0;
     this.output_queue = "";
     this.colors = [
@@ -85,11 +99,33 @@ function Term(width, height, handler, tot_height)
     this.application_keypad = false;
     /* if true, emulate some behaviors of the Linux console */
     this.linux_console = true;
+
+    this.textarea_has_focus = false;
 }
 
-Term.prototype.open = function(parent_el, textarea_el)
+Term.prototype.setKeyHandler = function(handler)
 {
-    var y, line, i, term, c, row_el;
+    this.handler = handler;
+}
+
+/* return the size of a character in CSS pixels using the selected font */
+function term_get_char_size(parent_el, font_size)
+{
+    var el, g, ret;
+    el = document.createElement("div");
+    el.classList.add("term", "term_char_size");
+    el.style.fontSize = font_size + "px";
+    el.textContent = "W";
+    parent_el.appendChild(el);
+    g = el.getBoundingClientRect();
+    /* the character width & height may not be an integer */
+    ret = [g.width, g.height];
+    return ret;
+}
+
+Term.prototype.open = function(parent_el)
+{
+    var y, line, i, term, c, row_el, char_size_ret;
 
     /* set initial content */
     this.lines = new Array();
@@ -101,17 +137,32 @@ Term.prototype.open = function(parent_el, textarea_el)
         this.lines[y] = line;
     }
 
+    char_size_ret = term_get_char_size(parent_el, this.font_size);
+    /* size of the character in CSS pixels */
+    this.char_width = char_size_ret[0];
+    this.char_height = char_size_ret[1];
+
+    this.scrollbar_width = 15;
+    
+    /* size of term_el in CSS pixels */
+    this.term_width = Math.ceil(this.w * this.char_width) +
+        this.scrollbar_width;
+    this.term_height = Math.ceil(this.h * this.char_height);
+        
     /* create the terminal window */
     this.term_el = document.createElement("div");
     this.term_el.className = "term";
-    this.term_el.style.lineHeight = "1.2em";
     /* XXX: could compute the font metrics */
-    this.term_el.style.width = "calc(" + this.w + "ch + 16px)";
-    this.term_el.style.height = (this.h * 1.2) + "em";
+    this.term_el.style.fontSize = this.font_size + "px";
+    this.term_el.style.width = this.term_width + "px";
+    this.term_el.style.height = this.term_height + "px";
+    /* allow the terminal to take the focus */
+    this.term_el.setAttribute("tabindex", "0");
     
     /* scroll bar */
     this.scrollbar_el = document.createElement("div");
     this.scrollbar_el.className = "term_scrollbar";
+    this.scrollbar_el.style.width = this.scrollbar_width + "px";
     this.term_el.appendChild(this.scrollbar_el);
 
     this.track_el = document.createElement("div");
@@ -145,33 +196,52 @@ Term.prototype.open = function(parent_el, textarea_el)
         this.content_el.appendChild(row_el);
     }
     
+    /* dummy textarea to get the input events and for the virtual
+       keyboard on mobile devices */
+    this.textarea_el = document.createElement("textarea");
+    this.textarea_el.classList.add("term_textarea");
+    this.textarea_el.setAttribute("autocorrect", "off");
+    this.textarea_el.setAttribute("autocapitalize", "off");
+    this.textarea_el.setAttribute("spellcheck", "false");
+    this.textarea_el.setAttribute("tabindex", "-1");
+    this.term_el.appendChild(this.textarea_el);
+
     this.parent_el = parent_el;
     parent_el.appendChild(this.term_el);
 
-    /* dummy text area for copy paste & mobile devices */
-    this.textarea_el = textarea_el;
-
     this.refresh(0, this.h - 1);
     
+    /* textarea_el events */
     // key handler
-    document.addEventListener("keydown", 
-                              this.keyDownHandler.bind(this), true);
-    document.addEventListener("keyup", 
-                              this.keyUpHandler.bind(this), true);
-    document.addEventListener("blur", 
-                              this.blurHandler.bind(this), true);
-    document.addEventListener("keypress", 
-                              this.keyPressHandler.bind(this), true);
-    // wheel
+    this.textarea_el.addEventListener("keydown", 
+                                      this.keyDownHandler.bind(this), true);
+    this.textarea_el.addEventListener("keyup", 
+                                      this.keyUpHandler.bind(this), true);
+    /* keypress is deprecated, so use input */
+    this.textarea_el.addEventListener("input", 
+                                      this.inputHandler.bind(this), true);
+    this.textarea_el.addEventListener("focus", 
+                                  this.focusHandler.bind(this), true);
+    this.textarea_el.addEventListener("blur", 
+                                  this.blurHandler.bind(this), true);
+
+    /* term_el events */
+    this.term_el.addEventListener("keydown",
+                                  this.termKeyDownHandler.bind(this),
+                                  true);
+    this.term_el.addEventListener("paste", 
+                                  this.pasteHandler.bind(this), true);
+    this.term_el.addEventListener("mouseup",
+                                  this.termMouseUpHandler.bind(this),
+                                  true);
     this.term_el.addEventListener("wheel", 
                                   this.wheelHandler.bind(this), false);
-    // paste
-    document.defaultView.addEventListener("paste", 
-                                          this.pasteHandler.bind(this), false);
-    
+
     // cursor blinking
     term = this;
     setInterval(function() { term.cursor_timer_cb(); }, 1000);
+
+    this.term_el.focus();
 };
 
 Term.prototype.refresh_scrollbar = function ()
@@ -195,6 +265,26 @@ Term.prototype.refresh_scrollbar = function ()
         this.thumb_el.style.top = thumb_pos + "px";
         this.thumb_el.style.height = thumb_size + "px";
     }
+}
+
+/* move the text area at the cursor position so that the browser shows
+ * the correct position when the virtual keyboard is used */
+Term.prototype.move_textarea = function()
+{
+    var x, y, base_x, base_y, pos;
+
+    pos = this.term_el.getBoundingClientRect();
+    base_x = pos.left + window.scrollX;
+    base_y = pos.top + window.scrollY;
+    /* position relative to the body */
+    x = Math.ceil(this.x * this.char_width + base_x);
+    y = Math.ceil(this.y * this.char_height + base_y);
+
+    this.textarea_el.style.width = Math.ceil(this.char_width) + "px";
+    this.textarea_el.style.height = Math.ceil(this.char_height) + "px";
+    this.textarea_el.style.left = x + "px";
+    this.textarea_el.style.top = y + "px";
+    this.textarea_el.style.zIndex = 1000;
 }
 
 Term.prototype.refresh = function(ymin, ymax)
@@ -351,6 +441,7 @@ Term.prototype.refresh = function(ymin, ymax)
     }
 
     this.refresh_scrollbar();
+    this.move_textarea();
 };
 
 Term.prototype.cursor_timer_cb = function()
@@ -1111,42 +1202,12 @@ Term.prototype.to_utf8 = function(s)
     return r;
 }
 
-Term.prototype.keyPressHandler = function (ev)
+Term.prototype.inputHandler = function (ev)
 {
-    var str, char_code;
-
-    if (ev.stopPropagation)
-        ev.stopPropagation();
-    if (ev.preventDefault)
-        ev.preventDefault();
-
-    str="";
-    if (!("charCode" in ev)) {
-        /* on Opera charCode is not defined and keypress is sent for
-         system keys. Moreover, only keupress is repeated which is a
-         problem for system keys. */
-        char_code = ev.keyCode;
-        if (this.key_rep_state == 1) {
-            this.key_rep_state = 2;
-            return false;
-        } else if (this.key_rep_state == 2) {
-            /* repetition */
-            this.show_cursor();
-            this.handler(this.key_rep_str);
-            return false;
-        }
-    } else {
-        char_code = ev.charCode;
-    }
-    if (char_code != 0) {
-        if (!ev.ctrlKey && 
-            ((!this.is_mac && !ev.altKey) ||
-             (this.is_mac && !ev.metaKey))) {
-            str = String.fromCharCode(char_code);
-        }
-    }
-    //    console.log("keypress: keycode=" + ev.keyCode + " charcode=" + ev.charCode + " str=" + str + " ctrl=" + ev.ctrlKey + " alt=" + ev.altKey + " meta=" + ev.metaKey);
+    var str;
+    str = this.textarea_el.value;
     if (str) {
+        this.textarea_el.value = "";
         this.show_cursor();
         if (this.utf8)
             str = this.to_utf8(str);
@@ -1157,11 +1218,48 @@ Term.prototype.keyPressHandler = function (ev)
     }
 };
 
+Term.prototype.termKeyDownHandler = function(ev)
+{
+    this.interceptBrowserExit(ev);
+    /* give the focus back to the textarea when a key is pressed */
+    this.textarea_el.focus();
+}
+
+Term.prototype.termMouseUpHandler = function(ev)
+{
+    var sel;
+    /* if no selection, can switch back up to the textarea focus */
+    sel = window.getSelection();
+    if (!sel || sel.isCollapsed)
+        this.textarea_el.focus();
+}
+
+Term.prototype.focusHandler = function (ev)
+{
+    this.textarea_has_focus = true;
+};
+
 Term.prototype.blurHandler = function (ev)
 {
     /* allow unloading the page */
     window.onbeforeunload = null;
+    this.textarea_has_focus = false;
 };
+
+Term.prototype.pasteHandler = function (ev)
+{
+    var c, str;
+    if (!this.textarea_has_focus) {
+        c = ev.clipboardData;
+        if (c) {
+            str = c.getData("text/plain");
+            if (this.utf8)
+                str = this.to_utf8(str);
+            this.queue_chars(str);
+            return false;
+        }
+    }
+}
 
 Term.prototype.wheelHandler = function (ev)
 {
@@ -1210,25 +1308,6 @@ Term.prototype.mouseUpHandler = function (ev)
     document.body.className = document.body.className.replace(" noSelect", "");
 }
 
-Term.prototype.pasteHandler = function (ev)
-{
-    var c = ev.clipboardData, str;
-    if (c) {
-        str = c.getData("text/plain");
-        if (this.utf8)
-            str = this.to_utf8(str);
-        this.queue_chars(str);
-        setTimeout(this.textAreaReset.bind(this), 10);
-        return false;
-    }
-}
-
-Term.prototype.textAreaReset = function(ev)
-{
-    /* reset text */
-    this.textarea_el.value = "Paste Here";
-}
-
 /* output queue to send back asynchronous responses */
 Term.prototype.queue_chars = function (str)
 {
@@ -1249,3 +1328,133 @@ Term.prototype.getSize = function ()
 {
     return [this.w, this.h];
 };
+
+/* resize the terminal (size in pixels). Return true if the display
+   size was modified. */
+/* XXX: may be simpler to separate the scrollback buffer from the
+   screen buffer */
+Term.prototype.resizePixel = function (new_width, new_height)
+{
+    var new_w, new_h, y, x, line, c, row_el, d, new_cur_h, e;
+    
+    if (new_width == this.term_width && new_height == this.term_height)
+        return false;
+    new_w = Math.floor((new_width - this.scrollbar_width) /
+                       this.char_width);
+    new_h = Math.floor(new_height / this.char_height);
+    if (new_w <= 0 || new_h <= 0 || new_h > this.tot_h)
+        return false;
+    
+    this.term_width = new_width;
+    this.term_height = new_height;
+    this.term_el.style.width = this.term_width + "px";
+    this.term_el.style.height = this.term_height + "px";
+
+    /* XXX: could keep the EOL positions */
+    if (new_w < this.w) {
+        /* reduce the line width */
+        for(y = 0; y < this.cur_h;y++) {
+            line = this.lines[y];
+            line = line.slice(0, new_w);
+        }
+    } else if (new_w > this.w) {
+        /* increase the line width */
+        c = 32 | (this.def_attr << 16);
+        for(y = 0; y < this.cur_h;y++) {
+            line = this.lines[y];
+            for(x = this.w; x < new_w; x++)
+                line[x] = c;
+        }
+    }
+
+    if (this.x >= new_w)
+        this.x = new_w - 1;
+
+    d = new_h - this.h;
+    if (d < 0) {
+        d = -d;
+        /* remove displayed lines */
+
+        /* strip the DOM terminal content */
+        for(y = new_h; y < this.h; y++) {
+            row_el = this.rows_el[y];
+            this.content_el.removeChild(row_el);
+        }
+        this.rows_el = this.rows_el.slice(0, new_h);
+
+        /* adjust cursor position if needed */
+        if (this.y >= new_h) {
+            if (d > this.y)
+                d = this.y;
+            this.y -= d;
+            this.y_base += d;
+            if (this.y_base >= this.tot_h)
+                this.y_base -= this.tot_h;
+        }
+
+        if (this.scroll_bottom > new_h)
+            this.scroll_bottom = new_h;
+        /* fail safe for scroll top */
+        if (this.scroll_top >= this.scroll_bottom)
+            this.scroll_top = 0;
+        
+    } else if (d > 0) {
+        /* add displayed lines */
+
+        if (this.cur_h == this.tot_h) {
+            if (d > this.tot_h - this.h)
+                d = this.tot_h - this.h;
+        } else {
+            if (d > this.y_base)
+                d = this.y_base;
+        }
+        this.y_base -= d;
+        if (this.y_base < 0)
+            this.y_base += this.tot_h;
+        this.y += d;
+
+        if (this.scroll_bottom == this.h)
+            this.scroll_bottom = new_h;
+        
+        /* extend the DOM terminal content */
+        for(y = this.h; y < new_h; y++) {
+            row_el = document.createElement("div");
+            this.rows_el.push(row_el);
+            this.content_el.appendChild(row_el);
+        }
+    }
+
+    if (this.cur_h < this.tot_h) {
+        new_cur_h = this.y_base + new_h;
+        if (new_cur_h < this.cur_h) {
+            /* remove lines in the scroll back buffer */
+            this.lines = this.lines.slice(0, new_cur_h);
+        } else if (new_cur_h > this.cur_h) {
+            /* add lines in the scroll back buffer */
+            c = 32 | (this.def_attr << 16);
+            for(y = this.cur_h; y < new_cur_h; y++) {
+                line = new Array();
+                for(x = 0; x < new_w; x++)
+                    line[x] = c;
+                this.lines[y] = line;
+            }
+        }
+        this.cur_h = new_cur_h;
+    }
+        
+    this.w = new_w;
+    this.h = new_h;
+
+    if (this.y >= this.h)
+        this.y = this.h - 1;
+
+    /* reset display position */
+    this.y_disp = this.y_base;
+/*    
+      console.log("lines.length", this.lines.length, "cur_h", this.cur_h,
+      "y_base", this.y_base, "h", this.h,
+      "scroll_bottom", this.scroll_bottom);
+*/  
+    this.refresh(0, this.h - 1);
+    return true;
+}
