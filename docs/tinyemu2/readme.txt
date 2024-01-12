@@ -1,3 +1,5 @@
+[ Same as parent folder, but for Full Version (tinyemu2 branch) ]
+
 JSLinux demo
 ============
 
