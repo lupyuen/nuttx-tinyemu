@@ -2,7 +2,9 @@
 
 # Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
 
-[__Demo of NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu/)
+[(Live Demo of NuttX on TinyEMU)](https://lupyuen.github.io/nuttx-tinyemu)
+
+[(Watch on YouTube)](https://youtu.be/KYrdwzIsgeQ)
 
 Apache NuttX RTOS is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, ...)
 
