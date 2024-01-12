@@ -1121,9 +1121,41 @@ From the [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a74
 virtio_serial_rxready: buf[0]=l, len=1
 uart_recvchars_done: 
 uart_datareceived: 
+```
+
+Which says that [NuttX Exception Handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L92) calls...
+
+- [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L397-L424) (to handle the keypress) which calls...
+
+- OpenAMP [virtqueue_get_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L138-L177) (to read the buffer from Receive Queue) and...
+
+  [uart_recvchars_done](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/serial/serial_dma.c#L292-L361) (to receive the keypress, see below)
+
+[uart_recvchars_done](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/serial/serial_dma.c#L292-L361) calls
+
+- [uart_datareceived](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/serial/serial.c#L1849-L1880) (to notify the waiting threads)
+
+```text
 virtio_serial_dmarxfree: length=0
 virtio_serial_dmareceive: buf[0]=, len=254
 virtio_serial_dmareceive: num=1, length=254, nlength=0
+```
+
+Then [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L397-L424) calls...
+
+- [virtio_serial_dmarxfree](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L385-L397) (to free the DMA Receive Buffer) which calls...
+
+- [uart_recvchars_dma](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/serial/serial_dma.c#L170-L292) (to receive the DMA data) which calls...
+
+- [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L385) which calls...
+
+- OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (to release the VirtIO Queue Buffer) and...
+
+  OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (to notify TinyEMU)
+
+Finally the Waiting Thread reads the keypress...
+
+```text
 uart_read: ch=l
 virtio_serial_dmarxfree: length=254
 uart_read: buf[0]=l, recvd=1
@@ -1132,50 +1164,45 @@ virtio_serial_dmarxfree: length=254
 virtio_serial_dmarxfree: length=254
 ```
 
-TODO
+The Waiting Thread calls...
 
-[virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427)
+- [uart_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/serial/serial.c#L731-L1156) (to read the keypress) which calls...
 
-[virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386)
+- [virtio_serial_dmarxfree](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L385-L397) (to free the DMA Receive Buffer)
 
 _What about NSH Shell?_
 
-From the [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)
+From the [Detailed Console Input Log](https://gist.github.com/lupyuen/1f0bbf1a749e58f1c467b50a031886fd)...
 
 ```text
 nsh_main: 
-test_virtio: 
 nsh_consolemain: 
 nsh_session: 
-virtio_console_recv_request
-
 NuttShell (NSH) NuttX-12.3.0-RC1
-plic_set_irq: irq_num=1, state=1
-plic_update_mip: set_mip, pending=0x1, served=0x0
-raise_exception: cause=-2147483639
-raise_exception2: cause=-2147483639, tval=0x0
-plic_read: offset=0x200004
-plic_update_mip: reset_mip, pending=0x1, served=0x1
-plic_set_irq: irq_num=1, state=0
-plic_update_mip: reset_mip, pending=0x0, served=0x1
-virtio_serial_txdone: 
-plic_write: offset=0x200004, val=0x1
-plic_update_mip: reset_mip, pending=0x0, served=0x0
-virtio_console_recv_request
-nsh> plic_set_irq: irq_num=1, state=1
-plic_update_mip: set_mip, pending=0x1, served=0x0
-raise_exception: cause=-2147483639
-raise_exception2: cause=-2147483639, tval=0x0
-plic_read: offset=0x200004
-plic_update_mip: reset_mip, pending=0x1, served=0x1
-plic_set_irq: irq_num=1, state=0
-plic_update_mip: reset_mip, pending=0x0, served=0x1
-virtio_serial_txdone: 
-plic_write: offset=0x200004, val=0x1
-plic_update_mip: reset_mip, pending=0x0, served=0x0
+nsh>
+```
+
+At NuttX Startup: [nsh_main](https://github.com/apache/nuttx-apps/blob/master/system/nsh/nsh_main.c#L40-L85) calls...
+
+- [nsh_consolemain](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_consolemain.c#L38-L82) which calls...
+
+- [nsh_session](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_session.c#L45-L249) (to run the NSH Session)
+
+```text
 nsh_session: Before readline_fd
 readline_fd: 
 readline_common: 
+...
+uart_read: buf[0]=l, recvd=1
+readline_common: ch=0x6c
 ```
 
-TODO
+After NuttX Startup: [nsh_session](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_session.c#L45-L249) calls...
+
+- [readline_fd](https://github.com/apache/nuttx-apps/blob/master/system/readline/readline_fd.c#L173-L223) (to read one line) which calls...
+
+- [readline_common](https://github.com/apache/nuttx-apps/blob/master/system/readline/readline_common.c#L444-L738) (to read one line) which calls...
+
+- [uart_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/serial/serial.c#L731-L1156) (to read one keypress)
+
+- Which is explained above
