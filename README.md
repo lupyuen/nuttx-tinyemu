@@ -671,7 +671,7 @@ nx_start: CPU0: Beginning Idle Loop
 
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
 
-## Enable the VirtIO Serial Driver
+# Enable the VirtIO Serial Driver
 
 Now we implement Console Input / Output with the NuttX Serial Driver for VirtIO:
 
