@@ -709,9 +709,70 @@ NuttShell (NSH) NuttX-12.3.0-RC1
 nx_start: CPU0: Beginning Idle Loop
 ```
 
-![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+NuttX Console crashes because we didn't initialise VirtIO early enough. So we moved the VirtIO Init from [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c)...
 
-> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
+```c
+int board_app_initialize(uintptr_t arg) {
+  ...
+#ifdef CONFIG_DRIVERS_VIRTIO_MMIO
+  //// Moved to nuttx/arch/risc-v/src/qemu-rv/qemu_rv_start.c
+  //// Previously: qemu_virtio_register_mmio_devices();
+#endif
+```
+
+To [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L233-L240)...
+
+```c
+void riscv_serialinit(void) {
+  // Init the VirtIO Devices
+  void qemu_virtio_register_mmio_devices(void);
+  qemu_virtio_register_mmio_devices();
+}
+```
+
+We created our own HTIF Driver, so 16550 UART Driver is no longer needed for Kernel Logging: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L240-L271)
+
+```c
+// Print to HTIF Console
+static void htif_putc(int ch) {
+  // Hardcode the HTIF Base Address and print: device=1, cmd=1, buf=ch
+  *(volatile uint64_t *) 0x40008000 = 0x0101000000000000ul | ch;
+}
+
+int up_putc(int ch) {
+  irqstate_t flags;
+
+  /* All interrupts must be disabled to prevent re-entrancy and to prevent
+   * interrupts from firing in the serial driver code.
+   */
+
+  flags = enter_critical_section();
+
+  /* Check for LF */
+
+  if (ch == '\n')
+    {
+      /* Add CR */
+
+      htif_putc('\r');
+    }
+
+  htif_putc(ch);
+  leave_critical_section(flags);
+
+  return ch;
+}
+```
+
+NuttX Apps will use the VirtIO Serial Driver to access the NuttX Console...
+
+[(Live Demo of NuttX on TinyEMU)](https://lupyuen.github.io/nuttx-tinyemu)
+
+[(Watch on YouTube)](https://youtu.be/KYrdwzIsgeQ)
+
+[(See the Modified Files)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+
+![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
 # Enable NuttX Console for VirtIO
 
@@ -736,13 +797,13 @@ This will...
 
 When we enable the NuttX Console for VirtIO, NuttX Shell works correctly yay!
 
-[See the Modified Files](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+[(Live Demo of NuttX on TinyEMU)](https://lupyuen.github.io/nuttx-tinyemu)
 
-[See the Full Demo](https://lupyuen.github.io/nuttx-tinyemu)
+[(Watch on YouTube)](https://youtu.be/KYrdwzIsgeQ)
 
-![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+[(See the Modified Files)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
+![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh2.png) 
 
 # TinyEMU can't enable Machine-Mode Software Interrupts
 
