@@ -23,7 +23,7 @@
  */
 "use strict";
 
-var term, console_write1;
+var term, console_write1, console_resize_event;
 var graphic_display, display_key_event, display_mouse_event;
 var net_state, net_write_packet, net_set_carrier;
 var display_wheel_event;
@@ -505,6 +505,7 @@ function start_vm(user, pwd)
     {
         /* C functions called from javascript */
         console_write1 = Module.cwrap('console_queue_char', null, ['number']);
+        console_resize_event = Module.cwrap('console_resize_event', null, []);
         fs_import_file = Module.cwrap('fs_import_file', null, ['string', 'number', 'number']);
         display_key_event = Module.cwrap('display_key_event', null, ['number', 'number']);
         display_mouse_event = Module.cwrap('display_mouse_event', null, ['number', 'number', 'number']);
@@ -519,6 +520,19 @@ function start_vm(user, pwd)
 
         Module.ccall("vm_start", null, ["string", "number", "string", "string", "number", "number", "number", "string"], [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url]);
         pwd = null;
+    }
+
+    function term_wrap_onclick_handler()
+    {
+        var term_wrap_el, w, h, term_bar_el, bar_h;
+        term_wrap_el = document.getElementById("term_wrap");
+        term_bar_el = document.getElementById("term_bar");
+        w = term_wrap_el.clientWidth;
+        h = term_wrap_el.clientHeight;
+        bar_h = term_bar_el.clientHeight;
+        if (term.resizePixel(w, h - bar_h)) {
+            console_resize_event();
+        }
     }
 
     /* read the parameters */
@@ -542,7 +556,7 @@ function start_vm(user, pwd)
     width = (params["w"] | 0) || 1024;
     height = (params["h"] | 0) || 640;
     graphic_enable = params["graphic"] | 0;
-    net_url = params["net_url"] || ""; /* empty string means no network */
+    net_url = params["net_url"]; /* empty string means no network */
     if (typeof net_url == "undefined")
         net_url = "wss://relay.widgetry.org/";
     drive_url = params["drive_url"] || "";
@@ -556,22 +570,26 @@ function start_vm(user, pwd)
     if (graphic_enable) {
         graphic_display = new GraphicDisplay(document.getElementById("term_container"), width, height);
     } else {
+        var term_wrap_el;
         width = 0;
         height = 0;
+        
         /* start the terminal */
-        term = new Term(cols, rows, term_handler, 10000);
+        term = new Term({ cols: cols, rows: rows, scrollback: 10000, fontSize: font_size });
+        term.setKeyHandler(term_handler);
         term.open(document.getElementById("term_container"),
                   document.getElementById("term_paste"));
-        term.term_el.style.fontSize = font_size + "px";
+
+        term_wrap_el = document.getElementById("term_wrap")
+        term_wrap_el.style.width = term.term_el.style.width;
+        term_wrap_el.onclick = term_wrap_onclick_handler;
+            
         term.write("Loading...\r\n");
     }
 
 //    console.log("cpu=" + cpu + " url=" + url + " mem=" + mem_size);
 
     switch(cpu) {
-    case "nuttx":
-        vm_file = "nuttx";
-        break;
     case "x86":
         vm_file = "x86emu";
         break;
