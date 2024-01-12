@@ -427,6 +427,10 @@ The other files were provided by [TinyEMU](https://bellard.org/tinyemu/)...
 
 - [jslinux-2019-12-21.tar.gz](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz): Precompiled JSLinux demo
 
+  [(Fixed for __Mobile Keyboards__)](https://github.com/lupyuen/nuttx-tinyemu/commit/33f0857a4a5ac8da899b159331be4ea258d490ca)
+
+TODO: Where is the updated source code for the WebAssembly? What is the implementation of `console_resize_event`? Hmmm...
+
 _How to test this locally?_
 
 To test on our computer, we need to install a Local Web Server (because our Web Browser won't load WebAssembly Files from the File System)...
@@ -1109,7 +1113,9 @@ TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_ma
 
 - [plic_update_mip](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L241C1-L253) (to clear the Machine-Mode Interrupt Pending Register)
 
-What happens between [virtio_serial_rxready](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L398-L427) and [virtio_serial_dmareceive](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/virtio/virtio-serial.c#L357-L386)? Let's find out...
+_How did we figure out all this?_
+
+We added [Debug Logs to TinyEMU](https://github.com/lupyuen/TinyEMU/commits/master/).
 
 # VirtIO Console Input in NuttX
 
