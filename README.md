@@ -1301,7 +1301,7 @@ So we remove `-s BINARYEN_TRAP_MODE=clamp` from Makefile.js...
 EMLDFLAGS=-O3 --memory-init-file 0 --closure 0 -s NO_EXIT_RUNTIME=1 -s NO_FILESYSTEM=1 -s "EXPORTED_FUNCTIONS=['_console_queue_char','_vm_start','_fs_import_file','_display_key_event','_display_mouse_event','_display_wheel_event','_net_write_packet','_net_set_carrier']" -s 'EXTRA_EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]' -s BINARYEN_TRAP_MODE=clamp --js-library js/lib.js
 ```
 
-[(See the changes)](https://github.com/lupyuen/TinyEMU/commit/471f6e684054eec1dc2ed98207652c32b4e996e7#diff-3fc6364bd19a0e4ee8d1e0fe312541201418d80f9d1b08015db4d11e7dbde39e)
+[(See the Modified File)](https://github.com/lupyuen/TinyEMU/commit/471f6e684054eec1dc2ed98207652c32b4e996e7#diff-3fc6364bd19a0e4ee8d1e0fe312541201418d80f9d1b08015db4d11e7dbde39e)
 
 Now it builds OK...
 
@@ -1316,3 +1316,5 @@ total 1160
 -rw-r--r-- 1 vscode vscode  45925 Jan 13 04:19 riscvemu64-wasm.js
 -rwxr-xr-x 1 vscode vscode 164038 Jan 13 04:19 riscvemu64-wasm.wasm
 ```
+
+[(See the Build Log)](https://github.com/lupyuen/TinyEMU/actions)
