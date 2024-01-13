@@ -34,7 +34,7 @@ temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 
 Or build TinyEMU on Ubuntu and macOS [with these steps](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml).
 
-TODO: Generate the Emscripten JavaScript via [GitHub Actions](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml)
+[(Generate the Emscripten JavaScript)](https://github.com/lupyuen/nuttx-tinyemu#build-tinyemu-for-webassembly-with-emscripten)
 
 # RISC-V Addresses for TinyEMU
 
