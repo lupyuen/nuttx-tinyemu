@@ -64,6 +64,10 @@ Thus we shall compile NuttX Kernel to boot at 0x8000_0000.
 
 We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
+TODO: Can we change the above addresses to emulate a RISC-V SoC, like Ox64 BL808?
+
+TODO: Wrap TinyEmu with Zig for safety and WebAssembly
+
 # TinyEMU Config
 
 _What's inside a TinyEMU Config?_
