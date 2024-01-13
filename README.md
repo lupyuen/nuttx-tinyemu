@@ -66,7 +66,7 @@ We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
 TODO: Can we change the above addresses to emulate a RISC-V SoC, like Ox64 BL808?
 
-TODO: Wrap TinyEMU with Zig for safety and WebAssembly
+TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly
 
 # TinyEMU Config
 
@@ -1359,4 +1359,4 @@ Objective: Take the NuttX Kernel built for [Ox64 BL808 SBC](https://www.hackster
 
     (So we can test Nim Blinky)
 
-TODO
+TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
