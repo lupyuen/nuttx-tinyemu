@@ -1318,3 +1318,17 @@ total 1160
 ```
 
 [(See the Build Log)](https://github.com/lupyuen/TinyEMU/actions)
+
+# Emulate Ox64 BL808 SBC with TinyEMU
+
+TODO
+
+Objective: Take the NuttX Kernel built for Ox64 BL808 SBC. And boot it on TinyEMU!
+
+1.  Fix these RISC-V Addresses in TinyEMU to follow BL808:
+
+1.  Emulate OpenSBI Timer
+
+1.  Emulate UART I/O (Memory Mapped I/O and PLIC Interrupts)
+
+1.  Emulate GPIO Output (So we can test Nim Blinky)
