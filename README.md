@@ -1321,14 +1321,42 @@ total 1160
 
 # Emulate Ox64 BL808 SBC with TinyEMU
 
+Objective: Take the NuttX Kernel built for [Ox64 BL808 SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). And boot it on TinyEMU RISC-V Emulator in the Web Browser!
+
+1.  Fix these RISC-V Addresses in TinyEMU to follow BL808 Memory Map: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
+
+    ```c
+    #define LOW_RAM_SIZE   0x00010000 /* 64KB */
+    #define RAM_BASE_ADDR  0x80000000
+    #define CLINT_BASE_ADDR 0x02000000
+    #define CLINT_SIZE      0x000c0000
+    #define DEFAULT_HTIF_BASE_ADDR 0x40008000
+    #define VIRTIO_BASE_ADDR 0x40010000
+    #define VIRTIO_SIZE      0x1000
+    #define VIRTIO_IRQ       1
+    #define PLIC_BASE_ADDR 0x40100000
+    #define PLIC_SIZE      0x00400000
+    #define FRAMEBUFFER_BASE_ADDR 0x41000000
+
+    #define RTC_FREQ 10000000
+    #define RTC_FREQ_DIV 16 /* arbitrary, relative to CPU freq to have a
+                              10 MHz frequency */
+    ```
+
+1.  Start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode)
+
+    (So we don't need OpenSBI and U-Boot Bootloader)
+
+1.  Emulate [OpenSBI Timer](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
+
+    (Intercept the Supervisor-To-Machine Mode ECALL)
+
+1.  Emulate BL808 UART I/O (Memory Mapped I/O and PLIC Interrupts)
+
+    (So we can run NuttX Shell)
+
+1.  Emulate BL808 GPIO Output (Memory Mapped I/O)
+
+    (So we can test Nim Blinky)
+
 TODO
-
-Objective: Take the NuttX Kernel built for Ox64 BL808 SBC. And boot it on TinyEMU!
-
-1.  Fix these RISC-V Addresses in TinyEMU to follow BL808:
-
-1.  Emulate OpenSBI Timer
-
-1.  Emulate UART I/O (Memory Mapped I/O and PLIC Interrupts)
-
-1.  Emulate GPIO Output (So we can test Nim Blinky)
