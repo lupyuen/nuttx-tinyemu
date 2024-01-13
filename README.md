@@ -809,7 +809,7 @@ When we enable the NuttX Console for VirtIO, NuttX Shell works correctly yay!
 
 ![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh2.png) 
 
-# TinyEMU can't enable Machine-Mode Software Interrupts
+# TinyEMU can't enable Machine-Mode External Interrupts
 
 [Based on our snooping](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu), we see that TinyEMU's VirtIO Console will [Trigger an Interrupt](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L220-L258) like so...
 
