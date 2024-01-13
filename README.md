@@ -1277,3 +1277,42 @@ After NuttX Startup: [nsh_session](https://github.com/apache/nuttx-apps/blob/mas
 - [uart_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/drivers/serial/serial.c#L731-L1156) (to read one keypress)
 
 - Which is explained above
+
+# Build TinyEMU for WebAssembly with Emscripten
+
+Based on: https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml
+
+```bash
+sudo apt install emscripten
+make -f Makefile.js 
+```
+
+Fails to build...
+
+```bash
+emcc -O3 --memory-init-file 0 --closure 0 -s NO_EXIT_RUNTIME=1 -s NO_FILESYSTEM=1 -s "EXPORTED_FUNCTIONS=['_console_queue_char','_vm_start','_fs_import_file','_display_key_event','_display_mouse_event','_display_wheel_event','_net_write_packet','_net_set_carrier']" -s 'EXTRA_EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]' -s BINARYEN_TRAP_MODE=clamp --js-library js/lib.js -s WASM=0 -o js/riscvemu32.js jsemu.js.o softfp.js.o virtio.js.o fs.js.o fs_net.js.o fs_wget.js.o fs_utils.js.o simplefb.js.o pci.js.o json.js.o block_net.js.o iomem.js.o cutils.js.o aes.js.o sha256.js.o riscv_cpu32.js.o riscv_machine.js.o machine.js.o elf.js.o
+emcc: error: Invalid command line option -s BINARYEN_TRAP_MODE=clamp: The wasm backend does not support a trap mode (it always clamps, in effect)
+make: *** [Makefile.js:47: js/riscvemu32.js] Error 1
+```
+
+So we remove `-s BINARYEN_TRAP_MODE=clamp` from Makefile.js...
+
+```bash
+EMLDFLAGS=-O3 --memory-init-file 0 --closure 0 -s NO_EXIT_RUNTIME=1 -s NO_FILESYSTEM=1 -s "EXPORTED_FUNCTIONS=['_console_queue_char','_vm_start','_fs_import_file','_display_key_event','_display_mouse_event','_display_wheel_event','_net_write_packet','_net_set_carrier']" -s 'EXTRA_EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]' -s BINARYEN_TRAP_MODE=clamp --js-library js/lib.js
+```
+
+[(See the changes)](https://github.com/lupyuen/TinyEMU/commit/471f6e684054eec1dc2ed98207652c32b4e996e7#diff-3fc6364bd19a0e4ee8d1e0fe312541201418d80f9d1b08015db4d11e7dbde39e)
+
+Now it builds OK...
+
+```bash
+/workspaces/bookworm/TinyEMU (master) $ ls -l js
+total 1160
+-rw-r--r-- 1 vscode vscode   8982 Jan 13 04:17 lib.js
+-rw-r--r-- 1 vscode vscode 352884 Jan 13 04:18 riscvemu32.js
+-rw-r--r-- 1 vscode vscode  45925 Jan 13 04:18 riscvemu32-wasm.js
+-rwxr-xr-x 1 vscode vscode 147816 Jan 13 04:18 riscvemu32-wasm.wasm
+-rw-r--r-- 1 vscode vscode 401186 Jan 13 04:18 riscvemu64.js
+-rw-r--r-- 1 vscode vscode  45925 Jan 13 04:19 riscvemu64-wasm.js
+-rwxr-xr-x 1 vscode vscode 164038 Jan 13 04:19 riscvemu64-wasm.wasm
+```
