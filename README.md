@@ -1,4 +1,4 @@
-![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
+![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-nsh2.png)
 
 # Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
 
