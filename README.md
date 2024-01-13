@@ -1,10 +1,14 @@
 ![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-nsh2.png)
 
-# Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
-
 [(Live Demo of NuttX on TinyEMU)](https://lupyuen.github.io/nuttx-tinyemu)
 
 [(Watch on YouTube)](https://youtu.be/KYrdwzIsgeQ)
+
+# Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 Apache NuttX RTOS is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, ...)
 
@@ -22,6 +26,10 @@ Also imagine: A NuttX Dashboard that lights up in Real-Time, as the various Nutt
 
 # Install TinyEMU
 
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
+
 _How to run TinyEMU in the Command Line?_
 
 We begin with TinyEMU in the Command Line, then move to WebAssembly. To install TinyEMU on macOS:
@@ -37,6 +45,10 @@ Or build TinyEMU on Ubuntu and macOS [with these steps](https://github.com/lupyu
 [(Generate the Emscripten JavaScript)](https://github.com/lupyuen/nuttx-tinyemu#build-tinyemu-for-webassembly-with-emscripten)
 
 # RISC-V Addresses for TinyEMU
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 _Where in RAM will NuttX boot?_
 
@@ -70,6 +82,10 @@ TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly
 
 # TinyEMU Config
 
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
+
 _What's inside a TinyEMU Config?_
 
 RISC-V Virtual Machines for TinyEMU are configured like this: [buildroot-riscv64.cfg](https://bellard.org/jslinux/buildroot-riscv64.cfg)
@@ -99,6 +115,10 @@ Thus we put NuttX Kernel into `bios` and leave `kernel` empty.
 [copy_bios](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L753-L812) will load NuttX Kernel at RAM_BASE_ADDR (0x8000_0000).
 
 # Build NuttX for TinyEMU
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 _Will NuttX boot on TinyEMU?_
 
@@ -171,6 +191,10 @@ riscv64-unknown-elf-objdump \
 
 # Run NuttX on TinyEMU
 
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
+
 _How to boot NuttX on TinyEMU?_
 
 We create a TinyEMU Config for NuttX and run it: [root-riscv64.cfg](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
@@ -191,6 +215,10 @@ $ temu nuttx.cfg
 TinyEMU hangs, nothing happens. Let's print something to TinyEMU HTIF Console...
 
 # Print to HTIF Console
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 _What's HTIF?_
 
@@ -265,6 +293,10 @@ Let's print something in our NuttX Boot Code...
 
 # Print in NuttX Boot Code
 
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
+
 _How to print to HTIF Console in the NuttX Boot Code? (RISC-V Assembly)_
 
 [Based on Star64 Debug Code](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console), we code this in RISC-V Assembly...
@@ -303,6 +335,10 @@ $ temu nuttx.cfg
 Let's fix the NuttX UART Driver...
 
 # Fix the NuttX UART Driver for TinyEMU
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 _NuttX on TinyEMU has been awfully quiet. How to fix the UART Driver so that NuttX can print things?_
 
@@ -410,6 +446,10 @@ Let's boot NuttX in the Web Browser...
 
 # Boot NuttX in the Web Browser
 
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
+
 _Will NuttX boot in the Web Browser?_
 
 Yep! WebAssembly Demo is here: [Demo of NuttX on TinyEMU](https://lupyuen.github.io/nuttx-tinyemu/)
@@ -458,6 +498,10 @@ To do Console Input, we need to implement VirtIO Console in our NuttX UART Drive
 
 # VirtIO Console in TinyEMU
 
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
+
 _How will we implement Console Input / Output in NuttX TinyEMU?_
 
 TinyEMU supports VirtIO for proper Console Input and Output...
@@ -500,6 +544,10 @@ This will help us understand the inner workings of VirtIO and OpenAMP! But first
 
 # Enable VirtIO and OpenAMP in NuttX
 
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
+
 _How do we call VirtIO and OpenAMP?_
 
 To enable VirtIO and OpenAMP in NuttX:
@@ -533,6 +581,10 @@ nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addr
 Now we configure NuttX VirtIO...
 
 # Configure NuttX VirtIO for TinyEMU
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 _How to make NuttX VirtIO talk to TinyEMU?_
 
@@ -581,6 +633,10 @@ At NuttX Startup: [board_app_initialize](https://github.com/lupyuen2/wip-pinepho
 Let's create a VirtIO Queue for the VirtIO Console and send some data...
 
 # Test TinyEMU VirtIO Console with NuttX
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 _NuttX has started VirtIO and OpenAMP and they talk nicely to TinyEMU. What next?_
 
@@ -909,6 +965,10 @@ The Network Device is explained in the [JSLinux FAQ](https://bellard.org/jslinux
 > Yes it is possible. It uses the websocket VPN offered by Benjamin Burns [(see his blog)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html). The bandwidth is capped to 40 kB/s and at most two connections are allowed per public IP address. Please don't abuse the service.
 
 # NuttX in Kernel Mode
+
+Read the article...
+
+-   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
 _Right now we're running NuttX in Flat Mode..._
 
