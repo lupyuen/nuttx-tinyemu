@@ -76,6 +76,8 @@ Thus we shall compile NuttX Kernel to boot at 0x8000_0000.
 
 We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
+[(CLINT and PLIC Addresses are defined here in NuttX)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files#diff-1d49cde8904f634c8963839554b7b626fd9083cf4205814b4e949630dc0a7dda)
+
 TODO: Can we change the above addresses to emulate a RISC-V SoC, like Ox64 BL808?
 
 TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly
@@ -958,11 +960,87 @@ TinyEMU supports these VirtIO Devices:
 
 More details in the [TinyEMU Doc](https://bellard.org/tinyemu/readme.txt). (Are all these devices supported in the Web Browser?)
 
-The Network Device is explained in the [JSLinux FAQ](https://bellard.org/jslinux/faq.html)...
+Let's talk about the Network Device...
+
+# TinyEMU Networking in the Web Browser
+
+_Can we use TCP/IP Networking in the Web Browser TinyEMY?_
+
+Yes it works! Go to [bellard.org/jslinux](https://bellard.org/jslinux/) and click on RISC-V Buildroot Linux. The `ping` command works!
+
+TinyEMU supports VirtIO Network Device, as explained in the [JSLinux FAQ](https://bellard.org/jslinux/faq.html)...
 
 > Can I access to the network from the virtual machine ?
 
-> Yes it is possible. It uses the websocket VPN offered by Benjamin Burns [(see his blog)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html). The bandwidth is capped to 40 kB/s and at most two connections are allowed per public IP address. Please don't abuse the service.
+> Yes it is possible. It uses the WebSocket VPN offered by Benjamin Burns [(see his blog)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html). The bandwidth is capped to 40 kB/s and at most two connections are allowed per public IP address. Please don't abuse the service.
+
+[(More about the WebSocket VPN)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html)
+
+Let's figure out how it works...
+
+## Send Network Packet
+
+In the TinyEMU WebAssembly, we see the WebAssembly Function that sends Network Packets: [jsemu.c](https://github.com/fernandotcl/TinyEMU/blob/master/jsemu.c#L132-L141)
+
+```c
+/* called from JS */
+void net_write_packet(const uint8_t *buf, int buf_len)
+{
+  EthernetDevice *net = global_vm->net;
+  if (net) {
+    net->device_write_packet(net, buf, buf_len);
+  }
+}
+```
+
+The WebAssembly Function above is called by the JavaScript Code that handles WebSocket VPN: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/jslinux.js#L446-L455)
+
+```javascript
+Ethernet.prototype.messageHandler = function(e)
+{
+  var str, buf_len, buf_addr, buf;
+  if (e.data instanceof ArrayBuffer) {
+    buf_len = e.data.byteLength;
+    buf = new Uint8Array(e.data);
+    buf_addr = _malloc(buf_len);
+    HEAPU8.set(buf, buf_addr);
+    net_write_packet(buf_addr, buf_len);
+```
+
+## Receive Network Packet
+
+In the TinyEMU JavaScript, we see the JavaScript Function that receives Network Packets: [lib.js](https://github.com/fernandotcl/TinyEMU/blob/master/js/lib.js#L172-L179)
+
+```javascript
+net_recv_packet: function(bs, buf, buf_len)
+{
+  if (net_state) {
+    net_state.recv_packet(HEAPU8.subarray(buf, buf + buf_len));
+  }
+},
+```
+
+The JavaScript Function above is called by the WebAssembly Code: [jsemu.c](https://github.com/fernandotcl/TinyEMU/blob/master/jsemu.c#L265-L278)
+
+```c
+if (p->eth_count > 0) {
+  EthernetDevice *net;
+  int i;
+  assert(p->eth_count == 1);
+  net = mallocz(sizeof(EthernetDevice));
+  net->mac_addr[0] = 0x02;
+  for(i = 1; i < 6; i++)
+      net->mac_addr[i] = (int)(emscripten_random() * 256);
+  net->write_packet = net_recv_packet;
+```
+
+## VirtIO Networking
+
+_How do we call this in NuttX?_
+
+We shall use the [NuttX VirtIO Network Driver](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-net.c).
+
+The VirtIO Network Driver will send [VirtIO Network Packets](https://wiki.osdev.org/Virtio#Communication) to TinyEMU.
 
 # NuttX in Kernel Mode
 
