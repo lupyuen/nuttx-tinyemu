@@ -964,7 +964,7 @@ Let's talk about the Network Device...
 
 # TinyEMU Networking in the Web Browser
 
-_Can we use TCP/IP Networking in the Web Browser TinyEMY?_
+_Can we use TCP/IP Networking in the Web Browser TinyEMU?_
 
 Yes it works! Go to [bellard.org/jslinux](https://bellard.org/jslinux/) and click on RISC-V Buildroot Linux. The `ping` command works!
 
@@ -1041,6 +1041,8 @@ _How do we call this in NuttX?_
 We shall use the [NuttX VirtIO Network Driver](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-net.c).
 
 The VirtIO Network Driver will send [VirtIO Network Packets](https://wiki.osdev.org/Virtio#Communication) to TinyEMU.
+
+TODO: Test NuttX [rv-virt:netnsh64](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/netnsh64/defconfig) with VirtIO Networking in Web Browser TinyEMU
 
 # NuttX in Kernel Mode
 
