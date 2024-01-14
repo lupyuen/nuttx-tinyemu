@@ -958,7 +958,11 @@ TinyEMU supports these VirtIO Devices:
 
 - [9P Filesystem Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1645-L2649)
 
-More details in the [TinyEMU Doc](https://bellard.org/tinyemu/readme.txt). (Are all these devices supported in the Web Browser?)
+More details in the [TinyEMU Doc](https://bellard.org/tinyemu/readme.txt).
+
+TODO: Are all these devices supported in the Web Browser?
+
+File Sync is implemented here: [VFsync (Virtual File Synchronization)](https://vfsync.org/index.html)
 
 Let's talk about the Network Device...
 
