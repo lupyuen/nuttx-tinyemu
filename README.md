@@ -974,6 +974,18 @@ TinyEMU supports VirtIO Network Device, as explained in the [JSLinux FAQ](https:
 
 > Yes it is possible. It uses the WebSocket VPN offered by Benjamin Burns [(see his blog)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html). The bandwidth is capped to 40 kB/s and at most two connections are allowed per public IP address. Please don't abuse the service.
 
+The WebSocket VPN is defined here: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/jslinux.js#L559-L561)
+
+```javascript
+net_url = params["net_url"]; /* empty string means no network */
+if (typeof net_url == "undefined")
+  net_url = "wss://relay.widgetry.org/";
+```
+
+WebSocket VPN Code is here: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/jslinux.js#L413-L477)
+
+TODO: How to move the WebSocket VPN to our Own Server? How to throttle the internet traffic?
+
 [(More about the WebSocket VPN)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html)
 
 Let's figure out how it works...
