@@ -1527,4 +1527,82 @@ Objective: Take the NuttX Kernel built for [Ox64 BL808 SBC](https://www.hackster
 
     (So we can test Nim Blinky)
 
+Let's try booting NuttX Ox64 on TinyEMU...
+
 TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
+
+# Change RISC-V Addresses in TinyEMU for Ox64 BL808
+
+We change the RISC-V Addresses in TinyEMU for Ox64 BL808: [riscv_machine.c](https://github.com/lupyuen/TinyEMU/commit/8100f25ce053ca858c7588aea211bb20401be980)
+
+```c
+#define LOW_RAM_SIZE    0x00010000  // TODO: 64KB at 0x0
+#define RAM_BASE_ADDR   0x50200000
+#define CLINT_BASE_ADDR 0x02000000  // TODO: Unused
+#define CLINT_SIZE      0x000c0000  // TODO: Unused
+#define PLIC_BASE_ADDR  0xe0000000ul
+#define PLIC_SIZE       0x00400000
+...
+#define PLIC_HART_BASE 0x201000  // Hart 0 S-Mode Priority Threshold
+#define PLIC_HART_SIZE 0x1000
+...
+// At 0x0: Jump to RAM_BASE_ADDR
+q = (uint32_t *)(ram_ptr + 0x1000);
+q[0] = 0x297 + RAM_BASE_ADDR - 0x1000; /* auipc t0, jump_addr */
+q[1] = 0x597; /* auipc a1, dtb */
+q[2] = 0x58593 + ((fdt_addr - 4) << 20); /* addi a1, a1, dtb */
+q[3] = 0xf1402573; /* csrr a0, mhartid */
+```
+
+Now NuttX Ox64 boots a tiny bit on TinyEMU yay!
+
+https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb
+
+```bash
+$ temu root-riscv64.cfg | more
+virtio_console_init
+csr_write: csr=0x104 val=0x0000000000000000
+csr_write: csr=0x105 val=0x0000000050200090
+csr_write: csr=0x100 val=0x0000000200000000
+csr_write: csr=0x100 val=0x0000000200000000
+csr_write: csr=0x100 val=0x0000000200000000
+csr_write: csr=0x100 val=0x0000000200000000
+csr_write: csr=0x140 val=0x0000000050400cd0
+csr_write: csr=0x180 val=0x0000000000000000
+csr_write: csr=0x105 val=0x0000000050200090
+csr_write: csr=0x100 val=0x0000000200002000
+csr_write: csr=0x003 val=0x0000000000000000
+csr_write: csr=0x100 val=0x8000000200006000
+target_read_slow: invalid physical address 0x0000000030002084
+target_write_slow: invalid physical address 0x0000000030002088
+```
+
+Remember to [Enable Exception Logging](https://github.com/lupyuen/TinyEMU/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6) in TinyEMU.
+
+_What's root-riscv64.cfg?_
+
+It's the TinyEMU Config that will boot the NuttX Ox64 `Image` file: [root-riscv64.cfg](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/root-riscv64.cfg)
+
+```json
+/* VM configuration file */
+{
+  version: 1,
+  machine: "riscv64",
+  memory_size: 256,
+  bios: "Image",
+}
+```
+
+`Image` file comes from a typical [NuttX Build for Ox64](https://github.com/lupyuen/nuttx-ox64/releases).
+
+_What are 0x30002084 and 0x30002088?_
+
+From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-serial-console)...
+
+- 0x30002088 (uart_fifo_wdata) means NuttX is writing to the UART Output Register. It's printing something to the console! [(BL808 Reference Manual, Page 428)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
+- 0x30002084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. [(BL808 Reference Manual, Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
+- That's why we always see "read 0x30002084" before "write 0x30002088".
+
+TODO: Intercept the "write 0x30002088" so we can print the UART Output from NuttX
