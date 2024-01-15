@@ -1536,7 +1536,7 @@ TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
 To boot NuttX Ox64 in TinyEMU: We change the RISC-V Addresses in TinyEMU, so that they match Ox64 BL808: [riscv_machine.c](https://github.com/lupyuen/TinyEMU/commit/8100f25ce053ca858c7588aea211bb20401be980)
 
 ```c
-#define LOW_RAM_SIZE    0x00010000  // TODO: 64KB at 0x0
+#define LOW_RAM_SIZE    0x00010000  // TODO: For 64KB of Boot Code at 0x0
 #define RAM_BASE_ADDR   0x50200000
 #define CLINT_BASE_ADDR 0x02000000  // TODO: Unused
 #define CLINT_SIZE      0x000c0000  // TODO: Unused
