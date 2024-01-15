@@ -992,7 +992,9 @@ WebSocket VPN Code is here: [jslinux.js](https://github.com/lupyuen/nuttx-tinyem
 
 _Can we use the browser connection to communicate to the internet, instead of WebSocket VPN?_
 
-From our analysis below, TinyEMU and VirtIO Networking are sending Ethernet Frames / IP Packets to the internet. But Web Browsers are not allowed to send IP Packets directly. That's why TinyEMU needs a WebSocket VPN hosted at `relay.widgetry.org`. (Which is throttled at 40 kB/s for free, fair use)
+From our analysis below, TinyEMU and VirtIO Networking are sending Ethernet Frames / IP Packets to the internet. But Web Browsers are not allowed to send IP Packets directly. 
+
+That's why TinyEMU needs to tunnel the packets through a WebSocket VPN hosted at `relay.widgetry.org`. (Which is throttled at 40 kB/s for free, fair use)
 
 _Can we host our own WebSocket VPN on our Local Computer?_
 
