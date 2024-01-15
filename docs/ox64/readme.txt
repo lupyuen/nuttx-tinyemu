@@ -1,4 +1,4 @@
-[ Same as parent folder, but for Network Version (tinyemu3 branch) ]
+[ Experimental Ox64 BL808 Emulator ]
 
 JSLinux demo
 ============
