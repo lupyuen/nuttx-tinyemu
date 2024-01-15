@@ -988,11 +988,21 @@ if (typeof net_url == "undefined")
 
 WebSocket VPN Code is here: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/jslinux.js#L413-L477)
 
-TODO: How to move the WebSocket VPN to our Own Server? How to throttle the internet traffic?
-
 [(More about the WebSocket VPN)](http://www.benjamincburns.com/2013/11/10/jor1k-ethmac-support.html)
 
-Let's figure out how it works...
+_Can we use the browser connection to communicate to the internet, instead of WebSocket VPN?_
+
+From our analysis below, TinyEMU and VirtIO Networking are sending Ethernet Frames / IP Packets to the internet. But Web Browsers are not allowed to send IP Packets directly. That's why TinyEMU needs a WebSocket VPN hosted at `relay.widgetry.org`. (Which is throttled at 40 kB/s for free, fair use)
+
+_Can we host our own WebSocket VPN on our Local Computer?_
+
+Possibly. But then we will have to host the Web Server on our Local Computer too. Which makes it cumbersome to install.
+
+_Can we host the WebSocket VPN on a server operated by the NuttX Project?_
+
+Possibly. But we need to throttle the internet traffic for free, fair use. And prevent abuse.
+
+Here's how TinyEMU VirtIO Networking works with the WebSocket VPN...
 
 ## Send Network Packet
 
