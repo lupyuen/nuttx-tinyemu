@@ -1556,8 +1556,6 @@ q[3] = 0xf1402573; /* csrr a0, mhartid */
 
 Now NuttX Ox64 boots a tiny bit on TinyEMU yay!
 
-https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb
-
 ```bash
 $ temu root-riscv64.cfg | more
 virtio_console_init
@@ -1576,6 +1574,8 @@ csr_write: csr=0x100 val=0x8000000200006000
 target_read_slow: invalid physical address 0x0000000030002084
 target_write_slow: invalid physical address 0x0000000030002088
 ```
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
 
 Remember to [Enable Exception Logging](https://github.com/lupyuen/TinyEMU/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6) in TinyEMU.
 
