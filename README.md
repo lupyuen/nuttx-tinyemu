@@ -1606,3 +1606,5 @@ From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-seria
 - That's why we always see "read 0x30002084" before "write 0x30002088".
 
 TODO: Intercept the "write 0x30002088" so we can print the UART Output from NuttX
+
+Note that we're still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)
