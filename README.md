@@ -1611,45 +1611,171 @@ Note that we're still booting in RISC-V Machine Mode! This will cause problems l
 
 # Intercept UART Registers for Ox64 BL808 Emulator
 
-Let's intercept the "write 0x30002088" in TinyEMU Emulator so we can print the UART Output from NuttX.
+Let's intercept the "read 0x30002084" and "write 0x30002088" in TinyEMU Emulator so we can print the UART Output for NuttX.
 
-TODO
-
-https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3
+We handle all "read 0x30002084" (uart_fifo_config_1) by return 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
 
 ```c
-        pr = get_phys_mem_range(s->mem_map, paddr);
-        if (!pr) {
-            //// Begin Test: Intercept Memory-Mapped I/O
-            switch(paddr & 0xfffffffffffful) {  // TODO: Why does NuttX read from 0x4000000030002084?
-            case 0x30002084:     // uart_fifo_config_1: Is UART Ready?
-                ret = 32; break; // UART TX is always ready, default TX FIFO Available is 32
+/* return 0 if OK, != 0 if exception */
+int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int size_log2) {
+...        
+  pr = get_phys_mem_range(s->mem_map, paddr);
+  if (!pr) {
+    //// Begin Test: Intercept Memory-Mapped I/O
+    switch(paddr & 0xfffffffffffful) {  // TODO: Why does NuttX read from 0x4000000030002084?
+    case 0x30002084:     // uart_fifo_config_1: Is UART Ready?
+      ret = 32; break; // UART TX is always ready, default TX FIFO Available is 32
 
-            default:  // Unknown Memory-Mapped I/O
+    default:  // Unknown Memory-Mapped I/O
 #ifdef DUMP_INVALID_MEM_ACCESS
-                printf("target_read_slow: invalid physical address 0x");
-                print_target_ulong(paddr);
-                printf("\n");
+      printf("target_read_slow: invalid physical address 0x");
+      print_target_ulong(paddr);
+      printf("\n");
 #endif
-                return 0;
-            }
-            //// End Test
-
-
-...
-        pr = get_phys_mem_range(s->mem_map, paddr);
-        if (!pr) {
-            //// Begin Test: Intercept Memory-Mapped I/O
-            switch(paddr & 0xfffffffffffful) {  // TODO: Why does NuttX write to 0x4000000030002088?
-            case 0x30002088:  // uart_fifo_wdata: UART Output
-                putchar(val); break;  // Print the character
-
-            default:  // Unknown Memory-Mapped I/O
-#ifdef DUMP_INVALID_MEM_ACCESS
-                printf("target_write_slow: invalid physical address 0x");
-                print_target_ulong(paddr);
-                printf("\n");
-#endif                
-            }
-            //// End Test
+      return 0;
+    }
+    //// End Test
 ```
+
+We handle all "write 0x30002088" (uart_fifo_wdata) by printing the character that's written to the UART Output Register: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
+
+```c
+/* return 0 if OK, != 0 if exception */
+int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int size_log2) {
+...
+  pr = get_phys_mem_range(s->mem_map, paddr);
+  if (!pr) {
+    //// Begin Test: Intercept Memory-Mapped I/O
+    switch(paddr & 0xfffffffffffful) {  // TODO: Why does NuttX write to 0x4000000030002088?
+    case 0x30002088:  // uart_fifo_wdata: UART Output
+      putchar(val); break;  // Print the character
+
+    default:  // Unknown Memory-Mapped I/O
+#ifdef DUMP_INVALID_MEM_ACCESS
+      printf("target_write_slow: invalid physical address 0x");
+      print_target_ulong(paddr);
+      printf("\n");
+#endif                
+    }
+    //// End Test
+```
+
+Here's the [TinyEMU Log for Intercepted UART Registers](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177). We see NuttX booting on TinyEMU yay!
+
+```text
+$ temu root-riscv64.cfg | more
+virtio_console_init
+ABCnx_start: Entry
+mm_initialize: Heap: name=Kmem, start=0x50407c00 size=2065408
+mm_addregion: [Kmem] Region 1: base=0x50407ea8 size=2064720
+mm_malloc: Allocated 0x50407ed0, size 704
+mm_malloc: Allocated 0x50408190, size 48
+...
+uart_register: Registering /dev/console
+target_read_slow: invalid physical address 0x0000000030002024
+target_write_slow: invalid physical address 0x0000000030002024
+work_start_lowpri kernel worker thread(s)
+uart_register: Registering /dev/console
+target_read_slow: invalid physical address 0x0000000030002024
+target_write_slow: invalid physical address 0x0000000030002024
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nx_start_applicaystem/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Fa: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+mm_initialize: Heap: name=(null), start=0x80200000 size=528384
+mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
+mm_initialize: Heap: name=(null), start=0x80200000 size=528384
+mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
+up_exit: TCB=0x504098d0 exiting
+raise_exception2: cause=8, tval=0x0
+pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
+s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
+a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
+a6 =0000000000000101 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
+s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
+s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
+t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
+priv=U mstatus=0000000a0006806
+ mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+raise_exception2: cause=2, tval=0x0
+raise_exception2: cause=2, tval=0x0
+...
+raise_exception2: cause=2, tval=0x0
+up_exit: TCB=0x504098d0 exiting
+raise_exception2: cause=8, tval=0x0
+pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
+s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
+a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
+a6 =00000000000001 s2 =0000000000000000 s3 =0000000000000000
+s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
+s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
+t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
+priv=U mstatus=0000000a00040021 cycles=82846806
+ mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+raise_exception2: cause=2, tval=0x0
+raise_exception2: cause=2, tval=0x0
+```
+
+TODO: Why does NuttX read from 0x4000000030002084? Probably due to T-Head C906 MMU Flags
+
+TODO: What is `raise_exception2: cause=2, tval=0x0`?
+
+TODO: Why is NuttX Shell started twice? Because it failed? (`/system/bin/init`)
+
+# NuttX Exception in Ox64 BL808 Emulator
+
+_What is `raise_exception2: cause=8`?_
+
+From the [TinyEMU Log for Intercepted UART Registers](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)...
+
+```text
+up_exit: TCB=0x504098d0 exiting
+raise_exception2: cause=8, tval=0x0
+pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
+s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
+a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
+a6 =0000000000000101 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
+s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
+s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
+t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
+priv=U mstatus=0000000a0006806
+ mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+raise_exception2: cause=2, tval=0x0
+```
+
+We look up the offending Code Address: `pc=8000_19c6`. This address comes from the NuttX App Virtual Memory: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30)
+
+```bash
+CONFIG_ARCH_TEXT_VBASE=0x80000000
+CONFIG_ARCH_TEXT_NPAGES=128
+CONFIG_ARCH_DATA_VBASE=0x80100000
+CONFIG_ARCH_DATA_NPAGES=128
+CONFIG_ARCH_HEAP_VBASE=0x80200000
+CONFIG_ARCH_HEAP_NPAGES=128
+```
+
+The only NuttX App we're running is the NuttX Shell. So we look up the RISC-V Disassembly for the NuttX Shell: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
+
+```text
+nuttx/syscall/proxies/PROXY_sched_getparam.c:8
+int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
+...
+00000000000019c6 <.LVL4>:
+nuttx/include/arch/syscall.h:229
+  asm volatile
+    19c6:	00000073          	ecall
+```
+
+0x19c6 is an ECALL from NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). Our NuttX Shell is making a System Call to NuttX Kernel!
+
+Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).
+
+TODO
