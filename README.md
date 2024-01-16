@@ -1446,16 +1446,14 @@ After NuttX Startup: [nsh_session](https://github.com/apache/nuttx-apps/blob/mas
 
 # Build TinyEMU for WebAssembly with Emscripten
 
-Based on: https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml
+We fixed the TinyEMU Build for Emscripten: https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7
+
+Previously it fails to build...
 
 ```bash
-sudo apt install emscripten
-make -f Makefile.js 
-```
+$ sudo apt install emscripten
+$ make -f Makefile.js 
 
-Fails to build...
-
-```bash
 emcc -O3 --memory-init-file 0 --closure 0 -s NO_EXIT_RUNTIME=1 -s NO_FILESYSTEM=1 -s "EXPORTED_FUNCTIONS=['_console_queue_char','_vm_start','_fs_import_file','_display_key_event','_display_mouse_event','_display_wheel_event','_net_write_packet','_net_set_carrier']" -s 'EXTRA_EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]' -s BINARYEN_TRAP_MODE=clamp --js-library js/lib.js -s WASM=0 -o js/riscvemu32.js jsemu.js.o softfp.js.o virtio.js.o fs.js.o fs_net.js.o fs_wget.js.o fs_utils.js.o simplefb.js.o pci.js.o json.js.o block_net.js.o iomem.js.o cutils.js.o aes.js.o sha256.js.o riscv_cpu32.js.o riscv_machine.js.o machine.js.o elf.js.o
 emcc: error: Invalid command line option -s BINARYEN_TRAP_MODE=clamp: The wasm backend does not support a trap mode (it always clamps, in effect)
 make: *** [Makefile.js:47: js/riscvemu32.js] Error 1
@@ -1467,7 +1465,7 @@ So we remove `-s BINARYEN_TRAP_MODE=clamp` from Makefile.js...
 EMLDFLAGS=-O3 --memory-init-file 0 --closure 0 -s NO_EXIT_RUNTIME=1 -s NO_FILESYSTEM=1 -s "EXPORTED_FUNCTIONS=['_console_queue_char','_vm_start','_fs_import_file','_display_key_event','_display_mouse_event','_display_wheel_event','_net_write_packet','_net_set_carrier']" -s 'EXTRA_EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]' -s BINARYEN_TRAP_MODE=clamp --js-library js/lib.js
 ```
 
-[(See the Modified File)](https://github.com/lupyuen/ox64-tinyemu/commit/471f6e684054eec1dc2ed98207652c32b4e996e7#diff-3fc6364bd19a0e4ee8d1e0fe312541201418d80f9d1b08015db4d11e7dbde39e)
+As we made some more fixes: [See the Modified Files](https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7)
 
 Now it builds OK...
 
