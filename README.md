@@ -1609,9 +1609,9 @@ Note that we're still booting in RISC-V Machine Mode! This will cause problems l
 
 # Intercept UART Registers for Ox64 BL808 Emulator
 
-Let's intercept the "read 0x30002084" and "write 0x30002088" in TinyEMU Emulator so we can print the UART Output for NuttX.
+Let's intercept the "read 0x30002084" and "write 0x30002088" in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.
 
-We handle all "read 0x30002084" (uart_fifo_config_1) by return 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
+We handle all "read 0x30002084" (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
 
 ```c
 /* return 0 if OK, != 0 if exception */
@@ -1635,7 +1635,7 @@ int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int 
     //// End Test
 ```
 
-We handle all "write 0x30002088" (uart_fifo_wdata) by printing the character that's written to the UART Output Register: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
+We handle all "write 0x30002088" (uart_fifo_wdata) by printing the character to the UART Output Register: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
 
 ```c
 /* return 0 if OK, != 0 if exception */
