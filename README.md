@@ -1784,7 +1784,12 @@ _Will our Ox64 BL808 Emulator run in the Web Browser?_
 
 Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7).
 
+Print to Device Console instead of JavaScript Console:
 
+https://github.com/lupyuen/ox64-tinyemu/commit/41383b85be0f0a16369d2661338487dd28a56a75
+
+And it runs OK in Web Browser yay!
+
+https://lupyuen.github.io/nuttx-tinyemu/ox64/
 
 TODO: Emulate BL808 GPIO to Blink an LED
-
