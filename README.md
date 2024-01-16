@@ -1780,7 +1780,11 @@ Which fails because everything runs in RISC-V Machine Mode right now. We will ne
 
 # Emulate Ox64 BL808 in Web Browser
 
-TODO: Test in WebAssembly
+_Will our Ox64 BL808 Emulator run in the Web Browser?_
+
+Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7).
+
+
 
 TODO: Emulate BL808 GPIO to Blink an LED
 
