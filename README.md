@@ -40,7 +40,7 @@ brew install --HEAD fernandotcl/fernandotcl/tinyemu
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 ```
 
-Or build TinyEMU on Ubuntu and macOS [with these steps](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml).
+Or build TinyEMU on Ubuntu and macOS [with these steps](https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml).
 
 [(Generate the Emscripten JavaScript)](https://github.com/lupyuen/nuttx-tinyemu#build-tinyemu-for-webassembly-with-emscripten)
 
@@ -1348,7 +1348,7 @@ TinyEMU [plic_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_ma
 
 _How did we figure out all this?_
 
-We added [Debug Logs to TinyEMU](https://github.com/lupyuen/TinyEMU/commits/master/).
+We added [Debug Logs to TinyEMU](https://github.com/lupyuen/ox64-tinyemu/commits/upstream).
 
 # VirtIO Console Input in NuttX
 
@@ -1448,7 +1448,7 @@ After NuttX Startup: [nsh_session](https://github.com/apache/nuttx-apps/blob/mas
 
 # Build TinyEMU for WebAssembly with Emscripten
 
-Based on: https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml
+Based on: https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml
 
 ```bash
 sudo apt install emscripten
@@ -1469,7 +1469,7 @@ So we remove `-s BINARYEN_TRAP_MODE=clamp` from Makefile.js...
 EMLDFLAGS=-O3 --memory-init-file 0 --closure 0 -s NO_EXIT_RUNTIME=1 -s NO_FILESYSTEM=1 -s "EXPORTED_FUNCTIONS=['_console_queue_char','_vm_start','_fs_import_file','_display_key_event','_display_mouse_event','_display_wheel_event','_net_write_packet','_net_set_carrier']" -s 'EXTRA_EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]' -s BINARYEN_TRAP_MODE=clamp --js-library js/lib.js
 ```
 
-[(See the Modified File)](https://github.com/lupyuen/TinyEMU/commit/471f6e684054eec1dc2ed98207652c32b4e996e7#diff-3fc6364bd19a0e4ee8d1e0fe312541201418d80f9d1b08015db4d11e7dbde39e)
+[(See the Modified File)](https://github.com/lupyuen/ox64-tinyemu/commit/471f6e684054eec1dc2ed98207652c32b4e996e7#diff-3fc6364bd19a0e4ee8d1e0fe312541201418d80f9d1b08015db4d11e7dbde39e)
 
 Now it builds OK...
 
@@ -1485,7 +1485,7 @@ total 1160
 -rwxr-xr-x 1 vscode vscode 164038 Jan 13 04:19 riscvemu64-wasm.wasm
 ```
 
-[(See the Build Log)](https://github.com/lupyuen/TinyEMU/actions)
+[(See the Build Log)](https://github.com/lupyuen/ox64-tinyemu/actions)
 
 # Emulate Ox64 BL808 SBC with TinyEMU
 
@@ -1533,7 +1533,7 @@ TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
 
 # Change RISC-V Addresses in TinyEMU for Ox64 BL808
 
-To boot NuttX Ox64 in TinyEMU: We change the RISC-V Addresses in TinyEMU, so that they match Ox64 BL808: [riscv_machine.c](https://github.com/lupyuen/TinyEMU/commit/8100f25ce053ca858c7588aea211bb20401be980)
+To boot NuttX Ox64 in TinyEMU: We change the RISC-V Addresses in TinyEMU, so that they match Ox64 BL808: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/commit/8100f25ce053ca858c7588aea211bb20401be980)
 
 ```c
 #define LOW_RAM_SIZE    0x00010000  // 64KB of Boot Code at 0x0
@@ -1577,7 +1577,7 @@ target_write_slow: invalid physical address 0x0000000030002088
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
 
-Remember to [Enable Exception Logging](https://github.com/lupyuen/TinyEMU/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6) in TinyEMU.
+Remember to [Enable Exception Logging](https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6) in TinyEMU.
 
 _What's root-riscv64.cfg?_
 
