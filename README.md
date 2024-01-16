@@ -1601,7 +1601,7 @@ From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-seria
 
 - 0x30002084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. [(BL808 Reference Manual, Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
-  [(`*0x30002084 & 0x3f` must be 0 to indicate that UART Transmit is ready)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
+  [(`*0x30002084 & 0x3f` must be non-zero to indicate that UART Transmit is ready)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
 - That's why we always see "read 0x30002084" before "write 0x30002088".
 
@@ -1614,3 +1614,42 @@ Note that we're still booting in RISC-V Machine Mode! This will cause problems l
 Let's intercept the "write 0x30002088" in TinyEMU Emulator so we can print the UART Output from NuttX.
 
 TODO
+
+https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3
+
+```c
+        pr = get_phys_mem_range(s->mem_map, paddr);
+        if (!pr) {
+            //// Begin Test: Intercept Memory-Mapped I/O
+            switch(paddr & 0xfffffffffffful) {  // TODO: Why does NuttX read from 0x4000000030002084?
+            case 0x30002084:     // uart_fifo_config_1: Is UART Ready?
+                ret = 32; break; // UART TX is always ready, default TX FIFO Available is 32
+
+            default:  // Unknown Memory-Mapped I/O
+#ifdef DUMP_INVALID_MEM_ACCESS
+                printf("target_read_slow: invalid physical address 0x");
+                print_target_ulong(paddr);
+                printf("\n");
+#endif
+                return 0;
+            }
+            //// End Test
+
+
+...
+        pr = get_phys_mem_range(s->mem_map, paddr);
+        if (!pr) {
+            //// Begin Test: Intercept Memory-Mapped I/O
+            switch(paddr & 0xfffffffffffful) {  // TODO: Why does NuttX write to 0x4000000030002088?
+            case 0x30002088:  // uart_fifo_wdata: UART Output
+                putchar(val); break;  // Print the character
+
+            default:  // Unknown Memory-Mapped I/O
+#ifdef DUMP_INVALID_MEM_ACCESS
+                printf("target_write_slow: invalid physical address 0x");
+                print_target_ulong(paddr);
+                printf("\n");
+#endif                
+            }
+            //// End Test
+```
