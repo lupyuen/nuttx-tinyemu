@@ -1601,11 +1601,15 @@ From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-seria
 
 - 0x30002084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. [(BL808 Reference Manual, Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
+  [(`*0x30002084 & 0x3f` must be 0 to indicate that UART Transmit is ready)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
+
 - That's why we always see "read 0x30002084" before "write 0x30002088".
+
+  [(See `bl808_send`)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
 Note that we're still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)
 
-# Intercept UART Output for Ox64 BL808 Emulator
+# Intercept UART Registers for Ox64 BL808 Emulator
 
 Let's intercept the "write 0x30002088" in TinyEMU Emulator so we can print the UART Output from NuttX.
 
