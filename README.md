@@ -78,9 +78,7 @@ We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
 [(CLINT and PLIC Addresses are defined here in NuttX)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files#diff-1d49cde8904f634c8963839554b7b626fd9083cf4205814b4e949630dc0a7dda)
 
-TODO: Can we change the above addresses to emulate a RISC-V SoC, like Ox64 BL808?
-
-TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly
+Later we'll change the above addresses to emulate a RISC-V SoC, like Ox64 BL808.
 
 # TinyEMU Config
 
