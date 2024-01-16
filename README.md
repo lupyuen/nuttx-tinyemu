@@ -1778,4 +1778,11 @@ nuttx/include/arch/syscall.h:229
 
 Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).
 
-TODO
+[(We quit if mcause=2, otherwise it will loop forever)](https://github.com/lupyuen/ox64-tinyemu/commit/9da5b066c9fe29ef46b93ff8174662d5e6858038)
+
+# Emulate Ox64 BL808 in Web Browser
+
+TODO: Test in WebAssembly
+
+TODO: Emulate BL808 GPIO to Blink an LED
+
