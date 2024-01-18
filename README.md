@@ -1792,6 +1792,8 @@ Which fails because everything runs in RISC-V Machine Mode right now. We will ne
 
 [(We quit if mcause=2, otherwise it will loop forever)](https://github.com/lupyuen/ox64-tinyemu/commit/9da5b066c9fe29ef46b93ff8174662d5e6858038)
 
+![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
+
 # Emulate Ox64 BL808 in Web Browser
 
 _Will our Ox64 BL808 Emulator run in the Web Browser?_
