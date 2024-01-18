@@ -1483,6 +1483,8 @@ total 1160
 
 [(See the Build Log)](https://github.com/lupyuen/ox64-tinyemu/actions)
 
+![Ox64 SBC will run in Machine, Supervisor AND User Modes](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
+
 # Emulate Ox64 BL808 SBC with TinyEMU
 
 Objective: Take the NuttX Kernel built for [Ox64 BL808 SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). And boot it on TinyEMU RISC-V Emulator in the Web Browser!
@@ -1526,6 +1528,8 @@ Objective: Take the NuttX Kernel built for [Ox64 BL808 SBC](https://www.hackster
 Let's try booting NuttX Ox64 on TinyEMU...
 
 TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
+
+![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
 # Change RISC-V Addresses in TinyEMU for Ox64 BL808
 
@@ -1606,6 +1610,8 @@ From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-seria
   [(See `bl808_send`)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
 Note that we're still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)
+
+![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
 
 # Intercept UART Registers for Ox64 BL808 Emulator
 
@@ -1726,6 +1732,8 @@ TODO: Why does NuttX read from 0x4000000030002084? Probably due to T-Head C906 M
 TODO: What is `raise_exception2: cause=2, tval=0x0`?
 
 TODO: Why is NuttX Shell started twice? Because it failed? (`/system/bin/init`)
+
+![Emulating the UART Registers with TinyEMU](https://lupyuen.github.io/images/tinyemu2-uart.jpg)
 
 # NuttX Exception in Ox64 BL808 Emulator
 
