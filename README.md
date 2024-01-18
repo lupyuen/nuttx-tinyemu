@@ -1554,6 +1554,8 @@ q[2] = 0x58593 + ((fdt_addr - 4) << 20); /* addi a1, a1, dtb */
 q[3] = 0xf1402573; /* csrr a0, mhartid */
 ```
 
+![BL808 Memory Map (Page 41)](https://lupyuen.github.io/images/tinyemu2-memory.jpg)
+
 Now NuttX Ox64 boots a tiny bit on TinyEMU yay!
 
 ```bash
@@ -1578,6 +1580,8 @@ target_write_slow: invalid physical address 0x0000000030002088
 [(See the Complete Log)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
 
 Remember to [Enable Exception Logging](https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6) in TinyEMU.
+
+![TinyEMU Emulator at the Command Line](https://lupyuen.github.io/images/tinyemu2-run.png)
 
 _What's root-riscv64.cfg?_
 
@@ -1664,6 +1668,8 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
     //// End Test
 ```
 
+![Emulating the UART Registers with TinyEMU](https://lupyuen.github.io/images/tinyemu2-uart.jpg)
+
 Here's the [TinyEMU Log for Intercepted UART Registers](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177). We see NuttX booting on TinyEMU yay!
 
 ```text
@@ -1733,7 +1739,7 @@ TODO: What is `raise_exception2: cause=2, tval=0x0`?
 
 TODO: Why is NuttX Shell started twice? Because it failed? (`/system/bin/init`)
 
-![Emulating the UART Registers with TinyEMU](https://lupyuen.github.io/images/tinyemu2-uart.jpg)
+![TinyEMU Emulator emulates UART Output](https://lupyuen.github.io/images/tinyemu2-run2.png)
 
 # NuttX Exception in Ox64 BL808 Emulator
 
