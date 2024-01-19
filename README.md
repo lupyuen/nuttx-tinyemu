@@ -1810,4 +1810,12 @@ https://lupyuen.github.io/nuttx-tinyemu/ox64/
 
 ![Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS](https://lupyuen.github.io/images/tinyemu2-title.png)
 
+# Start NuttX Kernel in Supervisor Mode
+
+We update the TinyEMU Boot Code to start NuttX in Supervisor Mode...
+
+- ["Start NuttX Kernel in Supervisor Mode"](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode)
+
+TODO: Emulate UART Interrupts for Console Input
+
 TODO: Emulate BL808 GPIO to Blink an LED
