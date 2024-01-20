@@ -1800,13 +1800,13 @@ _Will our Ox64 BL808 Emulator run in the Web Browser?_
 
 Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7).
 
-Then we print to Device Console instead of JavaScript Console...
-
-https://github.com/lupyuen/ox64-tinyemu/commit/41383b85be0f0a16369d2661338487dd28a56a75
+Then we [print to Device Console](https://github.com/lupyuen/ox64-tinyemu/commit/41383b85be0f0a16369d2661338487dd28a56a75) instead of JavaScript Console...
 
 And our Ox64 BL808 Emulator runs OK in Web Browser yay!
 
-https://lupyuen.github.io/nuttx-tinyemu/ox64/
+[_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/smode)
+
+[_(Watch the Demo on YouTube)_](https://youtu.be/FAxaMt6A59I)
 
 ![Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS](https://lupyuen.github.io/images/tinyemu2-title.png)
 
@@ -1816,7 +1816,9 @@ _NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in Ti
 
 Here's how...
 
-- [Start NuttX Kernel in Supervisor Mode](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode)
+- ["Start NuttX Kernel in Supervisor Mode"](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode)
+
+![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
 # Emulate UART Interrupts for Console Input
 
@@ -1824,7 +1826,9 @@ _How will we emulate UART Interrupts to support Console Input?_
 
 Like this...
 
-- [Emulate UART Interrupts for Console Input](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input)
+- ["Emulate UART Interrupts for Console Input"](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input)
+
+![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 # Emulate OpenSBI for System Timer
 
@@ -1832,6 +1836,10 @@ _How to emulate the OpenSBI ECALL to start the System Timer?_
 
 Check this out...
 
-- [Emulate OpenSBI for System Timer](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-opensbi-for-system-timer)
+- ["Emulate OpenSBI for System Timer"](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-opensbi-for-system-timer)
 
-TODO: Emulate BL808 GPIO to Blink an LED
+![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
+
+# Emulate BL808 GPIO to Blink an LED
+
+TODO
