@@ -1812,12 +1812,26 @@ https://lupyuen.github.io/nuttx-tinyemu/ox64/
 
 # Start NuttX Kernel in Supervisor Mode
 
-We update the TinyEMU Boot Code to start NuttX in Supervisor Mode...
+_NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?_
 
-- ["Start NuttX Kernel in Supervisor Mode"](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode)
+Here's how...
 
-TODO: Emulate UART Interrupts for Console Input
+- [Start NuttX Kernel in Supervisor Mode](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode)
 
-TODO: Emulate OpenSBI for System Timer
+# Emulate UART Interrupts for Console Input
+
+_How will we emulate UART Interrupts to support Console Input?_
+
+Like this...
+
+- [Emulate UART Interrupts for Console Input](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input)
+
+# Emulate OpenSBI for System Timer
+
+_How to emulate the OpenSBI ECALL to start the System Timer?_
+
+Check this out...
+
+- [Emulate OpenSBI for System Timer](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-opensbi-for-system-timer)
 
 TODO: Emulate BL808 GPIO to Blink an LED
