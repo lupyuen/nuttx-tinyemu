@@ -6,7 +6,9 @@
 
 # Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
 
-Read the article...
+Read the articles...
+
+-   ["Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS"](https://lupyuen.github.io/articles/tinyemu2)
 
 -   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
 
@@ -1487,6 +1489,10 @@ total 1160
 
 # Emulate Ox64 BL808 SBC with TinyEMU
 
+Read the article...
+
+-   ["Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS"](https://lupyuen.github.io/articles/tinyemu2)
+
 Objective: Take the NuttX Kernel built for [Ox64 BL808 SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). And boot it on TinyEMU RISC-V Emulator in the Web Browser!
 
 1.  Fix these RISC-V Addresses in TinyEMU to follow BL808 Memory Map: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
@@ -1532,6 +1538,10 @@ TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
 ![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
 # Change RISC-V Addresses in TinyEMU for Ox64 BL808
+
+Read the article...
+
+-   ["Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS"](https://lupyuen.github.io/articles/tinyemu2)
 
 To boot NuttX Ox64 in TinyEMU: We change the RISC-V Addresses in TinyEMU, so that they match Ox64 BL808: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/commit/8100f25ce053ca858c7588aea211bb20401be980)
 
@@ -1618,6 +1628,10 @@ Note that we're still booting in RISC-V Machine Mode! This will cause problems l
 ![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
 
 # Intercept UART Registers for Ox64 BL808 Emulator
+
+Read the article...
+
+-   ["Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS"](https://lupyuen.github.io/articles/tinyemu2)
 
 Let's intercept the "read 0x30002084" and "write 0x30002088" in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.
 
@@ -1743,6 +1757,10 @@ TODO: Why is NuttX Shell started twice? Because it failed? (`/system/bin/init`)
 
 # NuttX Exception in Ox64 BL808 Emulator
 
+Read the article...
+
+-   ["Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS"](https://lupyuen.github.io/articles/tinyemu2)
+
 _What is `raise_exception2: cause=8`?_
 
 From the [TinyEMU Log for Intercepted UART Registers](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)...
@@ -1795,6 +1813,10 @@ Which fails because everything runs in RISC-V Machine Mode right now. We will ne
 ![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
 
 # Emulate Ox64 BL808 in Web Browser
+
+Read the article...
+
+-   ["Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS"](https://lupyuen.github.io/articles/tinyemu2)
 
 _Will our Ox64 BL808 Emulator run in the Web Browser?_
 
