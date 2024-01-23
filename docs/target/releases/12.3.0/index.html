@@ -1,0 +1,1235 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>12.3.0</title>
+    
+    <meta name="author" content="">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/apache/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/themes/apache/css/style.css?body=1" rel="stylesheet" type="text/css">
+    <link href="/assets/themes/apache/css/syntax.css" rel="stylesheet"  type="text/css" media="screen" />
+    <link href="/assets/themes/apache/css/demo.css" rel="stylesheet" type="text/css"/>
+    <!-- Le fav and touch icons -->
+    <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+  </head>
+
+  <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+              <img src="/assets/themes/apache/img/logo.png" width="30">
+              Apache NuttX
+          </a>
+        </div>
+        <nav class="navbar-collapse collapse" role="navigation">
+          <ul class="nav navbar-nav navbar-right">
+            <li id="community">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">Community<b class="caret"></b></a>
+               <ul class="dropdown-menu dropdown-left">
+                <li><a href="/community">Get Involved</a></li>
+                <li><a href="/community-members">Who we are</a></li>
+               </ul>
+            </li>
+	    <li><a href="/docs/latest">Documentation</a></li>
+            <li><a href="https://github.com/apache/nuttx">GitHub</a></li>
+            <li id="apache">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">Apache<b class="caret"></b></a>
+               <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org/foundation/how-it-works.html">Apache Software Foundation</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/security/">Security</a></li>
+                <li><a href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a></li>
+                <li><a href="https://www.apache.org/events/current-event">Events</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                </ul>
+            </li>
+          </ul>
+        </nav><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+
+
+
+    <div class="container">
+      
+
+<!--<div class="hero-unit 12.3.0">
+  <h1></h1>
+</div>
+-->
+
+<div class="row">
+  <div class="col-md-12">
+    <!--
+
+-->
+
+<h1 id="apache-nuttx-1230-release-notes">Apache NuttX-12.3.0 Release Notes</h1>
+<ul id="markdown-toc">
+  <li><a href="#apache-nuttx-1230-release-notes" id="markdown-toc-apache-nuttx-1230-release-notes">Apache NuttX-12.3.0 Release Notes</a></li>
+</ul>
+
+<p>What’s New In This Release
+Major Changes to Core OS
+sched</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10062">#10062</a> sched: add CRITMONITOR time out panic</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10273">#10273</a> sched: add the startup process tracepoint</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9768">#9768</a> sched: Added missing semicolon to dead-lock detection.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9824">#9824</a> sched: assert: check intstack_sp when print last stack in irq context</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10009">#10009</a> sched: Assert: Enhance the panic notify feature</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10811">#10811</a> sched: assert: Skip to include board:board.h if CONFIG_ARCH_LEDS=n</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10705">#10705</a> sched: clock: Add special handling for TCB null pointer cases</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9691">#9691</a> sched: clock: clock_getcpuclockid: add clock_getcpuclockid implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9701">#9701</a> sched: clock: clock_getcpuclockid: fix code format, remove space</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9678">#9678</a> sched: clock: clock_getres: add two CPUTIME_ID res support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9753">#9753</a> sched: clock: fix build break</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9735">#9735</a> sched: clock: move clock_getcpuclockid() and clock_getres() to libc + misc fixes</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10086">#10086</a> sched: Define sched_getcpu return 0 when CONFIG_SMP equals n</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10603">#10603</a> sched: do not DEBUGASSERT for priority multi-boost</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9632">#9632</a> sched: fix pthread_exit crash</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10041">#10041</a> sched: group_killchildren send signo SIGQUIT before cancel it</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10758">#10758</a> sched: implement effective uid and gid interfaces #10119 enable O_CLOEXEC explicit</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10419">#10419</a> eched: misc: assert: Fix the printing alignment of interrupt stack during assert</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10493">#10493</a> sched: misc: optimize collect_deadlock implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10035">#10035</a> sched: pthread: Don’t do cancel when it is already in the exit process</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9631">#9631</a> sched: pthread: fix race condition on pthread_cond_wait()</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10155">#10155</a> sched: pthread: remove unused temp change sched_priority</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10683">#10683</a> sched: pthread_cleanup: rm sched_[un]lock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10681">#10681</a> sched: pthread_once: use rmutex replace sched_[un]lock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10078">#10078</a> sched: replace nxsched_gettid with nxsched_getpid.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10686">#10686</a> sched: return 0 from clock_systime_ticks if failed</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9863">#9863</a> sched: Rename DEBUG_TCBINFO to ARCH_HAVE_TCBINFO</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10199">#10199</a> sched: semaphore: Remove restriction to use nxsem_trywait from ISR</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10430">#10430</a> sched: signal: add more value defines of the siginfo si_code field</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10431">#10431</a> sched: signal: add siginterrupt implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9704">#9704</a> sched: signal: correct to const pointer for sigorset and sigandset</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10040">#10040</a> sched: signal: fix group signal can’t dispatch some parent group twice</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9923">#9923</a> sched: signal: ltp: sigprocmask fix</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10668">#10668</a> sched: signal: use work_cancel_sync() to fix used after free</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9790">#9790</a> sched: signal: SIGKILL or SIGSTOP cannot be caught</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9848">#9848</a> sched: signal: sig_nanosleep: fix the clock_nanosleep posix case</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10321">#10321</a> sched: sigqueue: add signal type judgment logic</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10313">#10313</a> sched: SMP: fix repeat entry timer_start</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10000">#10000</a> sched: SMP: fix repeat entry oneshot_tick_start</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10312">#10312</a> sched: smp: flush dcache before start other cpus</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9755">#9755</a> sched: task:fork: add fork implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9961">#9961</a> sched: task: task_spawnparms: out of loop when ret less than 0</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9878">#9878</a> sched: tcbinfo: add stack info to tcbinfo</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10063">#10063</a> sched: use perf to implement cpuload</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10684">#10684</a> sched: wdog:change g_wdtickbase update situation</li>
+</ul>
+
+<p>mm</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9970">#9970</a> memdump: support dump the leak memory (malloced but task exit)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10287">#10287</a> mempool: add check for double free check for mempool free</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10283">#10283</a> mempool: Use default alignment inside of blockalign</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10420">#10420</a> mm: alloc: remove all unnecessary cast for alloc</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10584">#10584</a> mm: heap: add coloration after free to detect use after free issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10704">#10704</a> mm: iob: limit the iob bufsize is sufficient to fill all L2:L3:L4 headers</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10292">#10292</a> mm: iob: iob_clone_partial support Negative offset</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10291">#10291</a> mm: iob: add elapse calc for iob_allocwait</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9741">#9741</a> mm: iob:iob_alloc: change sem_post to count++</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9630">#9630</a> mm: kasan: replace load:store methods to macro</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9969">#9969</a> mm: record more useful backtrace for memory node</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10786">#10786</a> mm: rewrite the memdump code for more readable</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10566">#10566</a> mm: shm:shmget: Zero allocated shared memory pages when created.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10150">#10150</a> mm: mempool:change mutex to rmutex avoid deadlock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10098">#10098</a> mm_heap: check heap member in advance</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9972">#9972</a> mm_heap: mm malloc failed dump and panic only valid for the heap own by OS</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9933">#9933</a> mmap: tmpfs: support mmap for tmpfs</li>
+</ul>
+
+<p>libs</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10415">#10415</a> alloca: add alloca implement for MSVC</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10337">#10337</a> ctype: toupper_l: Implement function toupper_l instead of macro</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9636">#9636</a> libc.csv: Correct return type of strchr</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10053">#10053</a> Revert “newlib: libc: memcpy M-profile PACBTI-enablement”</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10796">#10796</a> libc: add bsearch to libc.csv</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9706">#9706</a> libc: Add support for gdb rsp protocol</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10739">#10739</a> libc: add wchar api implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10667">#10667</a> libc: add wchar implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9643">#9643</a> libc: aio: fix aio_fsync compatible issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9626">#9626</a> libc: aio: fix aio_error compatible bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9634">#9634</a> libc: aio: fix aio_return compatible bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9640">#9640</a> libc: aio: fix aio_write compatible bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9637">#9637</a> libc: aio: fix aio_read compatible bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9648">#9648</a> libc: aio: fix aio_cancel compatible issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9655">#9655</a> libc: aio: adjust the flags determination method</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9664">#9664</a> libc: aio:lio_listio: fix the heap use-after-free bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10408">#10408</a> libc: Breakdown LIBC_BUILD_STRING into specific string operation…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9835">#9835</a> libc: basename: Change len type from int to size_t</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10417">#10417</a> libc: change the default NETDB_DNSCLIENT_MAXRESPONSE to the standard length</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10021">#10021</a> libc: compatible with Android for htonq:ntohq</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10708">#10708</a> libc: currect usage of getpid:gettid in library</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10121">#10121</a> libc: fdt: add libfdt support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10405">#10405</a> libc: fdt: modify makefile</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10519">#10519</a> libc: fix a fatal bug in fread</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9806">#9806</a> libc: fix and improve dynamic loader</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9716">#9716</a> libc: fix Deadloop in VFS if CONFIG_CANCELLATION_POINTS is enabled</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10470">#10470</a> libc: Fix loading of ET_DYN type of shared objects</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9882">#9882</a> libc: Fix modlib to get binary loading working again</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10169">#10169</a> libc: fix wait after vfork return error</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10508">#10508</a> libc: fopen: support fopen with mode ‘m’</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10290">#10290</a> libc: getifaddrs: set sin6_scope_id when IPv6 enable</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9789">#9789</a> libc: getpgid: add getpgid implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10336">#10336</a> libc: gpsutils: merged into one target to fix issue of parallel compile</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10184">#10184</a> libc: hex2bin: enhance 64-bit compatibility</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10675">#10675</a> libc: lib_iconv.c:Fix possible out-of-bounds reads</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10286">#10286</a> libc: lib_psfa_adddup2: fix mem leak when failed</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9644">#9644</a> libc: lib_remove: fix TOCTOU race condition</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10358">#10358</a> libc: libfread: Use memcpy to copy read-ahead buffer to caller buffer.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9696">#9696</a> libc: libvsprintf: fix vsnprintf bug with “%#.0f”</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9748">#9748</a> libc: libvsprintf: fix vsnprintf bug with “%e”</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9662">#9662</a> libc: locale:langinfo: implement the nl_langinfo function</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10607">#10607</a> libc: machine: Add LIBC_PREVENT_xxx which select LIBC_PREVENT_XXX_[KERNEL</td>
+          <td>USER] automatically</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10446">#10446</a> libc: machine: Fix ARMV[7</td>
+          <td>8]M_STRING_FUNCTION typo error in Kconfig</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10509">#10509</a> libc: mallopt: implement dummy mallopt</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9737">#9737</a> libc: modlib: fix dynamic loader issues</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10302">#10302</a> libc: netdb: add dependence to net ip config</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10798">#10798</a> libc: netdb: Change the default NETDB_DNSCLIENT_NAMESIZE to PATH_MAX</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9890">#9890</a> libc: netdb: Move dns query info and buffer out of the stack</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9857">#9857</a> libc: netdb: print dns server address when query failed</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10761">#10761</a> libc: netdb: fix dns failed when ipv4:6 dual stack enable</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10622">#10622</a> libc: netdb: Restrict DNS query types</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10624">#10624</a> libc: provide flat mode the chip string customization.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9886">#9886</a> libc: pthread: add pthread_atfork implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9947">#9947</a> libc: pthread: add pthread_attr_set:getscope api</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9708">#9708</a> libc: pthread: add the implementation of pthread_getcpuclockid</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9903">#9903</a> libc: pthread: fix the incorrect description in comments</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10752">#10752</a> libc: pthread: g_lock may lead deadlock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9771">#9771</a> libc: pthread: remove unsed compare code in pthread_rwlock_init()</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9948">#9948</a> libc: rand_r: support rand_r api</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9773">#9773</a> libc: set CONFIG_PTHREAD_STACK_MIN as DEFAULT_MM_PGSIZE`s default value and</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10064">#10064</a> libc: stdio: changed LIBC_NL_ARGMAX default value to 9</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10612">#10612</a> libc: stdio: lib_libfread: Fix buffer overflow issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9766">#9766</a> libc: stdlib: fix strtoul,strtoull bugs when value outside range</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9877">#9877</a> libc: strftime: add modifier character support to strftime</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10475">#10475</a> libc: support unlock version for fread:fwrite:fputc:fgetc:…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9750">#9750</a> libc: symtab: Move SYMTAB_XXX from unistd:Kconfig to symtab:Kconfig</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9650">#9650</a> libc: time:strftime: complete the strftime implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9836">#9836</a> libc: tls: Change the default value of TLS_NELEM to zero</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10320">#10320</a> libc: tls: Move task_tls_alloc and task_tls_destruct to libc</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10288">#10288</a> libc: tls: move task tls destruct to before _exit</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10082">#10082</a> libc: tls: Setting the candidtate index to null prevents dangling pointers.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10510">#10510</a> libm: ignore git submodules</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9764">#9764</a> libm: libmcs: Fix undefined symbol ‘fesetround’</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10114">#10114</a> libm: newlib: fix newlib build error</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10626">#10626</a> libm: use newlib-esp32</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10523">#10523</a> libsrc: Update libsrc</li>
+  <li><a href="https://github.com/apache/nuttx/pull/8244">#8244</a> libcxx: LLVM libcxx upgrade from 12.0.0 to 15.0.7</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10674">#10674</a> libcxx: select PTHREAD_MUTEX_TYPES to support recursive mutex</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10370">#10370</a> libcxx: strict GCC version check from GCC-12.2 to GCC-12</li>
+</ul>
+
+<p>binfmt</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10144">#10144</a> binfmt: add enter_critical_section</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10630">#10630</a> binfmt: binfmt_execmodule: Copy filename if CONFIG_BUILD_KERNEL and argv=NULL</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10107">#10107</a> binfmt: Change the default of BINFMT_DISABLE to DEFAULT_SMALL</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9635">#9635</a> binfmt: elf: Allow the userspace ELF type to be defined by board configuration.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9703">#9703</a> binfmt: elf: Replace nx_stat with file_stat</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9946">#9946</a> binfmt: elf: both regular file and non-regular file (such as :dev:node…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9956">#9956</a> binfmt: elf: bss section should init to zero</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9710">#9710</a> binfmt: elf: Replace {0x7f, ‘E’, ‘L’, ‘F’} to EI_MAGIC</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9945">#9945</a> binfmt: elf: Support to load ET_EXEC in flat mode</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10380">#10380</a> binfmt: Exec: Support run exec in current task</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9665">#9665</a> binfmt: Immediately exit from elf_loadbinary if elf format isn’t supported</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10462">#10462</a> binfmt: libelf:ELF Loader</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9833">#9833</a> binfmt: Move elf_allocbuffer to elf_sectname and elf_symname</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/9751">#9751</a> binfmt: Move [elf</td>
+          <td>nxflat]_[un]initialize to private header file</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9908">#9908</a> binfmt: remove sched_[un]lock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/8924">#8924</a> binfmt: support uid:gid config for binfs app</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10176">#10176</a> binfmt: support euid of process set from the file system</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10474">#10474</a> binfmt: The program headers are optional.</li>
+</ul>
+
+<p>misc</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10105">#10105</a> audio: add format sbc support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10340">#10340</a> audio: support 32-bits pcm</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10515">#10515</a> aio: change aio_fildes int type</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10749">#10749</a> debug: add support for IPC (interprocessor communication) debug messages</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10384">#10384</a> debug: Let boards define custom debug configuration.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10066">#10066</a> don’t call lib_free in the kernel code</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9677">#9677</a> errno: Adjust help string for EALREADY and ESTALE</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10562">#10562</a> extract PAGESIZE and PAGEMASK from definitions and seems as common macro</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10079">#10079</a> fix SIM sensor rpmsg runtime error by asan report.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10531">#10531</a> fix wait error after vfork</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9740">#9740</a> ifaddrs: add union ifa_ifu include ifu_broadaddr and ifu_dstaddr</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9816">#9816</a> include: add packed_struct macro implement</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10323">#10323</a> include: add the module of SDIO Slave</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10280">#10280</a> include: audio: Add AUDIO_CHANNELS_RANGE macro</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9934">#9934</a> include: bits.h: support GENMASK and GENMASK_ULL</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9774">#9774</a> include: change clockid_t type from uint8_t to int</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9951">#9951</a> include: fcntl.h: add O_NOATIME flags</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10357">#10357</a> include: list: Rewrite list_entry:list_first_entry:list_last_entry</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10303">#10303</a> include: move clockid_t and time[r]_t define to sys:types.h</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10120">#10120</a> include: note: fix sched_note_begin address errr</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10315">#10315</a> include: socket can : support ioctl cmd SIOCCANRECOVERY</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10395">#10395</a> make:archive: Use the full path name when matching or storing names in the archive</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10463">#10463</a> modify debug to enable ERR:WARN:INFO when DEBUG_FEATURES is enabled</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10507">#10507</a> mmc: add timeout fields for mmc_ioc_cmd</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10555">#10555</a> mmc: change rpmb operation type define style</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10670">#10670</a> notifier: add BLOCKING_INIT_NOTIFIER_HEAD support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9760">#9760</a> openamp:libmetal: Check CONFIG_HAVE_ATOMICS instead of HAVE_STDATOMIC_H in atomic.h</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10136">#10136</a> perf: The new configuration supports hardware performance counting</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10033">#10033</a> posix: fix some issues for ltp mqueue testcases.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10002">#10002</a> posix: fix ltp test issues</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10581">#10581</a> split a single queue to two separate queues at node p.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10664">#10664</a> unistd: add _POSIX_SEMAPHORES definition</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10110">#10110</a> use lib_free for memory deallocation after strdup or asprintf</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10458">#10458</a> video:fb: add xres and yres for fb overlay</li>
+</ul>
+
+<p>Changes to the Build System
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9993">#9993</a> Add PREBUILD definition</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10029">#10029</a> add prefix addr2line to parsememdump.py</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9627">#9627</a> Add script to parse callstack</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10576">#10576</a> build: Restore ARLOCK to improve compile speed in incremental case</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10597">#10597</a> checkpach supports python files</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9765">#9765</a> cmake: add initial support for nrf52:nrf53:nrf91</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10490">#10490</a> cmake: complete missing changes during cmake reforming</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10138">#10138</a> cmake: enable nxlib cmake build,fix build break</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10399">#10399</a> cmake: export_header support origin link and export install</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10409">#10409</a> cmake: support libm:newlib cmake build</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10213">#10213</a> cmake: fix add_user_library module archive issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9797">#9797</a> cmake: fix build after c33d1c9 (vfork -&gt; fork)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10421">#10421</a> cmake: fix invalid configs when export defconfig and .config</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9831">#9831</a> cmake: fix nrf91 modem static library build</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9785">#9785</a> cmake: fix NUTTX_COMMON_DIR definition</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10224">#10224</a> cmake: new feature on enhance apps header cmake module</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9881">#9881</a> cmake: port stm32f0l0g0</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10379">#10379</a> cmake: replace custom_patch_target with PATCH_COMMAND</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9783">#9783</a> cmake: some fixes for stm32 and support for stm32f7 and stm32h7</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10106">#10106</a> cmake: support armv7-r and tms570 chip</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9803">#9803</a> cmake: support pre-processor for linker script</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9819">#9819</a> cmake: win32: set default LINK_STACKSIZE to avoid stack overflow</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10492">#10492</a> kasan: add option to disable read:write checks</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10700">#10700</a> minidumpserver: don’t stop while gdb client is stopping</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10720">#10720</a> minidumpserver: refactor codes</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10733">#10733</a> minudumpserver: support auto parse log file feature</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10756">#10756</a> minudumpserver: support auto start GDB and execute some commands</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10546">#10546</a> mkdeps: increase MAX_BUFFER:MAX_EXPAND:MAX_SHQUOTE to 16384</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10540">#10540</a> mkexport: copy full library directly if library without path</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9618">#9618</a> mkexport: Allow boards to supply custom gnu-elf.ld.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10511">#10511</a> prasetrace: remvoe function name filter</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10774">#10774</a> parsememdump.py: support the sequence number parse</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10335">#10335</a> refresh.sh: Add option to refresh custom board</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10619">#10619</a> Remove archive lock file in make distclean</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10398">#10398</a> RFC: Add a toolchaine file for CMake in exported archive.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10582">#10582</a> showstack: add configurable rank parameters</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10595">#10595</a> Support defconfig merge</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10277">#10277</a> support xtensa esp32s3 arm-a thumb to use log create gdbserver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10699">#10699</a> Switch riscv GCC to 12.3</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10229">#10229</a> toolchain: detect use of large stack variables</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10763">#10763</a> Unix.mk:replace process substitution to pipe avoid out of order</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10689">#10689</a> use GCC 13.2 from xPack for risc-v</li>
+</ul>
+
+<p>Architectural Support
+New Architecture Support</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10646">#10646</a> arm: add Artery at32</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10558">#10558</a> arm: add Goldfosh arm32</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10378">#10378</a> arm: Add i.MX8MP platform (Cortex-M7)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9796">#9796</a> arm: add support for STM32H745</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10092">#10092</a> arm: nrf52: Board port to Arduino Nano 33 BLE</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10186">#10186</a> arm: qemu: Supports qemu arm32</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10645">#10645</a> arm64: Add support for FriendlyElec NanoPi M4</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10193">#10193</a> arm64: Add support for PINE64 PinePhone Pro</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10656">#10656</a> arm64: Goldfish arm64</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10294">#10294</a> arm64: IMX8 platform (Cortex-A53) support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10069">#10069</a> risc-v: Add support for StarFive JH7110 SoC</li>
+</ul>
+
+<p>Architecture With Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10482">#10482</a> arch_alarm: change tick to g_current_tick</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10010">#10010</a> arch_memcpy: Optimize arch memcpy for armv7-m and armv8-m</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10553">#10553</a> fix led panic feature</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10268">#10268</a> hostfs: support SEEK_CUR</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10057">#10057</a> Interrupt nesting</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10795">#10795</a> Kconfig: Add prompt string to ARCH_CHIP_CUSTOM</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9837">#9837</a> Kconfig: Change some “default y” to “default !DEFAULT_SMALL”</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/9906">#9906</a> move [enter</td>
+          <td>leave]_critical_section</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10334">#10334</a> nuttx: add -Wno-psabi to Toolchain.defs.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10081">#10081</a> nuttx: support to obtain host cpuinfo in NSH.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9763">#9763</a> nuttx: toolchain: Add macro _LDBL_EQ_DBL to nuttx:arm64:src:Toolchain.defs</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9866">#9866</a> perf: add ARCH_HAVE_PERF_EVENTS to support hardware perf events</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10648">#10648</a> remove FAR from source code under 32bit arch and board</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10145">#10145</a> timer: frequency 0 should not be set</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9959">#9959</a> update g_running_tasks when context switch occurred</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10250">#10250</a> arm: Avoid hard fault when reading vectors in text section.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10139">#10139</a> arm: arm_backtrace_sp: check the addr after every operation to addr</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10156">#10156</a> arm: clang: enhance compatibility of clang compiler</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9957">#9957</a> arm: Change the default value to ARCH_TRUSTZONE_NONSECURE</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10773">#10773</a> arm: Enable FPU on qemu and goldfish platforms</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10771">#10771</a> arm: Fix onchip flash erase fail</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9641">#9641</a> arm: move -mthumb option back to ARCHCPUFLAGS</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10499">#10499</a> arm: oneshot: rm sched_[un]lock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10632">#10632</a> arm: unwinder: fix unwind abort for uleb128 case</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9823">#9823</a> arm: vfork: modify struct vfork_s</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10568">#10568</a> arm: support reboot : poweroff for qemu virt arm</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10610">#10610</a> arm: psci: Fixed arm psci related compilation errors</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10254">#10254</a> arm: update secure handling to gic</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9809">#9809</a> arm: arm_gicv2: accesses the non-secure copy in non-secure state</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9907">#9907</a> arm: trustzone: update defconfig</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9944">#9944</a> arm: trustzone: time interrupt setting failed</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9960">#9960</a> arm: arm-m: Check the dcache status before enabling dcache</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10054">#10054</a> arm: arm-m: update memset function</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10276">#10276</a> arm: armv6: select ARCH_HAVE_CPUINFO by default</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10132">#10132</a> arm: armv6-m: add armv6-m cpuinfo</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10264">#10264</a> arm: armv6-m: cpuinfo: show cpufreq when hardware performance counting enabled</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10204">#10204</a> arm: armv7-a: Update the macro definition in gic.h</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10045">#10045</a> arm: armv7 updated</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9802">#9802</a> arm: armv{7/8}-m: Add Get Cache Information interface</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10536">#10536</a> arm: armv{7/8}-m: implement dcache clean as barrier in write-through mode</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10344">#10344</a> arm: armv{7/8}-m: mpu.h: add macro to configure shared memory region</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9699">#9699</a> arm: armv8-m: add support for ARMv8-M Security Extensions</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9804">#9804</a> arm: armv8-m: arm_hardfault: add arm_gen_nonsecurefault information</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9700">#9700</a> arm: armv8-m: arm_secure_irq.c: fix writing to the NVIC_AIRCR register</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9698">#9698</a> arm: armv8-m: nvic.h: add definition for NVIC non-secure registers offset</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10723">#10723</a> arm: armv8-m: strcpy: add arch optimize version</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10043">#10043</a> arm: armv8-m: support busfault forward to TEE</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10130">#10130</a> arm: armv8-m: the FPSCR[18:16] LTPSIZE field in exception_common</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9621">#9621</a> arm: cxd56xx: cxd56_dmac, lcd_dev: fix null pointer dereference</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9697">#9697</a> arm: cxd56xx: Fix bug when watchdog restart</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10721">#10721</a> arm: cxd56xx: Return error for RTC alarm setting before initialization</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10500">#10500</a> arm: cxd56xx: rm sched_[un]lock</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9495">#9495</a> arm: imxrt: add support for YT8512 phy</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9984">#9984</a> arm: imxrt: fix txdeadline add ecc:fd support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10087">#10087</a> arm: imxrt: flexcan use hpwork for receiving frames</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10194">#10194</a> arm: imxrt: s32k: edma lpi2c : lpspi fixes</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10220">#10220</a> arm: imxrt: Serial Preserve all but W1C bit in SR</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10464">#10464</a> arm: imx8mp: Add GPIO support for i.MX8MP</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10450">#10450</a> arm: imx8mp: Add i2c support for the i.MX8MP</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10232">#10232</a> arm: kinetis: s32k1 s32k3 kinetis: add propseg to ctrl1 timing mask</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9749">#9749</a> arm: phy62xx: Remove unused phy6222_irq.h</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10125">#10125</a> arm: qemu: add devicetree support for arm:arm64</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10252">#10252</a> arm: qemu: Remove qemu_net.c which isn’t needed anymore</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10628">#10628</a> arm: s32k3xx: emac use semi-unique MAC address</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10501">#10501</a> arm: sama5: sam_hsmci:rm sched_[un]lock</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10154">#10154</a> arm: sama5: MCAN Error corrections plus changes to improve clarity</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10688">#10688</a> arm: samv7: add phy bordinit functionality</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10716">#10716</a> arm: samv7: add support for 1 wire over UART:USART</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10527">#10527</a> arm: samv7: add support for SD card detection from CD:DAT3 line</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10429">#10429</a> arm: samv7: allow usage of QSPI in SPI mode for all MCUs</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9684">#9684</a> arm: samv7: fix minor issues with serial DMA</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10391">#10391</a> arm: samv7: pwm: add option to set channel polarity with IOCTL</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9711">#9711</a> arm: stm32: add rtc</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10360">#10360</a> arm: stm32: Fix bugs related to software flow control in file stm32_hciuart.c.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9977">#9977</a> arm: stm32: Optimize stm32 RTC accuracy</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10065">#10065</a> arm: stm32: stm32f4:f7:h7_eth: Improvements in Ethernet DMA error handling.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9649">#9649</a> arm: stm32: stm32f0l0g0: Fix gpio outputs from being configured as interrupts in stm32f0l0g0 gpio driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10328">#10328</a> arm: stm32: stm32h7: add CM4 core support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10472">#10472</a> arm: stm32: stm32l4: fix argument of nxsem_wait_uninterruptible</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10189">#10189</a> arm: stm32: stm32h7: stm32h7x5: fixed typo on SPI header inclusion</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10222">#10222</a> arm: stm32: stm32h7: use correct name for bit 2 in STM32_PWR_CR3 register</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10207">#10207</a> arm: nrf52: Added config setting for NRF52 I2C timing bug workaround.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10205">#10205</a> arm: nrf52: Changed NRF52 USB initialization to check for power via USBREGSTATUS</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10206">#10206</a> arm: nrf52: Fixed NRF52 I2C register naming.</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10208">#10208</a> arm: nrf52: Port recent changes in nrf52 to other Nordic chips</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10305">#10305</a> arm: nrf91: add missing include guards</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9895">#9895</a> arm: nrf91: fix for secure env only configurations</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9902">#9902</a> arm: nrf91: modem: fix returned source address</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9746">#9746</a> arm: nrf91: more work towards a usable port</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10788">#10788</a> arm: nrf{52</td>
+          <td>53}: pwm: fix compilation for MULTICHAN not set</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10741">#10741</a> arm: nrf{52</td>
+          <td>53</td>
+          <td>91}: fixes for serial driver</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10216">#10216</a> arm: nrf{52</td>
+          <td>53</td>
+          <td>91}: handle I2C errors in interrupt mode</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9973">#9973</a> arm64: add ARM64_DCACHE_DISABLE and ARM64_ICACHE_DISABLE config</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10148">#10148</a> arm64: add hostfs support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9971">#9971</a> arm64: add kasan support for arm64</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10653">#10653</a> arm64: add mcpu option for all Cortex CPU</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9967">#9967</a> arm64: arm64_backtrace: use running_task if arch_get_current_tcb return NULL</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9949">#9949</a> arm64: default select ARCH_HAVE_SETJMP</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9646">#9646</a> arm64: Do not set cntfrq_el0 in qemu_boot.c</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9794">#9794</a> arm64: enable ARCH_FPU for qemu-armv8a:netnsh_smp and netnsh_smp_hv</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10142">#10142</a> arm64: enable for arm64 virt to choice CPU core</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10650">#10650</a> arm64: fix arm64_start_cpu</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10135">#10135</a> arm64: Fixed arm64 backtrace support for other processes</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10008">#10008</a> arm64: get_cpu_id according to the correct affinity level</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10266">#10266</a> arm64: gnu: Set arch_* optimizations to be on by default.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10125">#10125</a> arm64: qemu: add devicetree support for arm64</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10297">#10297</a> arm64: remove unnecessary trace interface</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10131">#10131</a> arm64: save and restore fpu regs in jmp when ARCH_FPU enabled</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10694">#10694</a> arm64: select ARCH_HAVE_IRQTRIGGER for all arm64 chip</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9652">#9652</a> arm64: smp with kvm</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10701">#10701</a> arm64: support reboot : poweroff for qemu virt arm64</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10662">#10662</a> arm64: sync make file rules from arm</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9810">#9810</a> arm64: Use the correct aff in up_affinity_irq function</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9811">#9811</a> arm64: Use the correct cpu id for fpu idle task init</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10502">#10502</a> mips: pic32mx: sched_lock should replace with enter_critical_secion</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10346">#10346</a> risc-v: Allocate heap for default task stacksize</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9577">#9577</a> risc-v: fpu: Implement correct lazy-FPU functionality (attempt #2)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10300">#10300</a> risc-v: esp32c3: wifi_ble: Use nxsem_trywait to take semphr from ISR</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10643">#10643</a> risc-v: esp32c6: fix compilation of esp32c6 serial driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10089">#10089</a> risc-v: espressif: Add MCUboot support for ESP32-C3</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9874">#9874</a> risc-v: espressif: Add PWM:LEDC support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9633">#9633</a> risc-v: espressif: Add USB-Serial-JTAG driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9896">#9896</a> risc-v: espressif: get esp-hal-3rdparty sources based on its version</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9917">#9917</a> risc-v: espressif: update esp-hal-3rdparty and related issues</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10231">#10231</a> risc-v: espressif: Update esp-hal-3rdparty version</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9860">#9860</a> risc-v: hpm6750: keep cpu clock on after “wfi”</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10233">#10233</a> risc-v: litex: Add platform specific tickless implementation.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10393">#10393</a> risc-v: litex: Add system reset and access to core control registers.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10481">#10481</a> risc-v: litex: litex_sdio: Address race condition in eventwait.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9871">#9871</a> risc-v: mpfs: Add configuration option to enable DDR manual a…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10635">#10635</a> risc-v: mpfs: Add DMA buffer allocator for eMMC access</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10461">#10461</a> risc-v: mpfs: clear L2 before use</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10246">#10246</a> risc-v: mpfs: Ddr training fixes upstream</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10447">#10447</a> risc-v: mpfs: ddr fixes upstream</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9843">#9843</a> risc-v: mpfs: emmcsd: fix csd read</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10483">#10483</a> risc-v: mpfs: ethernet updates</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9657">#9657</a> risc-v: mpfs: Fix cache and scratchpad init</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10484">#10484</a> risc-v: mpfs: IHC bugfixes and perf enhancements</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10285">#10285</a> risc-v: mpfs: MPFS DDR training cleanups</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10341">#10341</a> risc-v: mpfs: mpfs_usb: fix tx fifo size setup</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10599">#10599</a> risc-v: mpfs: mpfs_i2c.c: Clean up using priv-&gt;status and STOP…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10423">#10423</a> risc-v: mpfs: mpfs_i2c.c: Replace 1 second timeout with Time-on-Air based timeout</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9851">#9851</a> risc-v: mpfs: mpfs_ddr.c: Correct erroneous register addresses…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9904">#9904</a> risc-v: mpfs: Set hart2 default entrypoint to -1 like the others</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10724">#10724</a> risc-v: riscv_pmp.c: fix broken TOR checks</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10451">#10451</a> risc-v: riscv_pmp.c: Improve NAPOT area validity checks</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10030">#10030</a> sim: add -Ttext-segment to load the image in the fixed address</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10141">#10141</a> sim: add set:get_power for sim_framebuffer.c</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10735">#10735</a> sim: add sim uart_ram support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10494">#10494</a> sim: add up_irq_enbale function.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10678">#10678</a> sim: alsa: add AUDIO_FMT_PCM query handler.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10617">#10617</a> sim: audio: add 24K sample rate support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9693">#9693</a> sim: audio: add AUDIOIOC_FLUSH ioctl</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10520">#10520</a> sim: audio: add media session support for sim_alsa audio_ops_s interface</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9689">#9689</a> sim: audio: driver add AUDIOIOC_GETLATENCY ioctl</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9680">#9680</a> sim: audio: register mixer device</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10600">#10600</a> sim: change Mac sim archive operate from replace to quick insertion</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10179">#10179</a> sim: crypto: compile mbedtls alternative implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10583">#10583</a> sim: crypto: support MBEDTLS_MD5_ALT config</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10128">#10128</a> sim: Fix sim stack smashing problem</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10671">#10671</a> sim: fix text-segment not taking effect</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10505">#10505</a> sim: framebuffer: fix memory leak in XStringListToTextProperty</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10052">#10052</a> sim: framebuffer: Optimize the timing of window to open and to close</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10606">#10606</a> sim: Guard frame buffer related setting in SIM_X11FB</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9935">#9935</a> sim: hostfs: fix issue about access file with size more than 2GB</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10414">#10414</a> sim: internal: add typedef pid_t to enhance sim compatibility</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10679">#10679</a> sim: posix: Add the host_system interface</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10325">#10325</a> sim: posix: Add the host_system interface used to execute the host command</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9770">#9770</a> sim: posix_test: fix shm_open() return file descriptor associated with FD_CLOEXEC</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10181">#10181</a> sim: Remove unnecessary configurations</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9667">#9667</a> sim: Rename sim_video to sim_camera</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10137">#10137</a> sim: rptun support panit &amp; reset and fix uinput_rpmsg bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10044">#10044</a> sim: set loop thread priority to configurable</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9859">#9859</a> sim: Support thread command by gdb python script</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10685">#10685</a> sim: sim_alsa: reset alsa pcm device when snd_pcm_avail &lt; 0</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9676">#9676</a> sim: sim_alsa.c: add paused variable instead of snd_pcm_pause.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10003">#10003</a> sim: sim_alsa.c: fix ioctl AUDIOIOC_GETBUFFERINFO error</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10781">#10781</a> sim: sim_rptun: unlink shm when quit</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10263">#10263</a> sim: sim_usbdev: add sim netdev config for rndis test</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10284">#10284</a> sim: simlulator rptun powerdown</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10489">#10489</a> sim: support configuring whether the master will automatically boot slave</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10551">#10551</a> sim: To avoid system calls being interrupted when use host api</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9899">#9899</a> sim: tcbinfo:add ebp to tcbinfo</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10351">#10351</a> sim: toywasm: disable example apps (hello, nettest)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10185">#10185</a> sim: use correct size to avoid buffer overflow</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10067">#10067</a> sim: use workquene instead of sim_bthcisock_loop</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9869">#9869</a> sim: use workquene instead rptun_loop</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9950">#9950</a> sim: usbdev: fix return value issue</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10349">#10349</a> sim: vpnkit: disable binfmt debug</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9828">#9828</a> sparc: bm3823: bm3823.h: Fix the name of the constant BM3823_Is_interrupt_pending</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10311">#10311</a> xtensa: enable -Oz for xtensa to reduce codesize</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10251">#10251</a> xtensa: Update MCUboot build process</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9805">#9805</a> xtensa: xtensa_saveusercontext:Leave the context information empty</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9705">#9705</a> xtensa: esp32: change free to kmm_free as it was allocated via kmm_malloc</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9707">#9707</a> xtensa: esp32: common: RGB LED support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10598">#10598</a> xtensa: esp32: RMT update</li>
+  <li><a href="https://github.com/apache/nuttx/pull/6992">#6992</a> xtensa: esp32: WS2812 LED driver using ESP32’s RMT peripheral</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10521">#10521</a> xtensa: esp32s3: Add support to TWAI:CANBus controller</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10491">#10491</a> xtensa: esp32s3: add UART RS485 support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10467">#10467</a> xtensa: esp32s3: add UART2 support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10015">#10015</a> xtensa: esp32s3: Enhance protected build linker scripts and memory layout to add support to protected build + Wi-Fi driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10637">#10637</a> xtensa: esp32s3: Fix octal lines mode SPIRAM blocking issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9658">#9658</a> xtensa: esp32s2: Fix UART1 default pins</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10465">#10465</a> xtensa: esp32s3: i2s: Add support for the I2S peripheral + Audio subsystem</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10200">#10200</a> xtensa: esp32s3: Implement ESP32-S3 BLE support with Wi-Fi coexistence</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10696">#10696</a> xtensa: esp32s3: LCD controller driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10625">#10625</a> xtensa: esp32s3: SPI support psram and flash timing tuning</li>
+</ul>
+
+<p>Driver Support
+New Driver Support</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10172">#10172</a> battery:add goldfish battery driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10249">#10249</a> crypto: Added NXP SE05x support (secure element)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9204">#9204</a> devicetree:fdt: Add initial FDT support and procfs for userspace export</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10165">#10165</a> input:support mouse driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10056">#10056</a> ioexpander: add support for pcf8575 expander</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10435">#10435</a> ioexpander: add support for ISO1I813T expander</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10426">#10426</a> ioexpander: add support for ISO1H812G expander</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9629">#9629</a> ioexpander: add SX1509 support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10532">#10532</a> ioexpander: mcp23008 Initial support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9683">#9683</a> mtd: ramtron.c: add FM25V02A-DGQ</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10503">#10503</a> net: Add initial ksz9477 switch support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9777">#9777</a> segger: Add SEGGER RTT serial:console support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9916">#9916</a> sensors: add support for BME680</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10127">#10127</a> sensors: add force sensor</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10760">#10760</a> sensors: goldfish: add goldfish sensors driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10725">#10725</a> sensors: goldfish: add goldfish gps driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9954">#9954</a> sensors: gps: Implement the GPS driver framework</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10152">#10152</a> power: Regulator:add new features</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10167">#10167</a> reset: Add resest driver framework</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10001">#10001</a> timers: qemu: add qemu rtc driver.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10171">#10171</a> video: add NuttX Goldfish-FB driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10118">#10118</a> video: add NuttX goldfish camera driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10195">#10195</a> virtio: add virtio input driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10498">#10498</a> virtio: rpmb: add virtio rpmb support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10166">#10166</a> virtio: audio:add virtio snd driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10173">#10173</a> virtio: add VirtIO GPU driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9297">#9297</a> virtio: add virtio framework in NuttX
+Drivers With Improvements</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9900">#9900</a> Revert “video: Don’t need update vbuf_tail in dequeue_vbuf_unsafe</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10516">#10516</a> Revert “rpmsgfs: cache statfs result in case of deadlock”</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9887">#9887</a> Format pointer through “%p” for kthread_create</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9776">#9776</a> return sequential characters for :dev:ascii device</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9922">#9922</a> adc: add missing parameters in ADC_RXINT</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10512">#10512</a> alarm: modify the default precision of up_perf_gettime to ns</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10757">#10757</a> alt1250: Correspond to shutdown</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10281">#10281</a> audio: add format for AAC:MSBC:CVSD</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10400">#10400</a> audio: cxd56: Move cxd56 sources into arch:cxd56xx</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9912">#9912</a> audio: cxd56: Support 24bit, 192kHz and 4ch max</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9846">#9846</a> audio: low level reset must always succeed</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9838">#9838</a> audio: remove unnecessary switch in switch</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10428">#10428</a> battery: add FAR for battery_gauge_operations_s</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9800">#9800</a> battery: fix poll return type</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9953">#9953</a> bch: fix sector buffer invalidation issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10468">#10468</a> clk: Change CLK_SET_RATE_NO_REPARENT to CLK_MUX_SET_RATE_NO_REPARENT</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10746">#10746</a> clk: fix some issues when use rpmsg clk</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10495">#10495</a> clk: Minor clk improvement</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9920">#9920</a> clk: rpmsgclk: allow client to disable clk of server</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10076">#10076</a> clk: support using clk function at interrupt and idle #9938 noteram: multi-instance support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10634">#10634</a> input: button: First press pwrkey is ineffective</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10533">#10533</a> input: button_upper.c:Modify log level</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10215">#10215</a> input: fix circbuf leak</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10163">#10163</a> input: Fix setting the number of keyboard driver buffers fails</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10133">#10133</a> input: Implement the debounce in button_upper.c</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10692">#10692</a> input: touchscreen: Bring up TSIOC_[SET</td>
+          <td>GET]CALIB macro</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9682">#9682</a> input: touchscreen: Translate raw X:Y data into pixel coordinates</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10147">#10147</a> input: rm sched_[un]lock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10005">#10005</a> ioexpander: add option to register GPIO by name for IOexpander</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10083">#10083</a> ioexpander: define IOEXPANDER_OPTION_NONGENERIC option</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9694">#9694</a> leds: Modified rgb led pwm freq from 100 to 200</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9787">#9787</a> lcd: add area alignment ioctl for lcd driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10271">#10271</a> lcd: add ioctl passthrough for LCD driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10640">#10640</a> lcd: Adding Byte-Per-Pixel Memory model option to memlcd</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9830">#9830</a> lcd: st7789: add support for 3 wire interface</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10639">#10639</a> lcd: Fixing row_size calculation when bpp is equal 1 in lcd_dev driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10318">#10318</a> math: Cordic api modify</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10180">#10180</a> math: math api support FFT</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10504">#10504</a> mmcsd: Add RPMB ioctl</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10778">#10778</a> mmcsd: add get emmc cid register interface.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10168">#10168</a> mmcsd: fix byte_block_count error in byte mode</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10440">#10440</a> mmcsd: fix regression causing emmcsd not working</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9937">#9937</a> mmcsd: mmcsd_sdio: config timout to write one data block</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10560">#10560</a> mmcsd: Rename mmc_rpmb_frame_s to rpmb_frame</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10732">#10732</a> mmcsd: support dump cid and csd with mmc-utils</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10672">#10672</a> mmcsd: update cid reg layout</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10269">#10269</a> misc: ftl: fix ftl_flush will read:erase beyond the end of the partition</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9822">#9822</a> misc: rpmsg: use workqueue for rpmsgdev poll notify</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9919">#9919</a> misc: Rpmsgblk: add support for mmc_ioc_cmd:mmc_multi_ioc_cmd ioctl</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10265">#10265</a> misc: rpmsgdev: add tun device ioctl support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9825">#9825</a> misc: rpmsgblk: get return value from header</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10187">#10187</a> misc: rpmsgblk: fix build break if CONFIG_DISABLE_PSEUDOFS_OPERATIONS</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10175">#10175</a> misc: rpmsgdev: support single read:write mode device</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9930">#9930</a> misc: rwbuffer: using unify lock function for lock and unlock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10738">#10738</a> modem: alt1250: Fix bug that errno was not converted correctly</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10737">#10737</a> modem: alt1250: Fix bug that modem version could not be taken</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10161">#10161</a> mtd: Add new functions part_isbad and part_markbad in mtd partition.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10332">#10332</a> mtd: add dhara compatiblity layer</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10518">#10518</a> mtd: dhara: add dhara folder in gitignore</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9958">#9958</a> mtd: ftl: Modify erasure result processing error issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9931">#9931</a> mtd: ftl: support to skip bad block for earse:bread:bwrite</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9983">#9983</a> mtd: ftl: pass the number of eraseblock for ftl_get_cblock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10095">#10095</a> mtd: mtd_config: add mtdconfig_register_by_path()</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10104">#10104</a> mtd: mtd_config: just query when data is null or len is zero</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10097">#10097</a> mtd: mtdconfig_fs: return -ENOENT when delete non-existed key</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9974">#9974</a> mtd: w25.c: enable support for W25QxxxJV NOR flash memories</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9772">#9772</a> net: Add wireless ops in upper-half driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9817">#9817</a> net: fix visual studio Compiler Error C2059</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9918">#9918</a> net: Make netdev_upperhalf work well with can</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9663">#9663</a> net: Remove HAVE_ATOMICS and use CONFIG_HAVE_ATOMICS directly</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10713">#10713</a> net: rpmsgdrv.c: Take netdev_register() return value into account</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10190">#10190</a> note: add maximum channel number check</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10272">#10272</a> note: add noteram crash dump</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10425">#10425</a> note: Add support for atrace mark:counter type</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10258">#10258</a> note: dump irq handler address to trace</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10506">#10506</a> note: fix sched_note declaration inconsistency</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10424">#10424</a> note: fix trace dump: dump failed</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10124">#10124</a> note: move the note formatting code from trace_dump into noteram_drivers.c</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10088">#10088</a> noteram: Remove the unnessary inclusion and declaration from header file</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10784">#10784</a> power: pm: check the domain in pm_querystate</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10585">#10585</a> power: pm: fix issue that system crash when passed invalid relpath value</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10049">#10049</a> power: pm: fix second time add wakelock dq caused error</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10601">#10601</a> power: pm: support pm runtime function</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10427">#10427</a> power: supply: Regulator: check the id when register</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10651">#10651</a> power: supply: regulator: Refine rpmsg regulator</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10745">#10745</a> power: supply: regulator: fix some issues about rpmsg regualtor</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10123">#10123</a> pipes: use circbuf to refine buffer model</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10330">#10330</a> pipes: fix busyloop issue when circbuf is full</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10270">#10270</a> pty: Support get and set local mode of pty</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9926">#9926</a> ramdisk: don’t free memory for romdisk</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10691">#10691</a> rptun: add remote poweroff support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10047">#10047</a> rptun: rptun update</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10182">#10182</a> rtt: add rtt syslog channel configuration</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9834">#9834</a> segger: Rename serial device from :dev:rttx to :dev:ttyRx</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9839">#9839</a> segger: Simplify serial driver configuration</li>
+  <li><a href="https://github.com/apache/nuttx/pull/5882">#5882</a> sensors: Add coordinate conversion function</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10740">#10740</a> sensors: add suffix _uorb to all sensors that use the new sensor framework</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10457">#10457</a> sensors: APDS9922 - remove unnecessary spinlock, consolidate i2c read:write</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10544">#10544</a> sensors: BMI270 fix compilation if sensor works in SPI mode</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9994">#9994</a> sensors: bmi270.c: fix define BMI270_TEMPERATURE</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10497">#10497</a> sensors: fix race condition about sensor rpmsg</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10410">#10410</a> sensors: fix wrong depends on SN_XXX</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10396">#10396</a> sensors: Move SCU-specific sensors into spresense board</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10077">#10077</a> sensors: optimize bmi160 sensor adapt to uorb.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10080">#10080</a> sensors: optimize bmp180 sensor adapt to uorb.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10623">#10623</a> sensors: remove non-standard message from bream privat…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10693">#10693</a> sensors: Remove the selection of UORB from Kconfig</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10542">#10542</a> sensors: Remove unnecessary heap allocation for bmi270</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10726">#10726</a> sensors: Solve the busy loop problem caused by sampling problems</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10259">#10259</a> sensors: update nbuffer to upper state</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10673">#10673</a> serial: Add ram uart driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10170">#10170</a> serial: filter out control character in pty echo</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10443">#10443</a> serial: fix error echo about VT100 escape sequence</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10442">#10442</a> serial: fix race condition about calling rxflowcontrol in mutli thread</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9799">#9799</a> serial: serial.c fix logic error</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9980">#9980</a> serial: Simplify the echo process</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10019">#10019</a> serial: uart_16550: Wait before setting Line Control Register (Synopsys DesignWare 8250)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10262">#10262</a> serial: uart: h5: add bt h5 uart serial driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10727">#10727</a> spi: call bind and unbind when user open or close to save power</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10192">#10192</a> spi: slave: use POLLPRI to notify TX_COMPLETE.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9759">#9759</a> spi: add support for qspi hwfeatures</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10782">#10782</a> spi: avoid calling QPOLL to change rx_length and cause data loss</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9921">#9921</a> spi: spi_slave: enhance spi_slave driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9781">#9781</a> syslog: add syslog channel filtering function</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9780">#9780</a> syslog: Fix syslog stack usage is too large</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10514">#10514</a> syslog: reset syslog buffer when syslog buffer include invalid character</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10048">#10048</a> syslog: syslog &amp; ramlog update</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10261">#10261</a> syslog: syslog_rpmsg: update check method when do flush()</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9779">#9779</a> timers: add up_perf_init weak_function</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9968">#9968</a> timers: add CONFIG_WATCHDOG_PANIC_NOTIFIER for panic notifier</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10486">#10486</a> timers: pcf85263.c: Fix compilation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10665">#10665</a> timers: timer_getoverrun: adjust the default errno from ENOSYS to EINVAL</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10485">#10485</a> usb: Add usb fs driver for userspace transfer</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10162">#10162</a> usb: Fixed memory leak for usb uninitialize process</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10011">#10011</a> Usb: Modify macro errors with COMPOSITE equipment.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10085">#10085</a> usbdev: add adb boardctl</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10242">#10242</a> usbdev: clear configid after class disconnect</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10112">#10112</a> usbdev: composite: Use the correct USB dual-speed descriptor when enabling IAD</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10113">#10113</a> usbdev: composite: add COMPOSITE_DEVICES config for composite device</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10616">#10616</a> usbdev: Fix build error with BOARD_USBDEV_SERIALSTR</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10070">#10070</a> usbdev: fixed composite usbdev issue</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10068">#10068</a> usbdev: move usbdev_req function to common code</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10620">#10620</a> usbdev: mtp: support media transfer protocol (MTP) class driver</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10331">#10331</a> usbdev: rndis: Fixing erroneous macros</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10567">#10567</a> usbdev: support usb adb fastboot</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10525">#10525</a> usrsock: fix rpmsg_usrsock memory leak when stop remote</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9913">#9913</a> usbhost: fix usbhost_hidkbd some errors</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9852">#9852</a> usbhost: usb communication memory should use DRVR_ALLOC</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10174">#10174</a> usrsock: usrsock_server: coverity fix for access invalid index</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10460">#10460</a> usrsock: usrsock_server: fix coverity for recvfrom handle</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10609">#10609</a> usrsock: usrsock_rpmsg_server: Add net_lock to combine get_tx_payload and recvfrom in recvfrom_handler</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10596">#10596</a> usrsock: usrsock_rpmsg_server: Clear revents for POLLHUP and POLLERR</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10036">#10036</a> video: fb: add fboverlay pandisplay &amp; display area ioctl</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10526">#10526</a> video: fb: add vsync queue mechanism</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10037">#10037</a> video: fb: fix that vtable.priv is not freed when fb register failed.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10432">#10432</a> video: Fix an issue isx019 may freeze</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10023">#10023</a> video: fix if video node do not exist on host of sim env, video driver init fail</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9964">#9964</a> video: Fix returned errno in error cases</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9965">#9965</a> video: Initialize flags member of query control APIs</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10580">#10580</a> video: Modify the properties of the goldfish camera driver kthread_create</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9786">#9786</a> video: use kmm_free(buff) to free memory instead of realloc(b…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10071">#10071</a> video: video driver supports NV12</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10682">#10682</a> video: vnc_updater: use [enter</td>
+          <td>leave]<em>critical_section replace sched</em>[un]lock</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10339">#10339</a> virtio: Add support to offload small IOBs</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10800">#10800</a> virtio: virtio-snd: add state sync for virtio snd device</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10715">#10715</a> wireless: bcm_driver: revert packed attribute for scan structure</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10710">#10710</a> wireless: bcm43xxx: Add handle type for disconnecting event</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10709">#10709</a> wireless: bcm43xxx: add Packet Traffic Arbitration Priority support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10711">#10711</a> wireless: bcm43xxx: correct beacon loss behavior</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10712">#10712</a> wireless: bcm43xxx: parse channel from IE when ctl_ch is 0</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10783">#10783</a> wireless: bcm43xxx: revert part of the previous upstream code</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9668">#9668</a> wireless: gs2200m: add NET_TCP dependency to NFS_DONT_BIND_TCP_SOCKET option</li>
+</ul>
+
+<p>Board Support
+New Board Support</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10790">#10790</a> arm: nrf52: add initial support for thingy91 board (nrf9160 and nrf52840 chips)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10217">#10217</a> arm: nrf52: arduino-nano-33ble-rev2:Add support for Arduino Nano 33 BLE Rev2 board</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10791">#10791</a> arm: nrf91: initial support for nrf9160-dk</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10385">#10385</a> arm: stm32f7: Meadow.OS integration - Part 1</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9853">#9853</a> arm: stm32u5: nucleo-u5a5zj-q: Initial support for NUCLEO-U5A5ZJ-Q board</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10631">#10631</a> arm: stm32f7: Add support to F7 Core Compute</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10392">#10392</a> arm: stm32f7: Add support to Common Boards to STM32F7 and ProjectLab board</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10094">#10094</a> risc-v: jh7110:star64: Add support for PINE64 Star64 JH7110 SBC</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10769">#10769</a> xtensa: esp32s3: Add ESP32-S3-BOX development board basic BSP</li>
+</ul>
+
+<p>Boards With Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10074">#10074</a> add KEEP to <em>(.init_array .init_array.</em>)</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9671">#9671</a> boardctl: Add const to struct boardioc_symtab_s::symtab</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9659">#9659</a> Enable virtio-blk and FAT for virt configurations</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10342">#10342</a> Fix QEMU_VIRTIO_MMIO_NUM</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10382">#10382</a> init_array.* needs to be executed in order</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10227">#10227</a> update README for virtio gpu driver</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9856">#9856</a> use the example from NuttX-apps for all NimBLE configurations</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9660">#9660</a> arm: qemu-armv8a: Add defconfigs for hypervisor</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9713">#9713</a> arm: cxd56xx: alt1250: Change power on sequence</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10099">#10099</a> arm: cxd56xx: Disable NET_ARP from lte defconfig</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10389">#10389</a> arm: cxd56xx: Fix charger and gauge initialize functions</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10101">#10101</a> arm: cxd56xx: Fix duplicate make target</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9966">#9966</a> arm: cxd56xx: Fix issue that GPO is not iniitalized by watchdog</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9692">#9692</a> arm: cxd56xx: Fix system clock to HV mode for video drivers</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10407">#10407</a> arm: cxd56xx: lte: use mbedtls version configured</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10777">#10777</a> arm: sam34: arduino-due: Add activation of SPI0 on arduino due</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10718">#10718</a> arm: sam34: arduino-due: Use standard arm-none-eabi toolchain by default.</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10210">#10210</a> arm: stm32: stm32f429i-disco: enable CONFIG_BOARDCTL for ofloader</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9962">#9962</a> arm: stm32: stm32f429i-disco: support stm32f429i-disco run open flash loader</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10522">#10522</a> arm: stm32: stm32f411e-disco: Fixes f4 disco</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10524">#10524</a> arm: stm32: stm32f411e-disco: F411e disco buttons</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10006">#10006</a> arm: stm32: nucleo-f446re: SystemView example based on nucleo-f446re</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10753">#10753</a> arm: stm32l4: nucleo-l432kc: Fix I2C1 pinout.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10109">#10109</a> arm: stm32f7: stm32f7-meadow: Add spiflash support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9847">#9847</a> arm: stm32f7: stm32f777zit6-meadow: Add usbnsh board profile</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10750">#10750</a> arm: stm32h7: nucleo-h745zi: access CM4 core NSH over uart rpmsg</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10223">#10223</a> arm: stm32h7: nucleo-h743zi: HCLK and ACLK are delivered from SYSCLK not CPUCLK</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10198">#10198</a> arm: stm32h7: stm32h745i-disco: supported external SDRAM</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10196">#10196</a> arm: kinetis: freedom-k28f:nshsdusb: Remove CONFIG_NETDB_BUFSIZE</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10274">#10274</a> arm: nrf52: arduino-nano-33ble{-rev2}: use bool for leds state</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10412">#10412</a> arm: nrf52: nrf52840-dk: add lsm9ds1 sensor support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10767">#10767</a> arm: nrf52: thingy52: use RTT console as default</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10304">#10304</a> arm: nrf53: fix broken rptun</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10789">#10789</a> arm: nrf53: thingy53: add rgbled and i2c tools support</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9873">#9873</a> arm: nrf91: nrf9160-dk: improvements for modem and support for modem sockets</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9639">#9639</a> arm: xmc4: Fixes for xmc4700-relax board</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10529">#10529</a> arm64: rk3399: pinephonepro: Add support for board reset.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10574">#10574</a> qemu: get reg and irq from devicetree node rather than macro</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10345">#10345</a> risc-v: Add -melf64lriscv to 64bit USER_LDFLAGS:LDELFFLAGS</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10307">#10307</a> risc-v: bl602: Move c++ related setting from wifi to elf</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10444">#10444</a> sim: add defconfig for ltp openposix testsuite</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10115">#10115</a> sim: add wakaama example configuration</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9955">#9955</a> sim: remove unnecessary config EXAMPLES_SOTEST_DEVPATH</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10695">#10695</a> sim: Minor USB improvement</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10016">#10016</a> sim: enable SIM_WALLTIME_SIGNAL for citest</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10570">#10570</a> sim: crypto: Enable CONFIG_CRYPTO_SW_AES</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/9801">#9801</a> arm: tiva: lm3s6432-s2e: Enable LTO for lm3s6432-s2e:nsh</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10530">#10530</a> xtensa: esp32: Add twai defconfigs to esp32</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9884">#9884</a> xtensa: esp32: esp32-devkitc: Refresh wifi_smp_rmt config</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9709">#9709</a> xtensa: esp32: esp32-devkitc: wamr_wasi_debug: enable wasi-threads</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9752">#9752</a> xtensa: esp32s2: Add basic support to SPIFLASH</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9868">#9868</a> xtensa: esp32s3: Do not include specfic board in commom</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9870">#9870</a> xtensa: esp32s3: Some follow-up changes for ESP32s3 32M flash support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10748">#10748</a> xtensa: esp32s3: esp32s3-devkit:disable esp32s3-devkit:ksta_softap spinlock config</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10588">#10588</a> xtensa: esp32s3: esp32s3-devkit:Add board GPIO support</li>
+  <li>
+    <p><a href="https://github.com/apache/nuttx/pull/10387">#10387</a> xtensa: esp32s3: esp32s3-lcd-ev: Add ESP32-S3-LCD-EV development board BSP</p>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/10591">#10591</a> x86_64: Change up_netinitialize to x86_64_netinitialize</li>
+</ul>
+
+<p>Graphics
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9909">#9909</a> graphics: remove sched_[un]lock
+Crypto
+Improvements</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10072">#10072</a> add curve25519 license</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10772">#10772</a> cryptodev: expansion hash operation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10073">#10073</a> export MD5:SHA1:SHA256:SHA512 via :dev:crypto</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10129">#10129</a> export SHA224:SHA384 via :dev:crypto</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10517">#10517</a> fix multiple definition of ‘poly1305_init’</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10020">#10020</a> fix nuttx crypto stability bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10134">#10134</a> fix typo for blake2s</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10060">#10060</a> not use software algorithm in nuttx crypto by default</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10026">#10026</a> porting Curve25519</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10211">#10211</a> remove CRYPTO_SW_AES and CRYPTO_BLAKE2S</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10244">#10244</a> remove software algorithm coupling in cryptodev</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10260">#10260</a> update aes algorithm process</li>
+</ul>
+
+<p>File System
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10061">#10061</a> add pipe type support to inode</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10764">#10764</a> add syncfs api for sync whole fs data</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9656">#9656</a> Define __USE_FILE_OFFSET64 when CONFIG_FS_LARGEFILE is enabled</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10779">#10779</a> hostfs: mask bit fields of not support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10257">#10257</a> ioctl: add BIOC_BLKGETSIZE cmd to get block sector numbers</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10418">#10418</a> inode:i_private: remove all unnecessary cast for i_private</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10422">#10422</a> inode: remove all unnecessary check for filep:inode</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9685">#9685</a> mount: correct df -h output format</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9654">#9654</a> nfs: Fix nfs client</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9963">#9963</a> nfs: support seek, fsync operation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9936">#9936</a> partition: Add txt partition table parser</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9939">#9939</a> procfs: call the close of each component when procfs_close</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10059">#10059</a> procfs: Optimize fd information output format</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10647">#10647</a> procfs: vela fs procfs add clock procfs entry</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9929">#9929</a> pseudo-file: support pseudo-file operation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10004">#10004</a> romfs: Fix FIOC_FILEPATH for dup’ed file</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10075">#10075</a> remove (flags &amp; MAP_PRIVATE) == 0.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9905">#9905</a> semaphore: modify or remove sched_[un]lock</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9924">#9924</a> semaphore: fix sem_open</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10343">#10343</a> shmfs: Fix illegal usage of void* arithmetics</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10039">#10039</a> tmpfs: fix tmpfs_read overwrite after seek over tfo_size</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9910">#9910</a> unionfs: Remove unionfs_mount function</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10295">#10295</a> vfs: add nxsched_foreach to sched_lock avoid crash</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9798">#9798</a> vfs: add refcnt using epoll_create to fix bug when use popen which dup the fd and close at end after epoll_create</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9927">#9927</a> vfs: dup: add nonblock flag to avoid happening block when dup</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10545">#10545</a> vfs: fix dup issue for eventfd:signalfd:timerfd</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10096">#10096</a> vfs: fs_open: add ioctl checkflag</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10007">#10007</a> vfs: open: Use file mode only when O_CREAT is specified.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9925">#9925</a> vfs: posix: fix ltp test errors</li>
+</ul>
+
+<p>Networking
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10038">#10038</a> add check for address binding</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10226">#10226</a> add FIOC_FILEPATH ioctl support for ICMP(v6):RPMsg:Usrsock sockets</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10103">#10103</a> add FIOC_FILEPATH ioctl support for tcp:udp:local sockets</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10319">#10319</a> add IP_MULTICAST_IF &amp; IPV6_MULTICAST_IF function implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9791">#9791</a> add msg_peek support for udp and tcp</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10111">#10111</a> add poll lock for local socket poll</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9744">#9744</a> add netfilter compatible definitions for iptables</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10539">#10539</a> arp: arp should depends on MM_IOB</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10293">#10293</a> arp: print dest ip address when receive wait timeout</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10449">#10449</a> assert: remove all unnecessary check for psock:conn</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10448">#10448</a> can: correct the return value if unsupported socket type</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10279">#10279</a> can: socketcan: fixed CAN ID cast error</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10549">#10549</a> can: socketcan: recv : fixed recv filter not work in special case</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10547">#10547</a> can: socketcan: support error frame filter</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10611">#10611</a> cmake: complete missing changes during reforming for net</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10314">#10314</a> devif: devif_poll : d_len must positive before invoke callback</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10621">#10621</a> devif_callback: modify the code logic to conform to the comment</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10278">#10278</a> icmp: add SOCK_RAW type support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10158">#10158</a> icmpv6: Fix icmpv6_neighbor for link-local address</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10140">#10140</a> icmpv6: Fix value of SIZEOF_ICMPV6_ECHO_xxx_S</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9743">#9743</a> if.h: add definitions associated with IF_OPER_</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10541">#10541</a> inet_sendto: correct error messages and remove the comment</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10034">#10034</a> inet_sockif.c: In tcp protocol, Add random ports during the listening phase, if no ports are bound</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9742">#9742</a> ioctl: add some bridge calls command</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10301">#10301</a> ip: print ip addresses using ip4_addrN macro</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10018">#10018</a> ipv4<em>setsockopt.c:Modify IP</em> MULTICAST_ TTL setting range</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10296">#10296</a> ipv6_setsockopt: remove redundant logic</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9702">#9702</a> limit max value for Send:Recv bufsize</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10230">#10230</a> local: Add peek support for pipe and MSG_PEEK support for local so…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9999">#9999</a> local: Add support for MSG_DONTWAIT to SOCK_STREAM</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10219">#10219</a> local: Fix the error return length when read the bigger packet.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10308">#10308</a> local: Fix the bug that localsocket fails to send in CONFIG_NET_LOCAL_DGRAM …</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10413">#10413</a> local: fix visual studio Compiler Error C2057</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9867">#9867</a> local: forward threshold ioctl() to pipe</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10298">#10298</a> local: local_recvmsg: do not print error message when errno is EAGAIN</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10027">#10027</a> local: local_sockif.c:add local_getpeername function implementation</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9841">#9841</a> local: remove client from server.lc_waiters when client close</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10221">#10221</a> local: Return an error when write the too big packet.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10466">#10466</a> local: Replace strlen with sizeof for kconfig string</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10785">#10785</a> local: socket: fix accept used after free</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9814">#9814</a> local: Support the abstract path to connect</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9778">#9778</a> local: Support the socketpair interface of local udp socket.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10538">#10538</a> mld: add byte order conversion for ipv6 address printing</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10117">#10117</a> netdev: Simplify handling of SIOCSIFMTU</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9745">#9745</a> netlink: add some definition</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/nuttx/pull/10143">#10143</a> remove [enter</td>
+          <td>leave]<em>critical_section and sched</em>[un]lock</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/apache/nuttx/pull/9928">#9928</a> rpmsg: get credentials between client and server</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9952">#9952</a> rpmsg: read receiving data after unbind</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10046">#10046</a> rpmsg: rpmsg_socket update</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10289">#10289</a> rpmsg: rpmsg_sockif: block poll shoud not set POLLERR</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10661">#10661</a> rpmsg: set conn-&gt;backlog=-1 only when socket listening</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10669">#10669</a> rpmsg: socket: add return value check.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10537">#10537</a> rpmsg_sockif: add recvlock for conn-&gt;sendsize in connect</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9879">#9879</a> setsockopt: Add IP_TTL support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10437">#10437</a> socket: bind: make sure that an address was provided</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10309">#10309</a> tcp: Added tcp zero window probe timer support</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10218">#10218</a> tcp: Fix the sack byte aligment error.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10324">#10324</a> tcp: Fix unreadable error when doing poll operation on tcp socket.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10022">#10022</a> tcp: return -EINVAL if bind is called more than once</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10608">#10608</a> tcp: Set SO_ERROR for poll error in setup</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10618">#10618</a> tcp: Stop monitor in tcp_free</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10459">#10459</a> tcp: tcp_input: update tx_unack before reorder_ofosegs</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10703">#10703</a> tcp: tcp_ofosegs: prepare iob to reset io_offset</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10627">#10627</a> tcp: psock_tcp_cansend: return EWOULDBLOCK when send buffer is full</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10177">#10177</a> tun: move tun related macro definitions out of CONFIG_NET_TUN</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10025">#10025</a> udp: add check of the ip packet length</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9844">#9844</a> udp: Change conn-&gt;readahead to I:O buffer chain</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9792">#9792</a> udp: Fix the bug of overwriting when the udp recv buffer is full</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10329">#10329</a> udp: Fix hybrid dual-stack IPv6:IPv4 socket</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9625">#9625</a> udp: Populate the udp connection structure with the address family.</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10032">#10032</a> udp: resolve udp disconnection, status not synchronized error</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9647">#9647</a> usrsock: Add new interface to tell usrsock available</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10762">#10762</a> utils: refine: set file mode when oflags contains O_CREAT</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10390">#10390</a> xx: wrbuffer: Do not use SEM_INITIALIZER for buffers</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10102">#10102</a> wireless: bluetooth: correct judgment conditions</li>
+  <li><a href="https://github.com/apache/nuttx/pull/10654">#10654</a> wireless: enable O_CLOEXEC explicit</li>
+</ul>
+
+<p>Compatibility Concerns</p>
+
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10480">#10480</a> usbdev: Split usbdev descriptor information  </li>
+</ul>
+
+<p>Split usbdev descriptor information, let the class device only handles descriptor information specific to the class, and shared descriptor information is passed through parameters and handled by the composite driver.</p>
+
+<p>Impact</p>
+
+<p>composite_initialize arguments have changed and board specific composite initialization needs to be updated.</p>
+
+<p>before:
+FAR void *composite_initialize(uint8_t ndevices, FAR struct composite_devdesc_s *pdevices);</p>
+
+<p>after:
+FAR void *composite_initialize(FAR const struct usbdev_devdescs_s *devdescs, FAR struct composite_devdesc_s *pdevices, uint8_t ndevices);</p>
+
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/10453">#10453</a> usbdev: Use BOARD_USBDEV_SERIALSTR config directly  </li>
+</ul>
+
+<p>A usbdev has only one serial string, so use a unique macro to control it.
+Delete the configurations for COMPOSITE_BOARD_SERIALSTR, PL2303_BOARD_SERIALSTR, CDCACM_BOARD_SERIALSTR, USBADB_BOARD_SERIALSTR, USBMSC_BOARD_SERIALSTR, and RNDIS_BOARD_SERIALSTR, and use BOARD_USBDEV_SERIALSTR for unification.</p>
+
+<p>Impact</p>
+
+<p>For boards that enable board serial string using COMPOSITE_BOARD_SERIALSTR, PL2303_BOARD_SERIALSTR, CDCACM_BOARD_SERIALSTR, USBADB_BOARD_SERIALSTR, USBMSC_BOARD_SERIALSTR, and RNDIS_BOARD_SERIALSTR, they need to be replaced with BOARD_USBDEV_SERIALSTR.</p>
+
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9932">#9932</a> video: driver support multiple instance </li>
+</ul>
+
+<p>The interface of video_uninitialize() has changed and is no longer compatible.</p>
+
+  </div>
+</div>
+
+
+      <hr>
+      <footer>
+        <!-- <p>&copy; 2024 </p>-->
+        <footer class="site-footer">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div style="text-align:center;">
+                <div style="margin-top: 20px; margin-bottom: 20px;">
+                    <a href="https://www.apache.org"><img src="/assets/themes/apache/img/asf-estd-1999-logo.png"
+                                                      alt="Apache Software Foundation, Est. 1999"/></a>
+                </div>
+                <div>
+                    Copyright &copy; 2019-2022 <a href="https://www.apache.org">The Apache Software Foundation</a>.
+                    Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version
+                    2.0</a>.
+                    <br>
+                    Apache and the Apache Feather logo are trademarks of The Apache Software Foundation.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+      </footer>
+    </div>
+
+    
+    <script src="/assets/themes/apache/jquery/jquery-2.1.1.min.js"></script>
+
+    <script src="/assets/themes/apache/bootstrap/js/bootstrap.min.js"></script>
+
+
+  </body>
+</html>
+

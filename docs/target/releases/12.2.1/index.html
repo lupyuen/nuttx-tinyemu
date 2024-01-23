@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>12.2.1</title>
+    
+    <meta name="author" content="">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/apache/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/themes/apache/css/style.css?body=1" rel="stylesheet" type="text/css">
+    <link href="/assets/themes/apache/css/syntax.css" rel="stylesheet"  type="text/css" media="screen" />
+    <link href="/assets/themes/apache/css/demo.css" rel="stylesheet" type="text/css"/>
+    <!-- Le fav and touch icons -->
+    <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+  </head>
+
+  <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+              <img src="/assets/themes/apache/img/logo.png" width="30">
+              Apache NuttX
+          </a>
+        </div>
+        <nav class="navbar-collapse collapse" role="navigation">
+          <ul class="nav navbar-nav navbar-right">
+            <li id="community">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">Community<b class="caret"></b></a>
+               <ul class="dropdown-menu dropdown-left">
+                <li><a href="/community">Get Involved</a></li>
+                <li><a href="/community-members">Who we are</a></li>
+               </ul>
+            </li>
+	    <li><a href="/docs/latest">Documentation</a></li>
+            <li><a href="https://github.com/apache/nuttx">GitHub</a></li>
+            <li id="apache">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">Apache<b class="caret"></b></a>
+               <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org/foundation/how-it-works.html">Apache Software Foundation</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/security/">Security</a></li>
+                <li><a href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a></li>
+                <li><a href="https://www.apache.org/events/current-event">Events</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                </ul>
+            </li>
+          </ul>
+        </nav><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+
+
+
+    <div class="container">
+      
+
+<!--<div class="hero-unit 12.2.1">
+  <h1></h1>
+</div>
+-->
+
+<div class="row">
+  <div class="col-md-12">
+    <!--
+
+-->
+
+<h1 id="apache-nuttx-1221-release-notes">Apache NuttX-12.2.1 Release Notes</h1>
+<ul id="markdown-toc">
+  <li><a href="#apache-nuttx-1221-release-notes" id="markdown-toc-apache-nuttx-1221-release-notes">Apache NuttX-12.2.1 Release Notes</a></li>
+</ul>
+
+<p>What’s New In This Release</p>
+
+<p>Changes to Core OS
+sched</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9723">#9723</a> {BP-9631} sched/pthread: fix race condition on pthread_cond_wait()</li>
+</ul>
+
+<p>libc</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9719">#9719</a> {BP-9716} libc: Fix Deadloop in VFS if CONFIG_CANCELLATION_POINTS is enabled</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9730">#9730</a> {BP-9611} libc: Minor fix for pwd</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9733">#9733</a> {BP-9626} libc/aio: fix aio_error compatible bug</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9729">#9729</a> {BP-9664} libc/aio/lio_listio: fix the heap use-after-free bug</li>
+</ul>
+
+<p>Changes to the Build System
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9720">#9720</a> {BP-9673} Revert “tools: Fix CONFIG_BASE_DEFCONFIG generation” </li>
+</ul>
+
+<p>Architectural Support
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9732">#9732</a> {BP-9621} arch/arm/cxd56xx/cxd56_dmac, lcd_dev: fix null pointer dereference</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9725">#9725</a> {BP-9697} arch/arm/cxd56xx: Fix bug when watchdog restart</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9728">#9728</a> {BP-9711} arch/arm/stm32/stm32_rtcounter.c: up_rtc_initialize Possible s…</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9727">#9727</a> {BP-9700} arch/armv8-m/arm_secure_irq.c: fix writing to the NVIC_AIRCR register</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9722">#9722</a> {BP-9649} arch/arm/stm32f0l0g0: Fix gpio outputs from being configured as interrupts in stm32f0l0g0</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9721">#9721</a> {BP-9658} arch/xtensa/esp32s2: Fix UART1 default pins</li>
+</ul>
+
+<p>Driver Support
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9724">#9724</a> {BP-9613} drivers/sensors/apds9960.c: Fix resource leak in error handling</li>
+  <li><a href="https://github.com/apache/nuttx/pull/9726">#9726</a> {BP-9692} drivers/video/isx01x: Fix system clock to HV mode</li>
+</ul>
+
+<p>Board Support
+Improvements</p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9734">#9734</a> {BP-9713} boards/arm/cxd56xx/alt1250: Change power on sequence</li>
+</ul>
+
+<p>File System
+Improvements </p>
+<ul>
+  <li><a href="https://github.com/apache/nuttx/pull/9731">#9731</a> {BP-9615} fs/fat: Fix undefined behavior in signed integer overflow check</li>
+</ul>
+
+  </div>
+</div>
+
+
+      <hr>
+      <footer>
+        <!-- <p>&copy; 2024 </p>-->
+        <footer class="site-footer">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div style="text-align:center;">
+                <div style="margin-top: 20px; margin-bottom: 20px;">
+                    <a href="https://www.apache.org"><img src="/assets/themes/apache/img/asf-estd-1999-logo.png"
+                                                      alt="Apache Software Foundation, Est. 1999"/></a>
+                </div>
+                <div>
+                    Copyright &copy; 2019-2022 <a href="https://www.apache.org">The Apache Software Foundation</a>.
+                    Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version
+                    2.0</a>.
+                    <br>
+                    Apache and the Apache Feather logo are trademarks of The Apache Software Foundation.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+      </footer>
+    </div>
+
+    
+    <script src="/assets/themes/apache/jquery/jquery-2.1.1.min.js"></script>
+
+    <script src="/assets/themes/apache/bootstrap/js/bootstrap.min.js"></script>
+
+
+  </body>
+</html>
+

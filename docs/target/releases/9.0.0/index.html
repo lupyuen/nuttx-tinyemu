@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>9.0.0</title>
+    
+    <meta name="author" content="">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/apache/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/themes/apache/css/style.css?body=1" rel="stylesheet" type="text/css">
+    <link href="/assets/themes/apache/css/syntax.css" rel="stylesheet"  type="text/css" media="screen" />
+    <link href="/assets/themes/apache/css/demo.css" rel="stylesheet" type="text/css"/>
+    <!-- Le fav and touch icons -->
+    <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+  </head>
+
+  <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+              <img src="/assets/themes/apache/img/logo.png" width="30">
+              Apache NuttX
+          </a>
+        </div>
+        <nav class="navbar-collapse collapse" role="navigation">
+          <ul class="nav navbar-nav navbar-right">
+            <li id="community">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">Community<b class="caret"></b></a>
+               <ul class="dropdown-menu dropdown-left">
+                <li><a href="/community">Get Involved</a></li>
+                <li><a href="/community-members">Who we are</a></li>
+               </ul>
+            </li>
+	    <li><a href="/docs/latest">Documentation</a></li>
+            <li><a href="https://github.com/apache/nuttx">GitHub</a></li>
+            <li id="apache">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">Apache<b class="caret"></b></a>
+               <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org/foundation/how-it-works.html">Apache Software Foundation</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/security/">Security</a></li>
+                <li><a href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a></li>
+                <li><a href="https://www.apache.org/events/current-event">Events</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                </ul>
+            </li>
+          </ul>
+        </nav><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+
+
+
+    <div class="container">
+      
+
+<!--<div class="hero-unit 9.0.0">
+  <h1></h1>
+</div>
+-->
+
+<div class="row">
+  <div class="col-md-12">
+    <!--
+
+-->
+
+<h2 id="apache-nuttx-900-release-notes">Apache NuttX-9.0.0 Release Notes</h2>
+
+<p>This is the first release of NuttX as Apache NuttX (Incubating) and represents our first major milestone as a Podling of the Apache Software Foundation’s Incubator. This release is the culmination of nearly 6 months of hard work and includes several new architectures and drivers, and numerous improvements and bug fixes to the core RTOS, drivers, and networking subsystems.</p>
+
+<p>Note that release consists of two tarballs:  apache-nuttx-9.0.0-incubating.tar.gz and apache-nuttx-apps-9.0.0-incubating.tar.gz.  These are available from:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.apache.org/dyn/closer.lua/incubator/nuttx/9.0.0/
+</code></pre></div></div>
+
+<p>Both may be needed (see the top-level nuttx/README.txt file for build
+information).  SHA512 checksums:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cb13d7081fb74d314950b1d04fd9ec97e7a94102eaea232a47fc3d02376e62450c42ff8e45b9ab7cebe09b5f3dd870403d37f7a602f48d492bf9fb924b1c4837  apache-nuttx-9.0.0-incubating.tar.gz
+078549269afc3548c5de285d4f653148236c2aaa84a0181c972f830bb3ffd187bedbf5ffbc53b7021a6944d584cbf5a6919569af469154289db5f151053ce897  apache-nuttx-apps-9.0.0-incubating.tar.gz
+</code></pre></div></div>
+
+<ul>
+  <li>Major Changes to Core OS
+    <ul>
+      <li>Bugfixes
+        <ul>
+          <li>nxsem_wait_uninterruptible() now returns if the task is canceled.</li>
+          <li>Fix a bug in pthread_condwait() that was improperly re-initializing the mutex.</li>
+          <li>In sched_setpriority(), fix functions called inside a DEBUGASSERT that were eliminated when assertions are disable</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Compatibility Concerns</p>
+
+    <ul>
+      <li>The configuration option CONFIG_CAN_PASS_STRUCT is now removed.  Previously, it was used (at the cost of breaking standards support) to support older versions of the SDCC compiler that couldn’t pass structs/unions as functions’ parameters.  A newer version of the compiler has resolved the issue.</li>
+    </ul>
+  </li>
+  <li>Major Changes to Build System
+    <ul>
+      <li>Add a post-build function that allows extending the build with CPU/board-specific logic.</li>
+      <li>Add build tools to simplify ZDS-II tool usage.</li>
+      <li>mkexport.sh: Deal with ARCHSCRIPT containing multiple files.</li>
+      <li>Various nxstyle improvements.</li>
+    </ul>
+  </li>
+  <li>Architectural Support
+    <ul>
+      <li>New architecture support
+        <ul>
+          <li>Add support for RISCV-64</li>
+          <li>Add support for x86_64 (tested on QEMU)</li>
+          <li>Add support for ELF64</li>
+          <li>Add a port to the NUCLEO-F429ZI board</li>
+          <li>Add support for the STM32H747I-DISCO board</li>
+          <li>Add Z20X board support and bootloader to upload code from the W25 flash to SRAM</li>
+          <li>Add initial support for Litex with softcore CPU VexRiscV SoC</li>
+          <li>Add support for the Digilent ARTY_A7 board to test the Litex port</li>
+          <li>Added initial support for Sipeed Maix Bit board with Kendryte K210 processor</li>
+          <li>New architectural support: ez80f92</li>
+          <li>Flat address x86_64 port of NuttX</li>
+          <li>Support to run NuttX on ESP32 QEMU</li>
+          <li>Initial support for Sipeed Maix Bit board with Kendryte K210 processor</li>
+          <li>Add initial support for Kendryte K210 processor in SMP mode</li>
+          <li>NXP S32K11x (Cortex-M0+) and S32K14x (Cortext-M4F): Add support for NXP automotive boards.</li>
+          <li>XMC 4700 (Cortex-M4F)</li>
+        </ul>
+      </li>
+      <li>Architectures with significant improvements
+        <ul>
+          <li>ESP32 loadable modules support</li>
+          <li>i.MX RT: FLEXIO clock config logic.</li>
+          <li>Fix the clock configuration for the i.MX RT family</li>
+          <li>i.MX RT: Add ability to run from OCRAM</li>
+          <li>SAMA5D27 peripheral support - USB Host working</li>
+          <li>z20x: Add W25 bootloader</li>
+          <li>i.MX RT: Add USB Device support</li>
+          <li>STM32, STM32F7, STM32H7 add SPI DMATHRESHOLD</li>
+          <li>Improve the simulator timer</li>
+          <li>64-bit modules on macOS simulator</li>
+          <li>z20x: Add XTP2046 SPI support; add timer support</li>
+          <li>RX65N RTC Driver added</li>
+          <li>NXP Freedom K28F Board SD-Card support</li>
+          <li>STM32H7: support SDRAM via FMC peripheral</li>
+          <li>LM3S6965-ek: Add PROTECTED build support</li>
+          <li>STM32H7: Added IWDG and WWDG, power management (sleep/stop/standby), WKUP pin configuration</li>
+          <li>SAMV71:  Add read UID implementation and move flash functions to RAM</li>
+          <li>i.MX RT: Fix interrupts storm (serial &amp; I2C)</li>
+          <li>Various fixes and cosmetic changes to the CxD56xx architecture</li>
+          <li>Fix SiFive FE310 related code (comments, improve serial irq handling, initial int status)</li>
+          <li>Implement QSPI for STM32H7</li>
+          <li>Improvements for the nRF52 port: I2C, SPI, GPIO support</li>
+          <li>Updates for LPC17xx/40xx serial</li>
+          <li>Adds basic support for Microchip SAM E54 Xplained Pro board</li>
+          <li>Adds an Ethernet driver for the SAME5x family (based on the SAMA5 GMAC driver)</li>
+          <li>Add CDC ECM Ethernet over USB 2.0 High Speed (tested on SAMA5D36-Xplained board)</li>
+          <li>Simulator: Reimplement simulator uart on top of serial driver framework</li>
+          <li>NXP S32K1XX peripheral clock fixes</li>
+          <li>Fix syscall stack alignment on armv7-m</li>
+          <li>Fix flash_erase(page) when page &gt;= 256 for STM32L4 family</li>
+          <li>Add partial support for the NETLINK poll() operation.</li>
+          <li>Add serial DMA support for STM32F7</li>
+          <li>Add AM335x Clock Configuration</li>
+          <li>Add I2C support for AM335x</li>
+          <li>Add configuration to fine tune LPI2C Timeout for iMXRT</li>
+          <li>Add CAN support to AM335x</li>
+          <li>Add I2C support to STM32F0/L0/G0</li>
+          <li>Kinetis LPC SDCard improvements</li>
+          <li>Replace the busy polling with work_queue in the ethernet driver of simulator</li>
+          <li>Fix Xtensa’s SMP support to follow same logic from other SMP archs</li>
+          <li>PIC32MZ: SPI transfers can be configured to use DMA.</li>
+          <li>PIC32MZ: Implement cache operations.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Driver Support
+    <ul>
+      <li>New drivers
+        <ul>
+          <li>New driver for the ADS7828 I2C analog to digital converter</li>
+          <li>driver/ioexpander: New driver for PCA9538 I2C I/O expander</li>
+          <li>New driver type for battery monitor ICs.</li>
+          <li>Driver for the BQ769x0 battery monitor IC.</li>
+          <li>Add Support for Quectel EC20 4G LTE Module USB CDC/ACM</li>
+          <li>Add QSPI-based Winbond NOR FLASH driver</li>
+        </ul>
+      </li>
+      <li>Drivers with significant improvements
+        <ul>
+          <li>Update all the drivers to check return value of nxsem_wait_uninterruptible().</li>
+          <li>MCP9844 shutdown mode support</li>
+          <li>fcntl: add O_CLOEXEC flag, add O_CLOEXEC/FD_CLOEXEC support</li>
+          <li>CDC-ECM Ethernet over USB 2.0 HS</li>
+          <li>smartfs improvements: Handling of duplicate sectors, support fsck to check and repair the smartfs file system, and recover SPI Flash from initial error state.</li>
+          <li>Various fixes for USBDEV driver: Remove unnecessary reset logic, fix descriptor type mismatch when dual speed is enabled, fix invalid/unsupported command processing, and fix string ID calculation.</li>
+          <li>Handle size zero in umm_malloc.c and umm_realloc.c, which causes a system freeze in kernel mode.</li>
+          <li>Fixed compilation issue with poll fds notification.</li>
+          <li>Report POLLHUP and POLLERR in ‘revents’ regardless the requested ‘events’ set.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Networking
+    <ul>
+      <li>Telnet:  Fix/Refine CTRL+C to work on telnet</li>
+      <li>TCP:  Fix of faulty TCP sequence increments</li>
+      <li>netdb:  Fix netdb to query IPv4 and IPv6 addresses regardless the server address type</li>
+      <li>Netlink sockets may be set to non-blocking</li>
+      <li>Improve TUN and SLIP, refine Control+C Handling in Telnet</li>
+      <li>Sockets:  Add socket MSG_DONTWAIT support</li>
+      <li>Network Loopback Driver: Add a configuration option to control packet size</li>
+      <li>Network IOCTLs:  Add FIONBIO network IOCTL support</li>
+      <li>NFS: Support IPv4 and TCP</li>
+      <li>Sockets: Add IP and TCP socket options needed by iperf3</li>
+      <li>Netlink: Add support for asynchronous Netlink responses</li>
+      <li>TCP: Monitor TCP_POLL/TCP_NEWDATA/TCP_BACKLOG per the request like UDP counterpart</li>
+      <li>TCP: Minor design improvement to TCP delayed ACKs</li>
+      <li>DNS IPv4/IPv6 Dual Host Support: When IPv4/IPv6 Dual Stack is enabled, queries both types of addresses regardless of whether the DNS server is accessed via IPv4 or IPv6. As a result, getaddrinfo() may return a mixed (IPv4/IPv6) address list.</li>
+    </ul>
+  </li>
+  <li>Applications
+    <ul>
+      <li>Improvements
+        <ul>
+          <li>Extend netutils and netinit to work with only Netlink sockets enabled</li>
+          <li>Add getprime program to check multi-thread performance</li>
+          <li>Improve zmodem send performance</li>
+          <li>Add simple HTS221, LSM303 and LSM6DSL examples</li>
+          <li>Improve to gs2200m wiki performance</li>
+          <li>Improve telnet server and enable it to listen on both IPv4 and IPv6</li>
+          <li>Improve ntpclient logic</li>
+          <li>Improve wapi to save configuration to file system</li>
+          <li>Improve wapi to skip associate if ssid is invalid</li>
+          <li>Improve cmd_nfsmount to use IPv4 and IPv6</li>
+          <li>Improve ostest for SMP and non-SMP configurations</li>
+          <li>Improve UDP to avoid using standard symbols</li>
+          <li>Improve dhcpd to include configurable timeout and retry count</li>
+        </ul>
+      </li>
+      <li>Bugfixes
+        <ul>
+          <li>Correct format when printing ARP tablet entries</li>
+          <li>Ensure /bin/ping and ping work at the same time</li>
+          <li>Correct backward conditional logic in dhcpd_leaseexpired()</li>
+          <li>Fix several problems on ftpd</li>
+          <li>Fix dhcpd issue reported on Issue #17</li>
+          <li>Fix sendmail example to run on a local SMTP server</li>
+          <li>Fix buffer overflow on netlib</li>
+          <li>Fix compile errors in loopback mode of the tcpblaster</li>
+          <li>Fix stack corruption in ELF task test</li>
+          <li>Fix errors in NoBlockRecv and BlockRecv tests of usrsocktest</li>
+          <li>Fix ipforward IP Header issue for IPv4</li>
+          <li>Fix wrongly swapped parity options of CU program</li>
+          <li>Fix slcd to avoid using priv-&gt;fd before initializing it</li>
+          <li>Fix (tcp, udp)blaster to build on macOS</li>
+          <li>Correct the buffer type of base64 program</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+  </div>
+</div>
+
+
+      <hr>
+      <footer>
+        <!-- <p>&copy; 2024 </p>-->
+        <footer class="site-footer">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div style="text-align:center;">
+                <div style="margin-top: 20px; margin-bottom: 20px;">
+                    <a href="https://www.apache.org"><img src="/assets/themes/apache/img/asf-estd-1999-logo.png"
+                                                      alt="Apache Software Foundation, Est. 1999"/></a>
+                </div>
+                <div>
+                    Copyright &copy; 2019-2022 <a href="https://www.apache.org">The Apache Software Foundation</a>.
+                    Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version
+                    2.0</a>.
+                    <br>
+                    Apache and the Apache Feather logo are trademarks of The Apache Software Foundation.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+      </footer>
+    </div>
+
+    
+    <script src="/assets/themes/apache/jquery/jquery-2.1.1.min.js"></script>
+
+    <script src="/assets/themes/apache/bootstrap/js/bootstrap.min.js"></script>
+
+
+  </body>
+</html>
+
