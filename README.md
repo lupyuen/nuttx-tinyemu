@@ -2147,6 +2147,74 @@ nsh>
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
 
+# Fix the System Timer
+
+TODO
+
+[For OpenSBI Set Timer: Clear the pending timer interrupt bit](https://github.com/lupyuen/ox64-tinyemu/commit/758287cc3aa8165303c6a726292e665af099aefd)
+
+[For RDTIME: Return the time](https://github.com/lupyuen/ox64-tinyemu/commit/1bcf19a4b2354bc47b515a3fe2f2e8a427e3900d)
+
+[Regularly trigger the Supervisor-Mode Timer Interrupt](https://github.com/lupyuen/ox64-tinyemu/commit/ddedb862a786e52b17cf3331752d50662eddffd3)
+
+`usleep` works OK yay!
+
+```text
+Loading...
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+ABC
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> usleep 1
+nsh> 
+```
+
+[Patch DCACHE.IALL and SYNC.S to become ECALL](https://github.com/lupyuen/ox64-tinyemu/commit/b8671f76414747b6902a7dcb89f6fc3c8184075f)
+
+[Handle System Timer with mtimecmp](https://github.com/lupyuen/ox64-tinyemu/commit/f00d40c0de3d97e93844626c0edfd3b19e8252db)
+
+[Emulator Timer Log](https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc)
+
+Test `ostest`...
+
+```text
+semtimed_test: Starting poster thread
+semtimed_test: Set thread 1 priority to 191
+semtimed_test: Starting poster thread 3
+semtimed_test: Set thread 3 priority to 64
+semtimed_test: Waiting for two second timeout
+poster_func: Waiting for 1 second
+semtimed_test: ERROR: sem_timedwait failed with: 110
+_assert: Current Version: NuttX  12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:51 risc
+-v
+_assert: Assertion failed (_Bool)0: at file: semtimed.c:240 task: ostest process
+: ostest 0x8000004a
+up_dump_register: EPC: 0000000050202008
+```
+
+[Remove the Timer Interrupt Interval because ostest will fail](https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75)
+
+`ostest` is OK yay!
+
+https://lupyuen.github.io/nuttx-tinyemu/timer/
+
+`expect` script works OK with Ox64 BL808 Emulator...
+
+```bash
+#!/usr/bin/expect
+set send_slow {1 0.001}
+spawn /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+
+expect "nsh> "
+send -s "uname -a\r"
+
+expect "nsh> "
+send -s "ostest\r"
+expect "ostest_main: Exiting with status -1"
+expect "nsh> "
+```
+
+We'll run this for Daily Automated Testing, right after the Daily Automated Build.
+
 # Emulate BL808 GPIO to Blink an LED
 
 TODO
