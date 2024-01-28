@@ -8,6 +8,8 @@
 
 Read the articles...
 
+-   ["Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"](https://lupyuen.github.io/articles/tinyemu3)
+
 -   ["Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS"](https://lupyuen.github.io/articles/tinyemu2)
 
 -   ["Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO"](https://lupyuen.github.io/articles/tinyemu)
@@ -1834,7 +1836,9 @@ And our Ox64 BL808 Emulator runs OK in Web Browser yay!
 
 # Start NuttX Kernel in Supervisor Mode
 
-![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
+Read the article...
+
+-   ["Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"](https://lupyuen.github.io/articles/tinyemu3)
 
 _NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?_
 
@@ -1956,7 +1960,9 @@ nx_start: CPU0: Beginning Idle Loop
 
 # Emulate UART Interrupts for Console Input
 
-![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
+Read the article...
+
+-   ["Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"](https://lupyuen.github.io/articles/tinyemu3)
 
 _How will we emulate [UART Interrupts](https://lupyuen.github.io/articles/plic2) to support Console Input?_
 
@@ -2104,7 +2110,9 @@ NuttX 12.4.0 96c2707 Jan 18 2024 12:07:28 risc-v ox64
 
 # Emulate OpenSBI for System Timer
 
-![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
+Read the article...
+
+-   ["Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"](https://lupyuen.github.io/articles/tinyemu3)
 
 _How to emulate the OpenSBI ECALL to start the System Timer?_
 
@@ -2149,7 +2157,9 @@ nsh>
 
 # Fix the System Timer
 
-TODO
+Read the article...
+
+-   ["Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"](https://lupyuen.github.io/articles/tinyemu3)
 
 [For OpenSBI Set Timer: Clear the pending timer interrupt bit](https://github.com/lupyuen/ox64-tinyemu/commit/758287cc3aa8165303c6a726292e665af099aefd)
 
