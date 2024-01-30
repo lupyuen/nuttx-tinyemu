@@ -506,7 +506,12 @@ function start_vm(user, pwd)
         //// Begin Test
         const elf_data = new Uint8Array([0x00, 0x01, 0x02, 0xfd, 0xfe, 0xff]);
         const elf_len = elf_data.length;
-        localStorage.setItem("elf_data", elf_data);
+        const elf_data_base64 = btoa(String.fromCharCode.apply(null, elf_data));
+
+        localStorage.setItem("elf_data", elf_data_base64);
+        const s = localStorage.getItem("elf_data");
+        const a = new Uint8Array([...atob(s)].map(c=>c.charCodeAt()))
+        console.log({a});
         //// End Test
 
         /* C functions called from javascript */
