@@ -504,8 +504,9 @@ function start_vm(user, pwd)
     function start()
     {
         //// Begin Test
-        const bin = new Uint8Array([0x00, 0x01, 0x02, 0xfd, 0xfe, 0xff]);
-        const elf_data = btoa(String.fromCharCode.apply(null, bin));
+        const elf_data = new Uint8Array([0x00, 0x01, 0x02, 0xfd, 0xfe, 0xff]);
+        const elf_len = elf_data.length;
+        localStorage.setItem("elf_data", elf_data);
         //// End Test
 
         /* C functions called from javascript */
@@ -526,8 +527,8 @@ function start_vm(user, pwd)
         Module.ccall(
             "vm_start",
             null,
-            ["string", "number", "string", "string", "number", "number", "number", "string", "string"],
-            [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url, elf_data]
+            ["string", "number", "string", "string", "number", "number", "number", "string", "array", "number"],
+            [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url, elf_data, elf_len]
         );
         pwd = null;
     }
