@@ -103,3 +103,15 @@ label {
     visibility: hidden;
     width: 80px;
 }
+
+/* NuttX Emulator Status */
+
+.gpio_off {
+    color: black;
+    background-color: transparent;
+}
+
+.gpio_on {
+    color: white;
+    background-color: green;
+}

@@ -487,6 +487,24 @@ Term.prototype.scroll_disp = function(n)
 
 Term.prototype.write = function(str)
 {
+    //// Begin Test: Handle Emulator Notification: {"nuttxemu":{"gpio29":1}}
+    if (str.indexOf(`{"nuttxemu":`) == 0) {
+        const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
+        console.log({ notify });
+        const gpio = Object.keys(notify)[0];  // "gpio29"
+        const val = notify[gpio];  // 0 or 1
+        console.log({ gpio, val });
+
+        document.getElementById("status").style.width = document.getElementById("term_wrap").style.width;
+        const gpio_status = document.getElementById(gpio);
+        gpio_status.style.display = "block";
+        gpio_status.className = (val == 0)
+            ? "gpio_off"
+            : "gpio_on";
+        return;
+    }
+    //// End Test
+
     var s, ymin, ymax;
     
     function update(y) 
