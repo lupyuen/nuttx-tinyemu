@@ -8,6 +8,8 @@
 
 Read the articles...
 
+-   ["Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)"](https://lupyuen.github.io/articles/romfs)
+
 -   ["TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)"](https://lupyuen.github.io/articles/tcc)
 
 -   ["Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"](https://lupyuen.github.io/articles/tinyemu3)
@@ -2226,6 +2228,14 @@ expect "nsh> "
 ```
 
 We'll run this for Daily Automated Testing, right after the Daily Automated Build.
+
+# Build and Test NuttX Apps in the Web Browser
+
+NuttX Emulator is now integrated with TCC RISC-V Compiler in WebAssembly. So we can Build and Test NuttX Apps in the Web Browser!
+
+Read the article...
+
+-   ["Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)"](https://lupyuen.github.io/articles/romfs)
 
 # Emulate BL808 GPIO to Blink an LED
 
