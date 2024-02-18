@@ -521,14 +521,15 @@ function start_vm(user, pwd)
         //// End Test
 
         //// Begin Test: Start QuickJS
-        let str = "qjs\r";
-        function start_quickjs() {
-            if (str.length == 0) { return; }
-            console_write1(str.charCodeAt(0));
-            str = str.substring(1);
-            window.setTimeout(start_quickjs, 10);
+        let send_str = "";
+        function send_command(cmd) {
+            if (cmd !== null) { send_str = cmd; }
+            if (send_str.length == 0) { return; }
+            console_write1(send_str.charCodeAt(0));
+            send_str = send_str.substring(1);
+            window.setTimeout(()=>{ send_command(null); }, 10);
         }
-        window.setTimeout(start_quickjs, 10000);
+        window.setTimeout(()=>{ send_command("qjs\r"); }, 10000);
         //// End Test
 
         /* C functions called from javascript */
