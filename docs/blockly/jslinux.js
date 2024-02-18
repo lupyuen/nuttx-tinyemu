@@ -754,6 +754,7 @@ async function control_device() {
 //// End Test
 
 //// Begin Test: Compile PureScript to JavaScript
+// Maybe we'll run a PureScript to analyse the Real-Time Logs from a NuttX Device?
 // https://lupyuen.github.io/nuttx-tinyemu/blockly/
 async function compile_purescript() {
 
