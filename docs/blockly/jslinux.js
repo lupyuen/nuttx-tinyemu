@@ -709,6 +709,7 @@ function on_login()
 //// Begin Test: Control Ox64 over UART
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
+    compile_purescript(); ////
     if (!navigator.serial) { const err = "Web Serial API only works with https://... and file://...!"; alert(err); throw new Error(err); }
 
     // Prompt user to select any serial port.
@@ -749,5 +750,44 @@ async function control_device() {
         // value is a string.
         console.log(value);
     }
+}
+//// End Test
+
+//// Begin Test: Compile PureScript to JavaScript
+async function compile_purescript() {
+
+    const url = "https://compile.purescript.org/compile";
+    const contentType = "text/plain;charset=UTF-8";
+    const body =
+`
+module Main where
+
+import Prelude
+
+import Effect (Effect)
+import Effect.Console (log)
+import Data.Array ((..))
+import Data.Foldable (for_)
+import TryPureScript (render, withConsole)
+
+main :: Effect Unit
+main = render =<< withConsole do
+  for_ (10 .. 1) \\n -> log (show n <> "...")
+  log "Lift off!"
+`;
+
+    // Default options are marked with *
+    // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+    const response = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: { "Content-Type": contentType },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: body,
+    });
+    console.log(await response.json()); // parses JSON response into native JavaScript objects
 }
 //// End Test
