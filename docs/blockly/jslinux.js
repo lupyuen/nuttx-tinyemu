@@ -529,7 +529,13 @@ function start_vm(user, pwd)
             send_str = send_str.substring(1);
             window.setTimeout(()=>{ send_command(null); }, 10);
         }
-        window.setTimeout(()=>{ send_command("qjs\r"); }, 10000);
+        const cmd = [
+            `qjs`,
+            `function main() { console.log(123); }`,
+            `main()`,
+            ``
+        ].join("\r");
+        window.setTimeout(()=>{ send_command(cmd); }, 10000);
         //// End Test
 
         /* C functions called from javascript */
