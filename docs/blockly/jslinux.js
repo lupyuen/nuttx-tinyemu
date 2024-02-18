@@ -538,6 +538,14 @@ function start_vm(user, pwd)
         window.setTimeout(()=>{ send_command(cmd); }, 10000);
         //// End Test
 
+        //// Begin Test: Control Ox64 over UART
+        async function control_device() {
+            // Prompt user to select any serial port.
+            const port = await navigator.serial.requestPort();
+        }
+        // document.getElementById("gpio29").onclick = "await navigator.serial.requestPort();";
+        //// End Test
+
         /* C functions called from javascript */
         console_write1 = Module.cwrap('console_queue_char', null, ['number']);
         console_resize_event = Module.cwrap('console_resize_event', null, []);
