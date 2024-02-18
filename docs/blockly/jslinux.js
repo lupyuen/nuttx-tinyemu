@@ -520,6 +520,17 @@ function start_vm(user, pwd)
         }
         //// End Test
 
+        //// Begin Test: Start QuickJS
+        let str = "qjs\r";
+        function start_quickjs() {
+            if (str.length == 0) { return; }
+            console_write1(str.charCodeAt(0));
+            str = str.substring(1);
+            window.setTimeout(start_quickjs, 10);
+        }
+        window.setTimeout(start_quickjs, 10000);
+        //// End Test
+
         /* C functions called from javascript */
         console_write1 = Module.cwrap('console_queue_char', null, ['number']);
         console_resize_event = Module.cwrap('console_resize_event', null, []);
