@@ -707,6 +707,7 @@ function on_login()
 })();
 
 //// Begin Test: Control Ox64 over UART
+// https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
     if (!navigator.serial) { const err = "Web Serial API only works with https://... and file://...!"; alert(err); throw new Error(err); }
 
@@ -720,6 +721,18 @@ async function control_device() {
     // TODO: Ox64 only connects at 2 Mbps, change this for other devices
     await port.open({ baudRate: 2000000 });
 
+    // Send a command to serial port
+    const cmd = [
+        `qjs`,
+        `function main() { console.log(123); }`,
+        `main()`,
+        ``
+    ].join("\r");
+    const textEncoder = new TextEncoderStream();
+    const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+    const writer = textEncoder.writable.getWriter();
+    await writer.write(cmd);
+    
     // Read from the serial port
     const textDecoder = new TextDecoderStream();
     const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
@@ -736,26 +749,5 @@ async function control_device() {
         // value is a string.
         console.log(value);
     }
-
-    // Read from the serial port
-    // while (port.readable) {
-    //     const reader = port.readable.getReader();
-    //     try {
-    //         while (true) {
-    //             const { value, done } = await reader.read();
-    //             if (done) {
-    //                 // Allow the serial port to be closed later.
-    //                 reader.releaseLock();
-    //                 break;
-    //             }
-    //             if (value) {
-    //                 console.log(value);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         // TODO: Handle non-fatal read error.
-    //         console.log(error);
-    //     }
-    // }
 }
 //// End Test
