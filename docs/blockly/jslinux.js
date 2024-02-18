@@ -754,10 +754,15 @@ async function control_device() {
 //// End Test
 
 //// Begin Test: Compile PureScript to JavaScript
+// https://lupyuen.github.io/nuttx-tinyemu/blockly/
 async function compile_purescript() {
 
+    // Public Server API that compiles PureScript to JavaScript
+    // https://github.com/purescript/trypurescript#server-api
     const url = "https://compile.purescript.org/compile";
     const contentType = "text/plain;charset=UTF-8";
+
+    // PureScript to be compiled to JavaScript
     const body =
 `
 module Main where
@@ -776,6 +781,7 @@ main = render =<< withConsole do
   log "Lift off!"
 `;
 
+    // Call Public Server API to compile our PureScript to JavaScript
     // Default options are marked with *
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
     const response = await fetch(url, {
@@ -788,6 +794,10 @@ main = render =<< withConsole do
         referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: body,
     });
-    console.log(await response.json()); // parses JSON response into native JavaScript objects
+
+    // Print the response
+    // { "js": "import * as Control_Bind from \"../Control.Bind/index.js\";\nimport * as Data_Array from \"../Data.Array/index.js\";\nimport * as Data_Foldable from \"../Data.Foldable/index.js\";\nimport * as Data_Show from \"../Data.Show/index.js\";\nimport * as Effect from \"../Effect/index.js\";\nimport * as Effect_Console from \"../Effect.Console/index.js\";\nimport * as TryPureScript from \"../TryPureScript/index.js\";\nvar show = /* #__PURE__ */ Data_Show.show(Data_Show.showInt);\nvar main = /* #__PURE__ */ Control_Bind.bindFlipped(Effect.bindEffect)(TryPureScript.render)(/* #__PURE__ */ TryPureScript.withConsole(function __do() {\n    Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Data_Array.range(10)(1))(function (n) {\n        return Effect_Console.log(show(n) + \"...\");\n    })();\n    return Effect_Console.log(\"Lift off!\")();\n}));\nexport {\n    main\n};",
+    //   "warnings": [] }
+    console.log(await response.json());
 }
 //// End Test
