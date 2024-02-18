@@ -538,14 +538,6 @@ function start_vm(user, pwd)
         window.setTimeout(()=>{ send_command(cmd); }, 10000);
         //// End Test
 
-        //// Begin Test: Control Ox64 over UART
-        async function control_device() {
-            // Prompt user to select any serial port.
-            const port = await navigator.serial.requestPort();
-        }
-        // document.getElementById("gpio29").onclick = "await navigator.serial.requestPort();";
-        //// End Test
-
         /* C functions called from javascript */
         console_write1 = Module.cwrap('console_queue_char', null, ['number']);
         console_resize_event = Module.cwrap('console_resize_event', null, []);
@@ -713,3 +705,57 @@ function on_login()
         start_vm(null, null);
     }
 })();
+
+//// Begin Test: Control Ox64 over UART
+async function control_device() {
+    if (!navigator.serial) { const err = "Web Serial API only works with https://... and file://...!"; alert(err); throw new Error(err); }
+
+    // Prompt user to select any serial port.
+    const port = await navigator.serial.requestPort();
+
+    // Get all serial ports the user has previously granted the website access to.
+    // const ports = await navigator.serial.getPorts();
+
+    // Wait for the serial port to open.
+    // TODO: Ox64 only connects at 2 Mbps, change this for other devices
+    await port.open({ baudRate: 2000000 });
+
+    // Read from the serial port
+    const textDecoder = new TextDecoderStream();
+    const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+    const reader = textDecoder.readable.getReader();
+
+    // Listen to data coming from the serial device.
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+            // Allow the serial port to be closed later.
+            reader.releaseLock();
+            break;
+        }
+        // value is a string.
+        console.log(value);
+    }
+
+    // Read from the serial port
+    // while (port.readable) {
+    //     const reader = port.readable.getReader();
+    //     try {
+    //         while (true) {
+    //             const { value, done } = await reader.read();
+    //             if (done) {
+    //                 // Allow the serial port to be closed later.
+    //                 reader.releaseLock();
+    //                 break;
+    //             }
+    //             if (value) {
+    //                 console.log(value);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         // TODO: Handle non-fatal read error.
+    //         console.log(error);
+    //     }
+    // }
+}
+//// End Test
