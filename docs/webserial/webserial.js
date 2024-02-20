@@ -651,13 +651,8 @@ async function control_device() {
         term.write(value);
         // console.log(value);
 
-        // If NSH already spotted: Send the next Command Char
-        if (nshSpotted) { 
-            await send_command(writer, null); 
-            continue;
-        }
-
         // Wait for "nsh>"
+        if (nshSpotted) { continue; }
         termBuffer += value;
         if (termBuffer.indexOf("nsh>") < 0) { continue; }
 
@@ -671,8 +666,7 @@ async function control_device() {
             window.localStorage.getItem("runCode"),
             ` `
         ].join("\r");
-        // window.setTimeout(()=>{ send_command(writer, cmd); }, 100);
-        await send_command(writer, cmd);
+        window.setTimeout(()=>{ send_command(writer, cmd); }, 1000);
     }
 }
 
@@ -683,6 +677,6 @@ async function send_command(writer, cmd) {
     if (send_str.length == 0) { return; }
     await writer.write(send_str.substring(0, 1));
     send_str = send_str.substring(1);
-    // window.setTimeout(()=>{ send_command(writer, null); }, 100);
+    window.setTimeout(()=>{ send_command(writer, null); }, 1000);
 }
 //// End Test
