@@ -660,11 +660,13 @@ async function control_device() {
         console.log("NSH Spotted!");
         nshSpotted = true;
 
-        // Send a command to serial port
+        // Send a command to serial port. Newlines become Carriage Returns.
+        const code = window.localStorage.getItem("runCode")
+            .split('\n').join('\r');
         const cmd = [
             `qjs`,
-            window.localStorage.getItem("runCode"),
-            ` `
+            code,
+            ``
         ].join("\r");
         window.setTimeout(()=>{ send_command(writer, cmd); }, 1000);
     }
@@ -675,8 +677,19 @@ let send_str = "";
 async function send_command(writer, cmd) {
     if (cmd !== null) { send_str = cmd; }
     if (send_str.length == 0) { return; }
-    await writer.write(send_str.substring(0, 1));
+
+    // Get the next character
+    const ch = send_str.substring(0, 1);
     send_str = send_str.substring(1);
-    window.setTimeout(()=>{ send_command(writer, null); }, 1000);
+
+    // Slow down at the end of each line
+    const timeout = (ch === "\r")
+        ? 2000
+        : 10;
+    console.log({ch, timeout});
+
+    // Send the character
+    await writer.write(ch);
+    window.setTimeout(()=>{ send_command(writer, null); }, timeout);
 }
 //// End Test

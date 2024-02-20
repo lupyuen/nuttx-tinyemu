@@ -529,9 +529,12 @@ function start_vm(user, pwd)
             send_str = send_str.substring(1);
             window.setTimeout(()=>{ send_command(null); }, 10);
         }
+        // Send a command to serial port. Newlines become Carriage Returns.
+        const code = window.localStorage.getItem("runCode")
+            .split('\n').join('\r');
         const cmd = [
             `qjs`,
-            window.localStorage.getItem("runCode"),
+            code,
             ``
         ].join("\r");
         window.setTimeout(()=>{ send_command(cmd); }, 5000);
