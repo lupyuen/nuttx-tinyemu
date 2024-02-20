@@ -531,11 +531,10 @@ function start_vm(user, pwd)
         }
         const cmd = [
             `qjs`,
-            `function main() { console.log(123); }`,
-            `main()`,
+            window.localStorage.getItem("runCode"),
             ``
         ].join("\r");
-        window.setTimeout(()=>{ send_command(cmd); }, 10000);
+        window.setTimeout(()=>{ send_command(cmd); }, 5000);
         //// End Test
 
         /* C functions called from javascript */
@@ -709,7 +708,6 @@ function on_login()
 //// Begin Test: Control Ox64 over UART
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
-    compile_purescript(); ////
     if (!navigator.serial) { const err = "Web Serial API only works with https://... and file://...!"; alert(err); throw new Error(err); }
 
     // Prompt user to select any serial port.
@@ -750,55 +748,5 @@ async function control_device() {
         // value is a string.
         console.log(value);
     }
-}
-//// End Test
-
-//// Begin Test: Compile PureScript to JavaScript
-// Maybe we'll run a PureScript to analyse the Real-Time Logs from a NuttX Device?
-// https://lupyuen.github.io/nuttx-tinyemu/blockly/
-async function compile_purescript() {
-
-    // Public Server API that compiles PureScript to JavaScript
-    // https://github.com/purescript/trypurescript#server-api
-    const url = "https://compile.purescript.org/compile";
-    const contentType = "text/plain;charset=UTF-8";
-
-    // PureScript to be compiled to JavaScript
-    const body =
-`
-module Main where
-
-import Prelude
-
-import Effect (Effect)
-import Effect.Console (log)
-import Data.Array ((..))
-import Data.Foldable (for_)
-import TryPureScript (render, withConsole)
-
-main :: Effect Unit
-main = render =<< withConsole do
-  for_ (10 .. 1) \\n -> log (show n <> "...")
-  log "Lift off!"
-`;
-
-    // Call Public Server API to compile our PureScript to JavaScript
-    // Default options are marked with *
-    // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-    const response = await fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: { "Content-Type": contentType },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: body,
-    });
-
-    // Print the response
-    // { "js": "import * as Control_Bind from \"../Control.Bind/index.js\";\nimport * as Data_Array from \"../Data.Array/index.js\";\nimport * as Data_Foldable from \"../Data.Foldable/index.js\";\nimport * as Data_Show from \"../Data.Show/index.js\";\nimport * as Effect from \"../Effect/index.js\";\nimport * as Effect_Console from \"../Effect.Console/index.js\";\nimport * as TryPureScript from \"../TryPureScript/index.js\";\nvar show = /* #__PURE__ */ Data_Show.show(Data_Show.showInt);\nvar main = /* #__PURE__ */ Control_Bind.bindFlipped(Effect.bindEffect)(TryPureScript.render)(/* #__PURE__ */ TryPureScript.withConsole(function __do() {\n    Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Data_Array.range(10)(1))(function (n) {\n        return Effect_Console.log(show(n) + \"...\");\n    })();\n    return Effect_Console.log(\"Lift off!\")();\n}));\nexport {\n    main\n};",
-    //   "warnings": [] }
-    console.log(await response.json());
 }
 //// End Test
