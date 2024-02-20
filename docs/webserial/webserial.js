@@ -684,9 +684,8 @@ async function send_command(writer, cmd) {
 
     // Slow down at the end of each line
     const timeout = (ch === "\r")
-        ? 2000
+        ? 3000
         : 10;
-    console.log({ch, timeout});
 
     // Send the character
     await writer.write(ch);
