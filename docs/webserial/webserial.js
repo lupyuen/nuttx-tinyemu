@@ -28,7 +28,6 @@ var graphic_display, display_key_event, display_mouse_event;
 var net_state, net_write_packet, net_set_carrier;
 var display_wheel_event;
 var fs_import_file;
-var Module = {};
 var downloading_timer_pending = false;
 var downloading_timer;
 
@@ -503,62 +502,6 @@ function start_vm(user, pwd)
 
     function start()
     {
-        //// Begin Test: Patch the ELF Data to a.out in Initial RAM Disk
-        //// localStorage.setItem("elf_data", "%7f%45%4c%46%02%01%01%00%00%00%00%00%00%00%00%00%01%00%f3%00%01%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%02%00%00%00%00%00%00%04%00%00%00%40%00%00%00%00%00%40%00%09%00%08%00%13%01%01%fa%23%3c%11%04%23%38%81%04%13%04%01%06%13%00%00%00%23%34%a4%fe%23%30%b4%fe%1b%05%d0%03%23%2e%a4%fc%1b%05%10%00%23%38%a4%fc%17%05%00%00%13%05%05%00%23%34%a4%fc%1b%05%f0%00%23%30%a4%fc%03%25%c4%fd%13%15%05%02%13%55%05%02%23%3c%a4%fa%03%35%04%fd%23%38%a4%fa%03%35%84%fc%23%34%a4%fa%03%35%04%fc%23%30%a4%fa%13%05%d0%03%93%05%10%00%37%06%08%00%1b%06%16%10%13%16%c6%00%93%06%f0%00%73%00%00%00%01%00%6f%00%00%00%83%30%81%05%03%34%01%05%13%01%01%06%67%80%00%00%00%00%00%00%00%00%48%65%6c%6c%6f%2c%20%57%6f%72%6c%64%21%21%0a%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%01%00%00%00%04%00%f1%ff%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%0e%00%00%00%01%00%03%00%00%00%00%00%00%00%00%00%10%00%00%00%00%00%00%00%00%00%00%00%00%00%01%00%2c%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%09%00%00%00%12%00%01%00%00%00%00%00%00%00%00%00%9a%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%68%65%6c%6c%6f%2e%63%00%6d%61%69%6e%00%4c%2e%30%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%2c%00%00%00%00%00%00%00%17%00%00%00%02%00%00%00%00%00%00%00%00%00%00%00%30%00%00%00%00%00%00%00%18%00%00%00%03%00%00%00%00%00%00%00%00%00%00%00%00%2e%74%65%78%74%00%2e%64%61%74%61%00%2e%64%61%74%61%2e%72%6f%00%2e%62%73%73%00%2e%73%79%6d%74%61%62%00%2e%73%74%72%74%61%62%00%2e%72%65%6c%61%2e%74%65%78%74%00%2e%73%68%73%74%72%74%61%62%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%01%00%00%00%01%00%00%00%06%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%40%00%00%00%00%00%00%00%9a%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%08%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%07%00%00%00%01%00%00%00%03%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%e0%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%08%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%0d%00%00%00%01%00%00%00%03%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%e0%00%00%00%00%00%00%00%10%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%08%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%16%00%00%00%08%00%00%00%03%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%f0%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%08%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%1b%00%00%00%02%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%f0%00%00%00%00%00%00%00%78%00%00%00%00%00%00%00%06%00%00%00%04%00%00%00%08%00%00%00%00%00%00%00%18%00%00%00%00%00%00%00%23%00%00%00%03%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%70%01%00%00%00%00%00%00%12%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%01%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%2b%00%00%00%04%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%90%01%00%00%00%00%00%00%30%00%00%00%00%00%00%00%05%00%00%00%01%00%00%00%08%00%00%00%00%00%00%00%18%00%00%00%00%00%00%00%36%00%00%00%03%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%c0%01%00%00%00%00%00%00%40%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%01%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00");
-        let elf_len = 0;
-        let elf_data = new Uint8Array([]);
-        const elf_data_encoded = localStorage.getItem("elf_data");
-        if (elf_data_encoded) {
-            elf_data = new Uint8Array(
-                elf_data_encoded
-                    .split("%")
-                    .slice(1)
-                    .map(hex=>Number("0x" + hex))
-            );
-            elf_len = elf_data.length;
-            console.log({elf_len, elf_data});    
-        }
-        //// End Test
-
-        //// Begin Test: Start QuickJS
-        let send_str = "";
-        function send_command(cmd) {
-            if (cmd !== null) { send_str = cmd; }
-            if (send_str.length == 0) { return; }
-            console_write1(send_str.charCodeAt(0));
-            send_str = send_str.substring(1);
-            window.setTimeout(()=>{ send_command(null); }, 10);
-        }
-        const cmd = [
-            `qjs`,
-            window.localStorage.getItem("runCode"),
-            ``
-        ].join("\r");
-        window.setTimeout(()=>{ send_command(cmd); }, 5000);
-        //// End Test
-
-        /* C functions called from javascript */
-        console_write1 = Module.cwrap('console_queue_char', null, ['number']);
-        console_resize_event = Module.cwrap('console_resize_event', null, []);
-        fs_import_file = Module.cwrap('fs_import_file', null, ['string', 'number', 'number']);
-        display_key_event = Module.cwrap('display_key_event', null, ['number', 'number']);
-        display_mouse_event = Module.cwrap('display_mouse_event', null, ['number', 'number', 'number']);
-        display_wheel_event = Module.cwrap('display_wheel_event', null, ['number']);
-        net_write_packet = Module.cwrap('net_write_packet', null, ['number', 'number']);
-        net_set_carrier = Module.cwrap('net_set_carrier', null, ['number']);
-
-        net_state = null;
-        if (net_url != "") {
-            net_state = new Ethernet(net_url);
-        }
-
-        Module.ccall(
-            "vm_start",
-            null,
-            ["string", "number", "string", "string", "number", "number", "number", "string", "array", "number"],
-            [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url, elf_data, elf_len]
-        );
-        pwd = null;
     }
 
     function term_wrap_onclick_handler()
@@ -623,47 +566,8 @@ function start_vm(user, pwd)
         term_wrap_el.style.width = term.term_el.style.width;
         term_wrap_el.onclick = term_wrap_onclick_handler;
             
-        term.write("Try this...\r\nqjs --std /system/bin/blink.js\r\n\r\n");
+        term.write("WebSerial Monitor for NuttX Device\r\nClick \"Connect\" to begin\r\n");
     }
-
-//    console.log("cpu=" + cpu + " url=" + url + " mem=" + mem_size);
-
-    switch(cpu) {
-    case "x86":
-        vm_file = "x86emu";
-        break;
-    case "riscv64":
-    case "riscv":
-        vm_file = "riscvemu64";
-        break;
-    case "riscv32":
-        vm_file = "riscvemu32";
-        break;
-    default:
-        term.writeln("Unknown cpu=" + cpu);
-        return;
-    }
-
-    if (typeof WebAssembly === "object") {
-        /* wasm support : the memory grows automatically */
-        vm_url = vm_file + "-wasm.js";
-    } else {
-        /* set the total memory */
-        alloc_size = mem_size;
-        if (cpu == "x86")
-            alloc_size += 16;
-        if (graphic_enable) {
-            /* frame buffer memory */
-            alloc_size += (width * height * 4 + 1048576 - 1) >> 20;
-        }
-        alloc_size += 32; /* extra space (XXX: reduce it ?) */
-        alloc_size = (alloc_size + 15) & -16; /* align to 16 MB */
-        Module.TOTAL_MEMORY = alloc_size << 20;
-        vm_url = vm_file + ".js";
-    }
-    Module.preRun = start;
-
-    loadScript(vm_url, null);
 }
 
 function on_login()
@@ -712,6 +616,7 @@ async function control_device() {
 
     // Prompt user to select any serial port.
     const port = await navigator.serial.requestPort();
+    term.write("Power on your NuttX Device\r\n");
 
     // Get all serial ports the user has previously granted the website access to.
     // const ports = await navigator.serial.getPorts();
@@ -721,16 +626,16 @@ async function control_device() {
     await port.open({ baudRate: 2000000 });
 
     // Send a command to serial port
-    const cmd = [
-        `qjs`,
-        `function main() { console.log(123); }`,
-        `main()`,
-        ``
-    ].join("\r");
-    const textEncoder = new TextEncoderStream();
-    const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-    const writer = textEncoder.writable.getWriter();
-    await writer.write(cmd);
+    // const cmd = [
+    //     `qjs`,
+    //     `function main() { console.log(123); }`,
+    //     `main()`,
+    //     ``
+    // ].join("\r");
+    // const textEncoder = new TextEncoderStream();
+    // const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+    // const writer = textEncoder.writable.getWriter();
+    // await writer.write(cmd);
     
     // Read from the serial port
     const textDecoder = new TextDecoderStream();
@@ -745,8 +650,9 @@ async function control_device() {
             reader.releaseLock();
             break;
         }
-        // value is a string.
-        console.log(value);
+        // Print to the Terminal
+        term.write(value);
+        // console.log(value);
     }
 }
 //// End Test
