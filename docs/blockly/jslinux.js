@@ -626,7 +626,7 @@ function start_vm(user, pwd)
         term_wrap_el.style.width = term.term_el.style.width;
         term_wrap_el.onclick = term_wrap_onclick_handler;
             
-        term.write("Try this...\r\nqjs --std /system/bin/blink.js\r\n\r\n");
+        term.write("Starting NuttX Emulator...\r\n");
     }
 
 //    console.log("cpu=" + cpu + " url=" + url + " mem=" + mem_size);
