@@ -566,7 +566,7 @@ function start_vm(user, pwd)
         term_wrap_el.style.width = term.term_el.style.width;
         term_wrap_el.onclick = term_wrap_onclick_handler;
             
-        term.write("WebSerial Monitor for NuttX Device\r\nClick \"Connect\" to begin\r\n");
+        term.write("WebSerial Monitor for NuttX Device\r\nClick \"Connect\" and connect to our NuttX Device\r\n");
     }
 }
 
@@ -616,7 +616,7 @@ async function control_device() {
 
     // Prompt user to select any serial port.
     const port = await navigator.serial.requestPort();
-    term.write("Power on your NuttX Device\r\n");
+    term.write("Power on our NuttX Device and we'll wait for \"nsh>\"\r\n");
 
     // Get all serial ports the user has previously granted the website access to.
     // const ports = await navigator.serial.getPorts();
@@ -625,22 +625,19 @@ async function control_device() {
     // TODO: Ox64 only connects at 2 Mbps, change this for other devices
     await port.open({ baudRate: 2000000 });
 
-    // Send a command to serial port
-    // const cmd = [
-    //     `qjs`,
-    //     `function main() { console.log(123); }`,
-    //     `main()`,
-    //     ``
-    // ].join("\r");
-    // const textEncoder = new TextEncoderStream();
-    // const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-    // const writer = textEncoder.writable.getWriter();
-    // await writer.write(cmd);
+    // Prepare to write to serial port
+    const textEncoder = new TextEncoderStream();
+    const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+    const writer = textEncoder.writable.getWriter();
     
     // Read from the serial port
     const textDecoder = new TextDecoderStream();
     const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
     const reader = textDecoder.readable.getReader();
+
+    // Wait for "nsh>"
+    let nshSpotted = false;
+    let termBuffer = "";
 
     // Listen to data coming from the serial device.
     while (true) {
@@ -653,6 +650,24 @@ async function control_device() {
         // Print to the Terminal
         term.write(value);
         // console.log(value);
+
+        // Wait for "nsh>"
+        if (nshSpotted) { continue; }
+        termBuffer += value;
+        if (termBuffer.indexOf("nsh>") < 0) { continue; }
+
+        // NSH Spotted!
+        console.log("NSH Spotted!");
+        nshSpotted = true;
+
+        // Send a command to serial port
+        const cmd = [
+            `qjs`,
+            `function main() { console.log(123); }`,
+            `main()`,
+            ``
+        ].join("\r");
+        await writer.write(cmd);
     }
 }
 //// End Test
