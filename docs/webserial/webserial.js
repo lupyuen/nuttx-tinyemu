@@ -662,7 +662,8 @@ async function control_device() {
 
         // Send a command to serial port. Newlines become Carriage Returns.
         const code = window.localStorage.getItem("runCode")
-            .split('\n').join('\r');
+            .split("\n").join("\r")
+            .split("\r\r").join("\r");
         const cmd = [
             `qjs`,
             code,

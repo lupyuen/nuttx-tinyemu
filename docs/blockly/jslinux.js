@@ -520,18 +520,30 @@ function start_vm(user, pwd)
         }
         //// End Test
 
-        //// Begin Test: Start QuickJS
+        //// Begin Test: Send a Command to Console Input, character by character
         let send_str = "";
         function send_command(cmd) {
             if (cmd !== null) { send_str = cmd; }
             if (send_str.length == 0) { return; }
-            console_write1(send_str.charCodeAt(0));
+
+            // Get the next character
+            const ch = send_str.substring(0, 1);
             send_str = send_str.substring(1);
-            window.setTimeout(()=>{ send_command(null); }, 10);
+
+            // Slow down at the end of each line
+            const timeout = (ch === "\r")
+                ? 1000
+                : 10;
+
+            // Send the character
+            console_write1(ch.charCodeAt(0));
+            window.setTimeout(()=>{ send_command(null); }, timeout);
         }
-        // Send a command to serial port. Newlines become Carriage Returns.
+
+        // Send a Command to Console Input. Newlines become Carriage Returns.
         const code = window.localStorage.getItem("runCode")
-            .split('\n').join(' \r');
+            .split("\n").join("\r")
+            .split("\r\r").join("\r");
         const cmd = [
             `qjs`,
             code,
