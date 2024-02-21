@@ -535,7 +535,7 @@ function start_vm(user, pwd)
         const cmd = [
             `qjs`,
             code,
-            ``
+            ` `
         ].join("\r");
         window.setTimeout(()=>{ send_command(cmd); }, 5000);
         //// End Test
