@@ -531,11 +531,11 @@ function start_vm(user, pwd)
         }
         // Send a command to serial port. Newlines become Carriage Returns.
         const code = window.localStorage.getItem("runCode")
-            .split('\n').join('\r');
+            .split('\n').join(' \r');
         const cmd = [
             `qjs`,
             code,
-            ` `
+            ``
         ].join("\r");
         window.setTimeout(()=>{ send_command(cmd); }, 5000);
         //// End Test
