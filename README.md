@@ -8,6 +8,10 @@
 
 Read the articles...
 
+-   ["(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way"](https://lupyuen.github.io/articles/quickjs2)
+
+-   ["QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)"](https://lupyuen.github.io/articles/quickjs)
+
 -   ["Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)"](https://lupyuen.github.io/articles/romfs)
 
 -   ["TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)"](https://lupyuen.github.io/articles/tcc)
