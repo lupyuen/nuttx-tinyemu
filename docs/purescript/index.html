@@ -48,7 +48,7 @@
 
   // Run parseException
   console.log('Running parseException...');
-  const exception = `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
+  const exception = `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
   const result1 = StringParser_Parser
     .runParser
     (parseException)

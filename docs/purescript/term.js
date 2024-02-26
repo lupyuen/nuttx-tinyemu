@@ -505,6 +505,10 @@ Term.prototype.write = function(str)
     }
     //// End Test
 
+    //// Begin Test: Parse NuttX Logs with PureScript
+    parseLog(str);
+    //// End Test
+
     var s, ymin, ymax;
     
     function update(y) 
@@ -1476,3 +1480,48 @@ Term.prototype.resizePixel = function (new_width, new_height)
     this.refresh(0, this.h - 1);
     return true;
 }
+
+//// Begin Test: Parse NuttX Logs with PureScript
+
+// Parse NuttX Logs with PureScript.
+// Assume `str` is a single character for Terminal Output. We accumulate the characters and parse the line.
+// PureScript Parser is inited in `index.html`
+function parseLog(str) {
+
+    // Accumulate the characters into a line
+    if (!window.StringParser_Parser) { return; }
+    termbuf += str;
+    if (termbuf.indexOf("\r") < 0) { return; }
+
+    // Ignore all Newlines and Carriage Returns
+    termbuf = termbuf
+        .split("\r").join("")
+        .split("\n").join("");
+    // console.log({termbuf});
+
+    // Parse the Exception
+    const exception = StringParser_Parser
+        .runParser(parseException)(termbuf)
+        .value0;
+
+    // Explain the Exception
+    if (exception.error === undefined) {
+        console.log({exception});
+        const explain = explainException(exception.mcause)(exception.epc)(exception.mtval);
+        console.log({explain});
+    }
+
+    // Run parseStackDump
+    const stackDump = StringParser_Parser
+        .runParser(parseStackDump)(termbuf)
+        .value0;
+    if (stackDump.error === undefined) { console.log({stackDump}); }
+
+    // Reset the Line Buffer
+    termbuf = "";
+}
+
+// Buffer the last line of the Terminal Output
+let termbuf = "";
+
+//// End Test
