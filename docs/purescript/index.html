@@ -28,4 +28,72 @@
     </tr>
   </table>
 </body>
+
+<!-- Begin Test: Call PureScript to parse NuttX Logs -->
+<script type=module>
+  // Import Main Module
+  import { main, doBoth, doRunParser, parseCSV, exampleContent2, parseException, parseStackDump, explainException } from 'https://lupyuen.github.io/nuttx-purescript-parser/index.js';
+  import * as StringParser_Parser from "https://compile.purescript.org/output/StringParser.Parser/index.js";
+
+  // For Testing: Export the PureScript Functions
+  window.main = main;
+  window.doBoth = doBoth;
+  window.doRunParser = doRunParser;
+  window.parseCSV = parseCSV;
+  window.exampleContent2 = exampleContent2;
+  window.StringParser_Parser = StringParser_Parser;
+  window.parseException = parseException;
+  window.parseStackDump = parseStackDump;
+  window.explainException = explainException;
+
+  // Run parseException
+  console.log('Running parseException...');
+  const exception = `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
+  const result1 = StringParser_Parser
+    .runParser
+    (parseException)
+    (exception)
+    ;
+  console.log({result1});
+  window.result1 = result1;
+
+  // Run explainException
+  const result2 = explainException(12)('000000008000ad8a')('000000008000ad8a')
+  console.log({result2});
+  window.result2 = result2;
+
+  // Run parseStackDump
+  console.log('Running parseStackDump...');
+  const stackDump = `[    6.242000] stack_dump: 0xc02027e0: c0202010 00000000 00000001 00000000 00000000 00000000 8000ad8a 00000000`;
+  const result3 = StringParser_Parser
+    .runParser
+    (parseStackDump)
+    (stackDump)
+    ;
+  console.log({result3});
+  window.result3 = result3;
+
+  // Run Main Function
+  // console.log('Running main...');
+  // main();
+
+  // Run parseCSV
+  // console.log('Running StringParser_Parser...');
+  // const result = StringParser_Parser
+  //   .runParser
+  //   (parseCSV)
+  //   (exampleContent2)
+  //   ;
+  // console.log({result});
+  // window.result = result;
+
+  // Alternatively
+  // console.log('Running doRunParser...');
+  // doRunParser({show : console.log})
+  //   ("bbbb")
+  //   (parseCSV)
+  //   (exampleContent2)
+  //   ();
+</script>
+<!-- End Test -->
 </html>
