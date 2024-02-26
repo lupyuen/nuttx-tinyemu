@@ -1498,6 +1498,7 @@ function parseLog(str) {
         .split("\r").join("")
         .split("\n").join("");
     // console.log({termbuf});
+    const parser_output = document.getElementById("parser_output");
 
     // Parse the Exception
     const exception = StringParser_Parser
@@ -1507,15 +1508,24 @@ function parseLog(str) {
     // Explain the Exception
     if (exception.error === undefined) {
         console.log({exception});
+        parser_output.innerHTML +=
+            `<p>${JSON.stringify(exception)}</p>`;
+
         const explain = explainException(exception.mcause)(exception.epc)(exception.mtval);
         console.log({explain});
+        parser_output.innerHTML +=
+            `<p>${JSON.stringify(explain)}</p>`;
     }
 
     // Run parseStackDump
     const stackDump = StringParser_Parser
         .runParser(parseStackDump)(termbuf)
         .value0;
-    if (stackDump.error === undefined) { console.log({stackDump}); }
+    if (stackDump.error === undefined) {
+        console.log({stackDump}); 
+        parser_output.innerHTML +=
+            `<p>${JSON.stringify(stackDump)}</p>`;
+    }
 
     // Reset the Line Buffer
     termbuf = "";
