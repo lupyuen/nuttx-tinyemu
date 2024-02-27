@@ -1,5 +1,9 @@
 const addr = "80007028";
 
+// Show 10 lines before and after the Requested Address
+const before_count = 10;
+const after_count = 10;
+
 // Fetch our Disassembly File, line by line
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#processing_a_text_file_line_by_line
 async function* makeTextFileLineIterator(fileURL) {
@@ -46,20 +50,29 @@ async function run() {
   let line = null;
 
   // Process our Disassembly File, line by line
-  for await (line of makeTextFileLineIterator(url)) {
+  const iter = makeTextFileLineIterator(url);
+  for await (line of iter) {
+
+    // Look for the Requested Address
     linenum++;
     if (line.indexOf(`    ${addr}:`) == 0) {
-      break;
+      after_lines.push(line);
+      continue;
     }
 
-    // Keep only 10 lines before
-    const before_count = 10;
-    before_lines.push(line);
-    if (before_lines.length > before_count) { before_lines.shift(); }
+    // Save the lines before the Requested Address
+    if (after_lines.length == 0) {
+      before_lines.push(line);
+      if (before_lines.length > before_count) { before_lines.shift(); }  
+    } else {
+      // Save the lines after the Requested Address
+      after_lines.push(line);
+      if (after_lines.length >= after_count) { break; }
+    }
   }
 
   console.log({before_lines});
-  console.log({line});
+  console.log({after_lines});
 }
 
 run();
