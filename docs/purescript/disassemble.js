@@ -5,6 +5,31 @@
 const before_count = 20;
 const after_count  = 20;
 
+// Convert `nuttx/arch/risc-v/src/common/crt0.c:166`
+// To `<a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/crt0.c#L166">...`
+// Convert `quickjs-nuttx/quickjs-libc.c:1954`
+// To `<a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs-libc.c#L1954">...`
+const search1  = "nuttx/";
+const replace1 = "https://github.com/apache/nuttx/blob/master/";
+const search2  = "quickjs-nuttx/";
+const replace2 = "https://github.com/lupyuen/quickjs-nuttx/blob/master/";
+
+// Convert the Source File to Source URL
+function processLine(line) {
+  if (line.indexOf(":") < 0) { return line; }
+  let url = line.split(":", 2).join("#L");
+
+  // Search and replace Source File to Source URL
+  if (line.indexOf(search1) == 0) {
+    url = url.split(search1, 2).join(replace1);
+  } else if (line.indexOf(search2) == 0) {
+    url = url.split(search2, 2).join(replace2);
+  } else {
+    return line;
+  }
+  return `<a href="${url}" target="_blank">${line}</a>`;
+}
+
 // Fetch our Disassembly File, line by line
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#processing_a_text_file_line_by_line
 async function* makeTextFileLineIterator(fileURL) {
@@ -56,22 +81,24 @@ async function run() {
 
   // Process our Disassembly File, line by line
   const iter = makeTextFileLineIterator(url);
-  for await (const line of iter) {
+  for await (const line1 of iter) {
 
     // Look for the Requested Address
     linenum++;
-    if (line.indexOf(`    ${addr}:`) == 0) {
-      after_lines.push(line);
+    if (line1.indexOf(`    ${addr}:`) == 0) {
+      const line2 = processLine(line1);
+      after_lines.push(line2);
       continue;
     }
 
     // Save the lines before the Requested Address
+    const line2 = processLine(line1);
     if (after_lines.length == 0) {
-      before_lines.push(line);
+      before_lines.push(line2);
       if (before_lines.length > before_count) { before_lines.shift(); }  
     } else {
       // Save the lines after the Requested Address
-      after_lines.push(line);
+      after_lines.push(line2);
       if (after_lines.length > after_count) { break; }
     }
   }
@@ -87,5 +114,3 @@ async function run() {
 }
 
 run();
-
-// https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
