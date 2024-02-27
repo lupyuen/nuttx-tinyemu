@@ -16,6 +16,7 @@ const replace2 = "https://github.com/lupyuen/quickjs-nuttx/blob/master/";
 
 // Convert the Source File to Source URL
 function processLine(line) {
+  line = line.split("\t").join("&nbsp;&nbsp;&nbsp;&nbsp;");
   if (line.indexOf(":") < 0) { return line; }
   let url = line.split(":", 2).join("#L");
 
@@ -107,10 +108,15 @@ async function run() {
   // Show the Before and After Lines.
   const line = after_lines[0];
   after_lines.shift();
-
   console.log({before_lines});
   console.log({line});
   console.log({after_lines});
+
+  const disassembly = document.getElementById("disassembly");
+  disassembly.innerHTML =
+    before_lines.join("<br>")
+    + `<br><span id="highlight"><br>${line}<br></span><br>`
+    + after_lines.join("<br>")
 }
 
 run();
