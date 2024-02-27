@@ -8,7 +8,7 @@
 
 000000008000700e <sig_trampoline>:
 sig_trampoline():
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/crt0.c:70
+nuttx/arch/risc-v/src/common/crt0.c:70
  ****************************************************************************/
 
 static void sig_trampoline(void) naked_function;
@@ -30,7 +30,7 @@ static void sig_trampoline(void)
 
 0000000080007028 <_start>:
 _start():
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/crt0.c:166
+nuttx/arch/risc-v/src/common/crt0.c:166
  *   exit.
  *
  ****************************************************************************/
@@ -38,7 +38,7 @@ _start():
 void _start(int argc, char *argv[])
 {
     80007028:	1141                	addi	sp,sp,-16
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/crt0.c:173
+nuttx/arch/risc-v/src/common/crt0.c:173
 
   /* Initialize the reserved area at the beginning of the .bss/.data region
    * that is visible to the RTOS.
@@ -46,16 +46,16 @@ void _start(int argc, char *argv[])
 
   ARCH_DATA_RESERVE->ar_sigtramp = (addrenv_sigtramp_t)sig_trampoline;
     8000702a:	008017b7          	lui	a5,0x801
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/crt0.c:166
+nuttx/arch/risc-v/src/common/crt0.c:166
 {
     8000702e:	e406                	sd	ra,8(sp)
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/crt0.c:173
+nuttx/arch/risc-v/src/common/crt0.c:173
   ARCH_DATA_RESERVE->ar_sigtramp = (addrenv_sigtramp_t)sig_trampoline;
     80007030:	07a2                	slli	a5,a5,0x8
     80007032:	00000717          	auipc	a4,0x0
     80007036:	fdc70713          	addi	a4,a4,-36 # 8000700e <sig_trampoline>
     8000703a:	e398                	sd	a4,0(a5)
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/crt0.c:187
+nuttx/arch/risc-v/src/common/crt0.c:187
   atexit(exec_dtors);
 #endif
 
@@ -63,7 +63,7 @@ void _start(int argc, char *argv[])
 
   ret = main(argc, argv);
     8000703c:	3da000ef          	jal	ra,80007416 <main>
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/crt0.c:191
+nuttx/arch/risc-v/src/common/crt0.c:191
 
   /* Call exit() if/when the main() returns */
 

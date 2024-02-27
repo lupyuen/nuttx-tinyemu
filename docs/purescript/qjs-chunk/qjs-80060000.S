@@ -2754,7 +2754,7 @@ void symlink(void) { puts("TODO: symlink"); exit(1); }
 
 000000008005fcaa <malloc_size>:
 malloc_size():
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_malloc_size.c:40
+nuttx/mm/umm_heap/umm_malloc_size.c:40
  ****************************************************************************/
 
 #undef malloc_size /* See mm/README.txt */
@@ -2763,17 +2763,17 @@ size_t malloc_size(FAR void *mem)
   return mm_malloc_size(USR_HEAP, mem);
     8005fcaa:	008017b7          	lui	a5,0x801
     8005fcae:	07a2                	slli	a5,a5,0x8
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_malloc_size.c:39
+nuttx/mm/umm_heap/umm_malloc_size.c:39
 {
     8005fcb0:	85aa                	mv	a1,a0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_malloc_size.c:40
+nuttx/mm/umm_heap/umm_malloc_size.c:40
   return mm_malloc_size(USR_HEAP, mem);
     8005fcb2:	6788                	ld	a0,8(a5)
     8005fcb4:	aa05                	j	8005fde4 <mm_malloc_size>
 
 000000008005fcb6 <free>:
 free():
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_free.c:49
+nuttx/mm/umm_heap/umm_free.c:49
  ****************************************************************************/
 
 #undef free /* See mm/README.txt */
@@ -2782,17 +2782,17 @@ void free(FAR void *mem)
   mm_free(USR_HEAP, mem);
     8005fcb6:	008017b7          	lui	a5,0x801
     8005fcba:	07a2                	slli	a5,a5,0x8
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_free.c:48
+nuttx/mm/umm_heap/umm_free.c:48
 {
     8005fcbc:	85aa                	mv	a1,a0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_free.c:49
+nuttx/mm/umm_heap/umm_free.c:49
   mm_free(USR_HEAP, mem);
     8005fcbe:	6788                	ld	a0,8(a5)
     8005fcc0:	a66d                	j	8006006a <mm_free>
 
 000000008005fcc2 <malloc>:
 malloc():
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_malloc.c:54
+nuttx/mm/umm_heap/umm_malloc.c:54
  *
  ****************************************************************************/
 
@@ -2800,7 +2800,7 @@ malloc():
 FAR void *malloc(size_t size)
 {
     8005fcc2:	85aa                	mv	a1,a0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_malloc.c:58
+nuttx/mm/umm_heap/umm_malloc.c:58
 #if defined(CONFIG_ARCH_ADDRENV) && defined(CONFIG_BUILD_KERNEL)
   /* Use memalign() because it implements the sbrk() logic */
 
@@ -2810,7 +2810,7 @@ FAR void *malloc(size_t size)
 
 000000008005fcc8 <memalign>:
 memalign():
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:53
+nuttx/mm/umm_heap/umm_memalign.c:53
  *
  ****************************************************************************/
 
@@ -2819,7 +2819,7 @@ FAR void *memalign(size_t alignment, size_t size)
 {
     8005fcc8:	7179                	addi	sp,sp,-48
     8005fcca:	e44e                	sd	s3,8(sp)
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:75
+nuttx/mm/umm_heap/umm_memalign.c:75
    * allocated).
    */
 
@@ -2827,7 +2827,7 @@ FAR void *memalign(size_t alignment, size_t size)
     {
       mem = mm_memalign(USR_HEAP, alignment, size);
     8005fccc:	008019b7          	lui	s3,0x801
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:53
+nuttx/mm/umm_heap/umm_memalign.c:53
 {
     8005fcd0:	f022                	sd	s0,32(sp)
     8005fcd2:	e84a                	sd	s2,16(sp)
@@ -2836,38 +2836,38 @@ FAR void *memalign(size_t alignment, size_t size)
     8005fcd8:	ec26                	sd	s1,24(sp)
     8005fcda:	892a                	mv	s2,a0
     8005fcdc:	842e                	mv	s0,a1
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:75
+nuttx/mm/umm_heap/umm_memalign.c:75
       mem = mm_memalign(USR_HEAP, alignment, size);
     8005fcde:	09a2                	slli	s3,s3,0x8
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:60
+nuttx/mm/umm_heap/umm_memalign.c:60
   umm_try_initialize();
     8005fce0:	03f000ef          	jal	ra,8006051e <umm_try_initialize>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:79
+nuttx/mm/umm_heap/umm_memalign.c:79
       if (!mem)
         {
           brkaddr = sbrk(size < 1 ? 1 : size);
           if (brkaddr == (FAR void *)-1)
     8005fce4:	5a7d                	li	s4,-1
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:75
+nuttx/mm/umm_heap/umm_memalign.c:75
       mem = mm_memalign(USR_HEAP, alignment, size);
     8005fce6:	0089b503          	ld	a0,8(s3) # 801008 <asinh-0x7f7feff8>
     8005fcea:	8622                	mv	a2,s0
     8005fcec:	85ca                	mv	a1,s2
     8005fcee:	3bc000ef          	jal	ra,800600aa <mm_memalign>
     8005fcf2:	84aa                	mv	s1,a0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:76
+nuttx/mm/umm_heap/umm_memalign.c:76
       if (!mem)
     8005fcf4:	e901                	bnez	a0,8005fd04 <memalign+0x3c>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:78
+nuttx/mm/umm_heap/umm_memalign.c:78
           brkaddr = sbrk(size < 1 ? 1 : size);
     8005fcf6:	8522                	mv	a0,s0
     8005fcf8:	e011                	bnez	s0,8005fcfc <memalign+0x34>
     8005fcfa:	4505                	li	a0,1
     8005fcfc:	068000ef          	jal	ra,8005fd64 <sbrk>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:79
+nuttx/mm/umm_heap/umm_memalign.c:79
           if (brkaddr == (FAR void *)-1)
     8005fd00:	ff4513e3          	bne	a0,s4,8005fce6 <memalign+0x1e>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_memalign.c:99
+nuttx/mm/umm_heap/umm_memalign.c:99
       set_errno(ENOMEM);
     }
 
@@ -2886,7 +2886,7 @@ FAR void *memalign(size_t alignment, size_t size)
 
 000000008005fd16 <realloc>:
 realloc():
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:55
+nuttx/mm/umm_heap/umm_realloc.c:55
  *
  ****************************************************************************/
 
@@ -2895,7 +2895,7 @@ FAR void *realloc(FAR void *oldmem, size_t size)
 {
     8005fd16:	7179                	addi	sp,sp,-48
     8005fd18:	e44e                	sd	s3,8(sp)
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:77
+nuttx/mm/umm_heap/umm_realloc.c:77
    * allocated).
    */
 
@@ -2903,7 +2903,7 @@ FAR void *realloc(FAR void *oldmem, size_t size)
     {
       mem = mm_realloc(USR_HEAP, oldmem, size);
     8005fd1a:	008019b7          	lui	s3,0x801
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:55
+nuttx/mm/umm_heap/umm_realloc.c:55
 {
     8005fd1e:	f022                	sd	s0,32(sp)
     8005fd20:	e84a                	sd	s2,16(sp)
@@ -2912,38 +2912,38 @@ FAR void *realloc(FAR void *oldmem, size_t size)
     8005fd26:	ec26                	sd	s1,24(sp)
     8005fd28:	892a                	mv	s2,a0
     8005fd2a:	842e                	mv	s0,a1
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:77
+nuttx/mm/umm_heap/umm_realloc.c:77
       mem = mm_realloc(USR_HEAP, oldmem, size);
     8005fd2c:	09a2                	slli	s3,s3,0x8
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:62
+nuttx/mm/umm_heap/umm_realloc.c:62
   umm_try_initialize();
     8005fd2e:	7f0000ef          	jal	ra,8006051e <umm_try_initialize>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:81
+nuttx/mm/umm_heap/umm_realloc.c:81
       if (!mem)
         {
           brkaddr = sbrk(size < 1 ? 1 : size);
           if (brkaddr == (FAR void *)-1)
     8005fd32:	5a7d                	li	s4,-1
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:77
+nuttx/mm/umm_heap/umm_realloc.c:77
       mem = mm_realloc(USR_HEAP, oldmem, size);
     8005fd34:	0089b503          	ld	a0,8(s3) # 801008 <asinh-0x7f7feff8>
     8005fd38:	8622                	mv	a2,s0
     8005fd3a:	85ca                	mv	a1,s2
     8005fd3c:	516000ef          	jal	ra,80060252 <mm_realloc>
     8005fd40:	84aa                	mv	s1,a0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:78
+nuttx/mm/umm_heap/umm_realloc.c:78
       if (!mem)
     8005fd42:	e901                	bnez	a0,8005fd52 <realloc+0x3c>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:80
+nuttx/mm/umm_heap/umm_realloc.c:80
           brkaddr = sbrk(size < 1 ? 1 : size);
     8005fd44:	8522                	mv	a0,s0
     8005fd46:	e011                	bnez	s0,8005fd4a <realloc+0x34>
     8005fd48:	4505                	li	a0,1
     8005fd4a:	01a000ef          	jal	ra,8005fd64 <sbrk>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:81
+nuttx/mm/umm_heap/umm_realloc.c:81
           if (brkaddr == (FAR void *)-1)
     8005fd4e:	ff4513e3          	bne	a0,s4,8005fd34 <realloc+0x1e>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_realloc.c:101
+nuttx/mm/umm_heap/umm_realloc.c:101
       set_errno(ENOMEM);
     }
 
@@ -2962,7 +2962,7 @@ FAR void *realloc(FAR void *oldmem, size_t size)
 
 000000008005fd64 <sbrk>:
 sbrk():
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:74
+nuttx/mm/umm_heap/umm_sbrk.c:74
  *        size.
  *
  ****************************************************************************/
@@ -2974,7 +2974,7 @@ FAR void *sbrk(intptr_t incr)
     8005fd68:	e822                	sd	s0,16(sp)
     8005fd6a:	e426                	sd	s1,8(sp)
     8005fd6c:	e04a                	sd	s2,0(sp)
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:81
+nuttx/mm/umm_heap/umm_sbrk.c:81
   uintptr_t allocbase;
   unsigned int pgincr;
   size_t bytesize;
@@ -2982,14 +2982,14 @@ FAR void *sbrk(intptr_t incr)
 
   DEBUGASSERT(incr >= 0);
     8005fd6e:	00055e63          	bgez	a0,8005fd8a <sbrk+0x26>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:81 (discriminator 1)
+nuttx/mm/umm_heap/umm_sbrk.c:81 (discriminator 1)
     8005fd72:	00029617          	auipc	a2,0x29
     8005fd76:	f0e60613          	addi	a2,a2,-242 # 80088c80 <qjsc_qjscalc+0x7da8>
     8005fd7a:	05100593          	li	a1,81
     8005fd7e:	00029517          	auipc	a0,0x29
     8005fd82:	f1250513          	addi	a0,a0,-238 # 80088c90 <qjsc_qjscalc+0x7db8>
     8005fd86:	3d7000ef          	jal	ra,8006095c <__assert>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:94
+nuttx/mm/umm_heap/umm_sbrk.c:94
 
   umm_try_initialize();
 
@@ -2999,19 +2999,19 @@ FAR void *sbrk(intptr_t incr)
     8005fd8a:	00801937          	lui	s2,0x801
     8005fd8e:	842a                	mv	s0,a0
     8005fd90:	0922                	slli	s2,s2,0x8
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:90
+nuttx/mm/umm_heap/umm_sbrk.c:90
   umm_try_initialize();
     8005fd92:	78c000ef          	jal	ra,8006051e <umm_try_initialize>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:94
+nuttx/mm/umm_heap/umm_sbrk.c:94
   brkaddr = (uintptr_t)mm_brkaddr(USR_HEAP, 0);
     8005fd96:	00893503          	ld	a0,8(s2) # 801008 <asinh-0x7f7feff8>
     8005fd9a:	4581                	li	a1,0
     8005fd9c:	078000ef          	jal	ra,8005fe14 <mm_brkaddr>
     8005fda0:	84aa                	mv	s1,a0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:95
+nuttx/mm/umm_heap/umm_sbrk.c:95
   if (incr > 0)
     8005fda2:	c405                	beqz	s0,8005fdca <sbrk+0x66>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:99
+nuttx/mm/umm_heap/umm_sbrk.c:99
     {
       /* Convert the increment to multiples of the page size */
 
@@ -3021,7 +3021,7 @@ FAR void *sbrk(intptr_t incr)
     8005fda8:	942e                	add	s0,s0,a1
     8005fdaa:	8031                	srli	s0,s0,0xc
     8005fdac:	2401                	sext.w	s0,s0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:105
+nuttx/mm/umm_heap/umm_sbrk.c:105
 
       /* Allocate the requested number of pages and map them to the
        * break address.
@@ -3031,10 +3031,10 @@ FAR void *sbrk(intptr_t incr)
     8005fdae:	85a2                	mv	a1,s0
     8005fdb0:	295040ef          	jal	ra,80064844 <pgalloc>
     8005fdb4:	85aa                	mv	a1,a0
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:106
+nuttx/mm/umm_heap/umm_sbrk.c:106
       if (allocbase == 0)
     8005fdb6:	c10d                	beqz	a0,8005fdd8 <sbrk+0x74>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:114
+nuttx/mm/umm_heap/umm_sbrk.c:114
           goto errout;
         }
 
@@ -3042,14 +3042,14 @@ FAR void *sbrk(intptr_t incr)
 
       bytesize = pgincr << MM_PGSHIFT;
     8005fdb8:	00c4161b          	slliw	a2,s0,0xc
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:115
+nuttx/mm/umm_heap/umm_sbrk.c:115
       mm_extend(USR_HEAP, (FAR void *)allocbase, bytesize, 0);
     8005fdbc:	00893503          	ld	a0,8(s2)
     8005fdc0:	1602                	slli	a2,a2,0x20
     8005fdc2:	4681                	li	a3,0
     8005fdc4:	9201                	srli	a2,a2,0x20
     8005fdc6:	076000ef          	jal	ra,8005fe3c <mm_extend>
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:123
+nuttx/mm/umm_heap/umm_sbrk.c:123
   return (FAR void *)brkaddr;
 
 errout:
@@ -3063,19 +3063,19 @@ errout:
     8005fdd2:	64a2                	ld	s1,8(sp)
     8005fdd4:	6105                	addi	sp,sp,32
     8005fdd6:	8082                	ret
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:121
+nuttx/mm/umm_heap/umm_sbrk.c:121
   set_errno(errcode);
     8005fdd8:	441000ef          	jal	ra,80060a18 <__errno>
     8005fddc:	47ad                	li	a5,11
     8005fdde:	c11c                	sw	a5,0(a0)
-/Users/Luppy/ox64/nuttx/mm/umm_heap/umm_sbrk.c:122
+nuttx/mm/umm_heap/umm_sbrk.c:122
   return (FAR void *)-1;
     8005fde0:	54fd                	li	s1,-1
     8005fde2:	b7e5                	j	8005fdca <sbrk+0x66>
 
 000000008005fde4 <mm_malloc_size>:
 mm_malloc_size():
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:52
+nuttx/mm/mm_heap/mm_malloc_size.c:52
     }
 #endif
 
@@ -3083,7 +3083,7 @@ mm_malloc_size():
 
   if (!mem)
     8005fde4:	c595                	beqz	a1,8005fe10 <mm_malloc_size+0x2c>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:63
+nuttx/mm/mm_heap/mm_malloc_size.c:63
 
   node = (FAR struct mm_freenode_s *)((FAR char *)mem - MM_SIZEOF_ALLOCNODE);
 
@@ -3092,40 +3092,40 @@ mm_malloc_size():
   DEBUGASSERT(MM_NODE_IS_ALLOC(node));
     8005fde6:	ff85b503          	ld	a0,-8(a1) # ff8 <asinh-0x7ffff008>
     8005fdea:	00157793          	andi	a5,a0,1
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:65
+nuttx/mm/mm_heap/mm_malloc_size.c:65
 
   return MM_SIZEOF_NODE(node) - MM_ALLOCNODE_OVERHEAD;
     8005fdee:	9971                	andi	a0,a0,-4
     8005fdf0:	1561                	addi	a0,a0,-8
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:63
+nuttx/mm/mm_heap/mm_malloc_size.c:63
   DEBUGASSERT(MM_NODE_IS_ALLOC(node));
     8005fdf2:	e385                	bnez	a5,8005fe12 <mm_malloc_size+0x2e>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:39 (discriminator 1)
+nuttx/mm/mm_heap/mm_malloc_size.c:39 (discriminator 1)
 {
     8005fdf4:	1141                	addi	sp,sp,-16
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:63 (discriminator 1)
+nuttx/mm/mm_heap/mm_malloc_size.c:63 (discriminator 1)
   DEBUGASSERT(MM_NODE_IS_ALLOC(node));
     8005fdf6:	00029617          	auipc	a2,0x29
     8005fdfa:	eb260613          	addi	a2,a2,-334 # 80088ca8 <qjsc_qjscalc+0x7dd0>
     8005fdfe:	03f00593          	li	a1,63
     8005fe02:	00029517          	auipc	a0,0x29
     8005fe06:	ec650513          	addi	a0,a0,-314 # 80088cc8 <qjsc_qjscalc+0x7df0>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:39 (discriminator 1)
+nuttx/mm/mm_heap/mm_malloc_size.c:39 (discriminator 1)
 {
     8005fe0a:	e406                	sd	ra,8(sp)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:63 (discriminator 1)
+nuttx/mm/mm_heap/mm_malloc_size.c:63 (discriminator 1)
   DEBUGASSERT(MM_NODE_IS_ALLOC(node));
     8005fe0c:	351000ef          	jal	ra,8006095c <__assert>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:54
+nuttx/mm/mm_heap/mm_malloc_size.c:54
       return 0;
     8005fe10:	4501                	li	a0,0
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_malloc_size.c:66
+nuttx/mm/mm_heap/mm_malloc_size.c:66
 }
     8005fe12:	8082                	ret
 
 000000008005fe14 <mm_brkaddr>:
 mm_brkaddr():
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:53
+nuttx/mm/mm_heap/mm_brkaddr.c:53
   uintptr_t brkaddr;
 
 #if CONFIG_MM_REGIONS > 1
@@ -3133,41 +3133,41 @@ mm_brkaddr():
 #else
   DEBUGASSERT(heap && region == 0);
     8005fe14:	c111                	beqz	a0,8005fe18 <mm_brkaddr+0x4>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:53 (discriminator 2)
+nuttx/mm/mm_heap/mm_brkaddr.c:53 (discriminator 2)
     8005fe16:	cd99                	beqz	a1,8005fe34 <mm_brkaddr+0x20>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:47 (discriminator 3)
+nuttx/mm/mm_heap/mm_brkaddr.c:47 (discriminator 3)
 {
     8005fe18:	1141                	addi	sp,sp,-16
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:53 (discriminator 3)
+nuttx/mm/mm_heap/mm_brkaddr.c:53 (discriminator 3)
   DEBUGASSERT(heap && region == 0);
     8005fe1a:	00029617          	auipc	a2,0x29
     8005fe1e:	ece60613          	addi	a2,a2,-306 # 80088ce8 <qjsc_qjscalc+0x7e10>
     8005fe22:	03500593          	li	a1,53
     8005fe26:	00029517          	auipc	a0,0x29
     8005fe2a:	eda50513          	addi	a0,a0,-294 # 80088d00 <qjsc_qjscalc+0x7e28>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:47 (discriminator 3)
+nuttx/mm/mm_heap/mm_brkaddr.c:47 (discriminator 3)
 {
     8005fe2e:	e406                	sd	ra,8(sp)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:53 (discriminator 3)
+nuttx/mm/mm_heap/mm_brkaddr.c:53 (discriminator 3)
   DEBUGASSERT(heap && region == 0);
     8005fe30:	32d000ef          	jal	ra,8006095c <__assert>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:56 (discriminator 4)
+nuttx/mm/mm_heap/mm_brkaddr.c:56 (discriminator 4)
 #endif
 
   brkaddr = (uintptr_t)heap->mm_heapend[region];
     8005fe34:	6128                	ld	a0,64(a0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:57 (discriminator 4)
+nuttx/mm/mm_heap/mm_brkaddr.c:57 (discriminator 4)
   return brkaddr ? (FAR void *)(brkaddr + MM_SIZEOF_ALLOCNODE) : NULL;
     8005fe36:	c111                	beqz	a0,8005fe3a <mm_brkaddr+0x26>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:57 (discriminator 1)
+nuttx/mm/mm_heap/mm_brkaddr.c:57 (discriminator 1)
     8005fe38:	0541                	addi	a0,a0,16
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_brkaddr.c:58
+nuttx/mm/mm_heap/mm_brkaddr.c:58
 }
     8005fe3a:	8082                	ret
 
 000000008005fe3c <mm_extend>:
 mm_extend():
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:54
+nuttx/mm/mm_heap/mm_extend.c:54
  *
  ****************************************************************************/
 
@@ -3180,7 +3180,7 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
     8005fe42:	f426                	sd	s1,40(sp)
     8005fe44:	f04a                	sd	s2,32(sp)
     8005fe46:	ec4e                	sd	s3,24(sp)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:62
+nuttx/mm/mm_heap/mm_extend.c:62
   uintptr_t blockstart;
   uintptr_t blockend;
 
@@ -3188,13 +3188,13 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
 
   DEBUGASSERT(heap && mem);
     8005fe48:	c111                	beqz	a0,8005fe4c <mm_extend+0x10>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:62 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:62 (discriminator 2)
     8005fe4a:	ed89                	bnez	a1,8005fe64 <mm_extend+0x28>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:62 (discriminator 3)
+nuttx/mm/mm_heap/mm_extend.c:62 (discriminator 3)
     8005fe4c:	00029617          	auipc	a2,0x29
     8005fe50:	ecc60613          	addi	a2,a2,-308 # 80088d18 <qjsc_qjscalc+0x7e40>
     8005fe54:	03e00593          	li	a1,62
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 3)
+nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 3)
 #if CONFIG_MM_REGIONS > 1
   DEBUGASSERT(size >= MIN_EXTEND && region >= 0 &&
               region < heap->mm_nregions);
@@ -3203,18 +3203,18 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
     8005fe58:	00029517          	auipc	a0,0x29
     8005fe5c:	ed050513          	addi	a0,a0,-304 # 80088d28 <qjsc_qjscalc+0x7e50>
     8005fe60:	2fd000ef          	jal	ra,8006095c <__assert>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 4)
+nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 4)
     8005fe64:	47fd                	li	a5,31
     8005fe66:	84b2                	mv	s1,a2
     8005fe68:	00c7f363          	bgeu	a5,a2,8005fe6e <mm_extend+0x32>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 2)
     8005fe6c:	ca81                	beqz	a3,8005fe7c <mm_extend+0x40>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 3)
+nuttx/mm/mm_heap/mm_extend.c:67 (discriminator 3)
     8005fe6e:	00029617          	auipc	a2,0x29
     8005fe72:	ed260613          	addi	a2,a2,-302 # 80088d40 <qjsc_qjscalc+0x7e68>
     8005fe76:	04300593          	li	a1,67
     8005fe7a:	bff9                	j	8005fe58 <mm_extend+0x1c>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:75 (discriminator 4)
+nuttx/mm/mm_heap/mm_extend.c:75 (discriminator 4)
   /* Make sure that the memory region are properly aligned */
 
   blockstart = (uintptr_t)mem;
@@ -3223,40 +3223,40 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
   DEBUGASSERT(MM_ALIGN_UP(blockstart) == blockstart);
     8005fe7c:	00f58993          	addi	s3,a1,15
     8005fe80:	ff09f993          	andi	s3,s3,-16
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:73 (discriminator 4)
+nuttx/mm/mm_heap/mm_extend.c:73 (discriminator 4)
   blockend   = blockstart + size;
     8005fe84:	00b607b3          	add	a5,a2,a1
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:75 (discriminator 4)
+nuttx/mm/mm_heap/mm_extend.c:75 (discriminator 4)
   DEBUGASSERT(MM_ALIGN_UP(blockstart) == blockstart);
     8005fe88:	00b98963          	beq	s3,a1,8005fe9a <mm_extend+0x5e>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:75 (discriminator 1)
+nuttx/mm/mm_heap/mm_extend.c:75 (discriminator 1)
     8005fe8c:	00029617          	auipc	a2,0x29
     8005fe90:	ef460613          	addi	a2,a2,-268 # 80088d80 <qjsc_qjscalc+0x7ea8>
     8005fe94:	04b00593          	li	a1,75
     8005fe98:	b7c1                	j	8005fe58 <mm_extend+0x1c>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:76 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:76 (discriminator 2)
   DEBUGASSERT(MM_ALIGN_DOWN(blockend) == blockend);
     8005fe9a:	ff07f913          	andi	s2,a5,-16
     8005fe9e:	00f90963          	beq	s2,a5,8005feb0 <mm_extend+0x74>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:76 (discriminator 1)
+nuttx/mm/mm_heap/mm_extend.c:76 (discriminator 1)
     8005fea2:	00029617          	auipc	a2,0x29
     8005fea6:	f3e60613          	addi	a2,a2,-194 # 80088de0 <qjsc_qjscalc+0x7f08>
     8005feaa:	04c00593          	li	a1,76
     8005feae:	b76d                	j	8005fe58 <mm_extend+0x1c>
     8005feb0:	842a                	mv	s0,a0
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:80 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:80 (discriminator 2)
 
   /* Take the memory manager mutex */
 
   DEBUGVERIFY(mm_lock(heap));
     8005feb2:	7ae000ef          	jal	ra,80060660 <mm_lock>
     8005feb6:	00055963          	bgez	a0,8005fec8 <mm_extend+0x8c>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:80 (discriminator 1)
+nuttx/mm/mm_heap/mm_extend.c:80 (discriminator 1)
     8005feba:	00029617          	auipc	a2,0x29
     8005febe:	f6660613          	addi	a2,a2,-154 # 80088e20 <qjsc_qjscalc+0x7f48>
     8005fec2:	05000593          	li	a1,80
     8005fec6:	bf49                	j	8005fe58 <mm_extend+0x1c>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:86 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:86 (discriminator 2)
 
   /* Get the terminal node in the old heap.  The block to extend must
    * immediately follow this node.
@@ -3264,16 +3264,16 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
 
   oldnode = heap->mm_heapend[region];
     8005fec8:	6038                	ld	a4,64(s0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:87 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:87 (discriminator 2)
   DEBUGASSERT((uintptr_t)oldnode + MM_SIZEOF_ALLOCNODE == blockstart);
     8005feca:	01070593          	addi	a1,a4,16
     8005fece:	01358963          	beq	a1,s3,8005fee0 <mm_extend+0xa4>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:87 (discriminator 1)
+nuttx/mm/mm_heap/mm_extend.c:87 (discriminator 1)
     8005fed2:	00029617          	auipc	a2,0x29
     8005fed6:	f5e60613          	addi	a2,a2,-162 # 80088e30 <qjsc_qjscalc+0x7f58>
     8005feda:	05700593          	li	a1,87
     8005fede:	bfad                	j	8005fe58 <mm_extend+0x1c>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:95 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:95 (discriminator 2)
    * This is the old size (MM_SIZEOF_ALLOCNODE) plus the size of
    * the block (size) minus the size of the new terminal node
    * (MM_SIZEOF_ALLOCNODE) or simply:
@@ -3284,30 +3284,30 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
     8005fee2:	8b8d                	andi	a5,a5,3
     8005fee4:	8fc5                	or	a5,a5,s1
     8005fee6:	e71c                	sd	a5,8(a4)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:99 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:99 (discriminator 2)
 
   /* The old node should already be marked as allocated */
 
   DEBUGASSERT(MM_NODE_IS_ALLOC(oldnode));
     8005fee8:	8b85                	andi	a5,a5,1
     8005feea:	eb81                	bnez	a5,8005fefa <mm_extend+0xbe>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:99 (discriminator 1)
+nuttx/mm/mm_heap/mm_extend.c:99 (discriminator 1)
     8005feec:	00029617          	auipc	a2,0x29
     8005fef0:	f8c60613          	addi	a2,a2,-116 # 80088e78 <qjsc_qjscalc+0x7fa0>
     8005fef4:	06300593          	li	a1,99
     8005fef8:	b785                	j	8005fe58 <mm_extend+0x1c>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:104 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:104 (discriminator 2)
 
   /* Get and initialize the new terminal node in the heap */
 
   newnode       = (FAR struct mm_allocnode_s *)
                   (blockend - MM_SIZEOF_ALLOCNODE);
     8005fefa:	1941                	addi	s2,s2,-16
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:105 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:105 (discriminator 2)
   newnode->size = MM_SIZEOF_ALLOCNODE | MM_ALLOC_BIT;
     8005fefc:	47c5                	li	a5,17
     8005fefe:	00f93423          	sd	a5,8(s2)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:111 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:111 (discriminator 2)
 
   heap->mm_heapend[region] = newnode;
 
@@ -3315,21 +3315,21 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
 
   heap->mm_heapsize += size;
     8005ff02:	7010                	ld	a2,32(s0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:107 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:107 (discriminator 2)
   heap->mm_heapend[region] = newnode;
     8005ff04:	05243023          	sd	s2,64(s0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:112 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:112 (discriminator 2)
   mm_unlock(heap);
     8005ff08:	8522                	mv	a0,s0
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:111 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:111 (discriminator 2)
   heap->mm_heapsize += size;
     8005ff0a:	94b2                	add	s1,s1,a2
     8005ff0c:	f004                	sd	s1,32(s0)
     8005ff0e:	e42e                	sd	a1,8(sp)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:112 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:112 (discriminator 2)
   mm_unlock(heap);
     8005ff10:	774000ef          	jal	ra,80060684 <mm_unlock>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:118 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:118 (discriminator 2)
 
   /* Finally "free" the new block of memory where the old terminal node was
    * located.
@@ -3337,26 +3337,26 @@ void mm_extend(FAR struct mm_heap_s *heap, FAR void *mem, size_t size,
 
   mm_free(heap, mem);
     8005ff14:	8522                	mv	a0,s0
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:119 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:119 (discriminator 2)
 }
     8005ff16:	7442                	ld	s0,48(sp)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:118 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:118 (discriminator 2)
   mm_free(heap, mem);
     8005ff18:	65a2                	ld	a1,8(sp)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:119 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:119 (discriminator 2)
 }
     8005ff1a:	70e2                	ld	ra,56(sp)
     8005ff1c:	74a2                	ld	s1,40(sp)
     8005ff1e:	7902                	ld	s2,32(sp)
     8005ff20:	69e2                	ld	s3,24(sp)
     8005ff22:	6121                	addi	sp,sp,64
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_extend.c:118 (discriminator 2)
+nuttx/mm/mm_heap/mm_extend.c:118 (discriminator 2)
   mm_free(heap, mem);
     8005ff24:	a299                	j	8006006a <mm_free>
 
 000000008005ff26 <mm_delayfree>:
 mm_delayfree():
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:74
+nuttx/mm/mm_heap/mm_free.c:74
  *   Delay free memory if `delay` is true, otherwise free it immediately.
  *
  ****************************************************************************/
@@ -3371,7 +3371,7 @@ void mm_delayfree(FAR struct mm_heap_s *heap, FAR void *mem, bool delay)
     8005ff30:	84aa                	mv	s1,a0
     8005ff32:	842e                	mv	s0,a1
     8005ff34:	8932                	mv	s2,a2
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:81
+nuttx/mm/mm_heap/mm_free.c:81
   FAR struct mm_freenode_s *prev;
   FAR struct mm_freenode_s *next;
   size_t nodesize;
@@ -3380,7 +3380,7 @@ void mm_delayfree(FAR struct mm_heap_s *heap, FAR void *mem, bool delay)
   if (mm_lock(heap) < 0)
     8005ff36:	72a000ef          	jal	ra,80060660 <mm_lock>
     8005ff3a:	12054263          	bltz	a0,8006005e <mm_delayfree+0x138>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:98
+nuttx/mm/mm_heap/mm_free.c:98
   memset(mem, 0x55, mm_malloc_size(heap, mem));
 #endif
 
@@ -3388,7 +3388,7 @@ void mm_delayfree(FAR struct mm_heap_s *heap, FAR void *mem, bool delay)
 
   if (delay)
     8005ff3e:	00090963          	beqz	s2,8005ff50 <mm_delayfree+0x2a>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:196
+nuttx/mm/mm_heap/mm_free.c:196
 
   /* Add the merged node to the nodelist */
 
@@ -3398,54 +3398,54 @@ void mm_delayfree(FAR struct mm_heap_s *heap, FAR void *mem, bool delay)
     8005ff42:	6442                	ld	s0,16(sp)
     8005ff44:	60e2                	ld	ra,24(sp)
     8005ff46:	6902                	ld	s2,0(sp)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:195
+nuttx/mm/mm_heap/mm_free.c:195
   mm_unlock(heap);
     8005ff48:	8526                	mv	a0,s1
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:196
+nuttx/mm/mm_heap/mm_free.c:196
 }
     8005ff4a:	64a2                	ld	s1,8(sp)
     8005ff4c:	6105                	addi	sp,sp,32
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:195
+nuttx/mm/mm_heap/mm_free.c:195
   mm_unlock(heap);
     8005ff4e:	af1d                	j	80060684 <mm_unlock>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:108
+nuttx/mm/mm_heap/mm_free.c:108
   nodesize = MM_SIZEOF_NODE(node);
     8005ff50:	ff843783          	ld	a5,-8(s0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:107
+nuttx/mm/mm_heap/mm_free.c:107
   node = (FAR struct mm_freenode_s *)((FAR char *)mem - MM_SIZEOF_ALLOCNODE);
     8005ff54:	ff040593          	addi	a1,s0,-16
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:112
+nuttx/mm/mm_heap/mm_free.c:112
   DEBUGASSERT(MM_NODE_IS_ALLOC(node));
     8005ff58:	0017f693          	andi	a3,a5,1
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:108
+nuttx/mm/mm_heap/mm_free.c:108
   nodesize = MM_SIZEOF_NODE(node);
     8005ff5c:	ffc7f713          	andi	a4,a5,-4
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:112
+nuttx/mm/mm_heap/mm_free.c:112
   DEBUGASSERT(MM_NODE_IS_ALLOC(node));
     8005ff60:	ee89                	bnez	a3,8005ff7a <mm_delayfree+0x54>
     8005ff62:	00029617          	auipc	a2,0x29
     8005ff66:	d4660613          	addi	a2,a2,-698 # 80088ca8 <qjsc_qjscalc+0x7dd0>
     8005ff6a:	07000593          	li	a1,112
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:177
+nuttx/mm/mm_heap/mm_free.c:177
       DEBUGASSERT(prev->blink);
     8005ff6e:	00029517          	auipc	a0,0x29
     8005ff72:	f2a50513          	addi	a0,a0,-214 # 80088e98 <qjsc_qjscalc+0x7fc0>
     8005ff76:	1e7000ef          	jal	ra,8006095c <__assert>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:114
+nuttx/mm/mm_heap/mm_free.c:114
   node->size &= ~MM_ALLOC_BIT;
     8005ff7a:	9bf9                	andi	a5,a5,-2
     8005ff7c:	fef43c23          	sd	a5,-8(s0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:118
+nuttx/mm/mm_heap/mm_free.c:118
   heap->mm_curused -= nodesize;
     8005ff80:	789c                	ld	a5,48(s1)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:122
+nuttx/mm/mm_heap/mm_free.c:122
   next = (FAR struct mm_freenode_s *)((FAR char *)node + nodesize);
     8005ff82:	00e586b3          	add	a3,a1,a4
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:118
+nuttx/mm/mm_heap/mm_free.c:118
   heap->mm_curused -= nodesize;
     8005ff86:	8f99                	sub	a5,a5,a4
     8005ff88:	f89c                	sd	a5,48(s1)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:123
+nuttx/mm/mm_heap/mm_free.c:123
   DEBUGASSERT(MM_PREVNODE_IS_ALLOC(next));
     8005ff8a:	669c                	ld	a5,8(a3)
     8005ff8c:	0027f613          	andi	a2,a5,2
@@ -3454,17 +3454,17 @@ void mm_delayfree(FAR struct mm_heap_s *heap, FAR void *mem, bool delay)
     8005ff96:	f1e60613          	addi	a2,a2,-226 # 80088eb0 <qjsc_qjscalc+0x7fd8>
     8005ff9a:	07b00593          	li	a1,123
     8005ff9e:	bfc1                	j	8005ff6e <mm_delayfree+0x48>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:124
+nuttx/mm/mm_heap/mm_free.c:124
   if (MM_NODE_IS_FREE(next))
     8005ffa0:	0017f613          	andi	a2,a5,1
     8005ffa4:	ee3d                	bnez	a2,80060022 <mm_delayfree+0xfc>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:127
+nuttx/mm/mm_heap/mm_free.c:127
       size_t nextsize = MM_SIZEOF_NODE(next);
     8005ffa6:	9bf1                	andi	a5,a5,-4
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:134
+nuttx/mm/mm_heap/mm_free.c:134
       andbeyond = (FAR struct mm_allocnode_s *)((FAR char *)next + nextsize);
     8005ffa8:	00f68633          	add	a2,a3,a5
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:135
+nuttx/mm/mm_heap/mm_free.c:135
       DEBUGASSERT(MM_PREVNODE_IS_FREE(andbeyond) &&
     8005ffac:	6608                	ld	a0,8(a2)
     8005ffae:	8909                	andi	a0,a0,2
@@ -3475,7 +3475,7 @@ void mm_delayfree(FAR struct mm_heap_s *heap, FAR void *mem, bool delay)
     8005ffbc:	f1860613          	addi	a2,a2,-232 # 80088ed0 <qjsc_qjscalc+0x7ff8>
     8005ffc0:	08700593          	li	a1,135
     8005ffc4:	b76d                	j	8005ff6e <mm_delayfree+0x48>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:142
+nuttx/mm/mm_heap/mm_free.c:142
       DEBUGASSERT(next->blink);
     8005ffc6:	0186b803          	ld	a6,24(a3)
     8005ffca:	00081963          	bnez	a6,8005ffdc <mm_delayfree+0xb6>
@@ -3483,33 +3483,33 @@ void mm_delayfree(FAR struct mm_heap_s *heap, FAR void *mem, bool delay)
     8005ffd2:	f4a60613          	addi	a2,a2,-182 # 80088f18 <qjsc_qjscalc+0x8040>
     8005ffd6:	08e00593          	li	a1,142
     8005ffda:	bf51                	j	8005ff6e <mm_delayfree+0x48>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:143
+nuttx/mm/mm_heap/mm_free.c:143
       next->blink->flink = next->flink;
     8005ffdc:	6a88                	ld	a0,16(a3)
     8005ffde:	00a83823          	sd	a0,16(a6)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:144
+nuttx/mm/mm_heap/mm_free.c:144
       if (next->flink)
     8005ffe2:	c119                	beqz	a0,8005ffe8 <mm_delayfree+0xc2>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:146
+nuttx/mm/mm_heap/mm_free.c:146
           next->flink->blink = next->blink;
     8005ffe4:	6e94                	ld	a3,24(a3)
     8005ffe6:	ed14                	sd	a3,24(a0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:151
+nuttx/mm/mm_heap/mm_free.c:151
       nodesize            += nextsize;
     8005ffe8:	973e                	add	a4,a4,a5
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:152
+nuttx/mm/mm_heap/mm_free.c:152
       node->size           = nodesize | (node->size & MM_MASK_BIT);
     8005ffea:	ff843783          	ld	a5,-8(s0)
     8005ffee:	8b8d                	andi	a5,a5,3
     8005fff0:	8fd9                	or	a5,a5,a4
     8005fff2:	fef43c23          	sd	a5,-8(s0)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:153
+nuttx/mm/mm_heap/mm_free.c:153
       andbeyond->preceding = nodesize;
     8005fff6:	e218                	sd	a4,0(a2)
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:166
+nuttx/mm/mm_heap/mm_free.c:166
   if (MM_PREVNODE_IS_FREE(node))
     8005fff8:	ff843783          	ld	a5,-8(s0)
     8005fffc:	8b89                	andi	a5,a5,2
     8005fffe:	cfa1                	beqz	a5,80060056 <mm_delayfree+0x130>
-/Users/Luppy/ox64/nuttx/mm/mm_heap/mm_free.c:169
+nuttx/mm/mm_heap/mm_free.c:169
         ((FAR char *)node - node->preceding);
