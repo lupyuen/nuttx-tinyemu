@@ -47,11 +47,10 @@ async function run() {
   const before_lines = [];
   const after_lines = [];
   let linenum = 0;
-  let line = null;
 
   // Process our Disassembly File, line by line
   const iter = makeTextFileLineIterator(url);
-  for await (line of iter) {
+  for await (const line of iter) {
 
     // Look for the Requested Address
     linenum++;
@@ -67,7 +66,7 @@ async function run() {
     } else {
       // Save the lines after the Requested Address
       after_lines.push(line);
-      if (after_lines.length >= after_count) { break; }
+      if (after_lines.length > after_count) { break; }
     }
   }
 
