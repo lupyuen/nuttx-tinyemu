@@ -78,7 +78,13 @@ async function run() {
   // URL of our Disassembly File, chunked for easier display.
   // TODO: Given an Exception Address like 8000ad8a. we should try multiple files by address:
   // qjs-8000ad90.S, qjs-8000ae00.S, qjs-8000b000.S, qjs-80010000.S
-  const url = "qjs-chunk/qjs-80008000.S";
+  // Assume `addr` is `80007028`
+  const addr_prefix = addr.substring(0, addr.length - 3);  // `80007`
+  const addr_inc = Number.parseInt(addr_prefix, 16) + 1;  // 0x80008
+  const addr_str = Number(addr_inc).toString(16);  // `80008`
+  const url = `qjs-chunk/qjs-${addr_str}000.S`;
+
+  // TODO: Get `qjs` from identifyAddress()
 
   // Remember the lines before and after the Requested Address
   const before_lines = [];
