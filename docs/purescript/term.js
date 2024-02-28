@@ -1505,7 +1505,7 @@ function parseLog(str) {
         .runParser(parseException)(termbuf)
         .value0;
 
-    // Explain the Exception
+    // Explain the Exception and link to the Disassembly
     if (exception.error === undefined) {
         console.log({exception});
         const epc   = disassemble(exception.epc);
@@ -1526,9 +1526,10 @@ function parseLog(str) {
             .split(exception.epc, 2).join(epc)      // Link EPC to Disassembly
             .split(exception.mtval, 2).join(mtval)  // Link MTVAL to Disassembly
             ;
+        parser_output.innerHTML += "<h3>Stack Dump</h3>";
     }
 
-    // Run parseStackDump
+    // Parse the Stack Dump and link to the Disassembly
     const stackDump = StringParser_Parser
         .runParser(parseStackDump)(termbuf)
         .value0;
@@ -1536,14 +1537,14 @@ function parseLog(str) {
         console.log({stackDump}); 
         const str = [
             stackDump.addr + ":",
-            stackDump.v1,
-            stackDump.v2,
-            stackDump.v3,
-            stackDump.v4,
-            stackDump.v5,
-            stackDump.v6,
-            stackDump.v7,
-            stackDump.v8,
+            disassemble(stackDump.v1),
+            disassemble(stackDump.v2),
+            disassemble(stackDump.v3),
+            disassemble(stackDump.v4),
+            disassemble(stackDump.v5),
+            disassemble(stackDump.v6),
+            disassemble(stackDump.v7),
+            disassemble(stackDump.v8),
         ].join("&nbsp;&nbsp;");
         parser_output.innerHTML +=
             `<p>${str}</p>`;
@@ -1553,7 +1554,8 @@ function parseLog(str) {
     termbuf = "";
 }
 
-// If `addr` is a valid address, return the Disassembly URL.
+// If `addr` is a valid address, return the Disassembly URL:
+// <a href="disassemble.html?addr=8000a0e4" target="_blank">8000a0e4</a>
 // Otherwise return `addr`
 function disassemble(addr) {
     const id = identifyAddress(addr).value0;
