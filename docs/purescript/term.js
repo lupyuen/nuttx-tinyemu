@@ -1508,13 +1508,19 @@ function parseLog(str) {
     // Explain the Exception
     if (exception.error === undefined) {
         console.log({exception});
+        const exception_str = [
+            "Exception:" + "&nbsp;".repeat(1) + exception.exception,
+            "MCAUSE:"    + "&nbsp;".repeat(4) + exception.mcause,
+            "EPC:"       + "&nbsp;".repeat(7) + exception.epc,
+            "MTVAL:"     + "&nbsp;".repeat(5) + exception.mtval,
+        ].join("<br>");
         parser_output.innerHTML +=
-            `<p>${JSON.stringify(exception)}</p>`;
+            `<p>${exception_str}</p>`;
 
         const explain = explainException(exception.mcause)(exception.epc)(exception.mtval);
         console.log({explain});
         parser_output.innerHTML +=
-            `<p>${JSON.stringify(explain)}</p>`;
+            `<p>${explain}</p>`;
     }
 
     // Run parseStackDump
@@ -1523,8 +1529,19 @@ function parseLog(str) {
         .value0;
     if (stackDump.error === undefined) {
         console.log({stackDump}); 
+        const str = [
+            stackDump.addr + ":",
+            stackDump.v1,
+            stackDump.v2,
+            stackDump.v3,
+            stackDump.v4,
+            stackDump.v5,
+            stackDump.v6,
+            stackDump.v7,
+            stackDump.v8,
+        ].join("&nbsp;&nbsp;");
         parser_output.innerHTML +=
-            `<p>${JSON.stringify(stackDump)}</p>`;
+            `<p>${str}</p>`;
     }
 
     // Reset the Line Buffer
