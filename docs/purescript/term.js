@@ -1508,11 +1508,13 @@ function parseLog(str) {
     // Explain the Exception
     if (exception.error === undefined) {
         console.log({exception});
+        const epc   = disassemble(exception.epc);
+        const mtval = disassemble(exception.mtval);
         const exception_str = [
             "Exception:" + "&nbsp;".repeat(1) + exception.exception,
             "MCAUSE:"    + "&nbsp;".repeat(4) + exception.mcause,
-            "EPC:"       + "&nbsp;".repeat(7) + exception.epc,
-            "MTVAL:"     + "&nbsp;".repeat(5) + exception.mtval,
+            "EPC:"       + "&nbsp;".repeat(7) + epc,
+            "MTVAL:"     + "&nbsp;".repeat(5) + mtval,
         ].join("<br>");
         parser_output.innerHTML +=
             `<p>${exception_str}</p>`;
@@ -1520,7 +1522,10 @@ function parseLog(str) {
         const explain = explainException(exception.mcause)(exception.epc)(exception.mtval);
         console.log({explain});
         parser_output.innerHTML +=
-            `<p>${explain}</p>`;
+            `<p>${explain}</p>`
+            .split(exception.epc, 2).join(epc)      // Link EPC to Disassembly
+            .split(exception.mtval, 2).join(mtval)  // Link MTVAL to Disassembly
+            ;
     }
 
     // Run parseStackDump
@@ -1546,6 +1551,20 @@ function parseLog(str) {
 
     // Reset the Line Buffer
     termbuf = "";
+}
+
+// If `addr` is a valid address, return the Disassembly URL.
+// Otherwise return `addr`
+function disassemble(addr) {
+    const id = identifyAddress(addr).value0;
+    if (id === undefined) { return addr; }
+
+    const url = `disassemble.html?addr=${addr}`;
+    return [
+        `<a href="${url}" target="_blank">`,
+        addr,
+        `</a>`,
+    ].join("");
 }
 
 // Buffer the last line of the Terminal Output

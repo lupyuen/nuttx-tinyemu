@@ -49,7 +49,7 @@
 <!-- Begin Test: Call PureScript to parse NuttX Logs -->
 <script type=module>
   // Import Main Module
-  import { parseException, parseStackDump, explainException } from 'https://lupyuen.github.io/nuttx-purescript-parser/index.js';
+  import { parseException, parseStackDump, explainException, identifyAddress } from 'https://lupyuen.github.io/nuttx-purescript-parser/index.js';
   import * as StringParser_Parser from "https://compile.purescript.org/output/StringParser.Parser/index.js";
 
   // Export the PureScript Functions
@@ -57,6 +57,7 @@
   window.parseException = parseException;
   window.parseStackDump = parseStackDump;
   window.explainException = explainException;
+  window.identifyAddress = identifyAddress;
 
   // Run parseException
   console.log('Running parseException...');
@@ -84,6 +85,20 @@
     ;
   console.log({result3});
   window.result3 = result3;
+
+  // Run identifyAddress
+  console.log('Running identifyAddress...');
+  const result4 = identifyAddress('502198ac')
+  console.log({result4});
+  window.result4 = result4;
+
+  const result5 = identifyAddress('80064a28')
+  console.log({result5});
+  window.result5 = result5;
+  
+  const result6 = identifyAddress('0000000800203b88')
+  console.log({result6});
+  window.result6 = result6;
 </script>
 <!-- End Test -->
 </html>
