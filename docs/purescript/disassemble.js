@@ -88,9 +88,9 @@ async function run() {
   // Process our Disassembly File, line by line
   const iter = makeTextFileLineIterator(url);
   for await (const line1 of iter) {
+    if (after_lines.length == 0) { linenum++; }
 
     // Look for the Requested Address
-    linenum++;
     if (line1.indexOf(`    ${addr}:`) == 0) {
       const line2 = processLine(line1);
       after_lines.push(line2);
@@ -118,10 +118,14 @@ async function run() {
   console.log({after_lines});
 
   const disassembly = document.getElementById("disassembly");
-  disassembly.innerHTML =
-    before_lines.join("<br>")
-    + `<br><span id="highlight"><br>${line}<br></span><br>`
-    + after_lines.join("<br>")
+  const file = `https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/${url}#L${linenum}`;
+  disassembly.innerHTML = [
+    `<p><a href=${file}>(See the Disassembly File)</a></p>`,
+    before_lines.join("<br>"),
+    `<span id="highlight"><br>${line}<br></span>`,
+    after_lines.join("<br>"),
+    `<p><a href=${file}>(See the Disassembly File)</a></p>`,
+  ].join("<br>");
 }
 
 run();
