@@ -67,8 +67,13 @@ async function* makeTextFileLineIterator(fileURL) {
 // Fetch and display our Disassembly File, line by line
 async function run() {
 
-  // `addr` is `80007028`
+  // Set the Title. `addr` is `80007028`
   const addr = new URL(document.URL).searchParams.get("addr");
+  const title = document.getElementById("title");
+  title.innerHTML += 
+    addr.substring(0, 4).toUpperCase()
+    + "_"
+    + addr.substring(4).toUpperCase();
 
   // URL of our Disassembly File, chunked for easier display.
   // TODO: Given an Exception Address like 8000ad8a. we should try multiple files by address:
