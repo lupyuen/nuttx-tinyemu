@@ -126,11 +126,11 @@ async function run() {
   const disassembly = document.getElementById("disassembly");
   const file = `https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/${url}#L${linenum}`;
   disassembly.innerHTML = [
-    `<p><a href=${file}>(See the Disassembly File)</a></p>`,
+    `<p><a href="${file}" target="_blank">(See the Disassembly File)</a></p>`,
     before_lines.join("<br>"),
     `<span id="highlight"><br>${line}<br></span>`,
     after_lines.join("<br>"),
-    `<p><a href=${file}>(See the Disassembly File)</a></p>`,
+    `<p><a href="${file}" target="_blank">(See the Disassembly File)</a></p>`,
   ].join("<br>");
 }
 
