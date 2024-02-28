@@ -36,9 +36,9 @@
           </tr>
         </table>      
       </td>
-      <td style="vertical-align: top;">
+      <td style="vertical-align: top">
         <!-- NuttX Parser Output -->
-        <div id="parser_output">
+        <div id="parser_output" style="font-family: monospace; width: 500px;">
           <h3>NuttX Log Parser with PureScript</h3>
         </div>
       </td>
@@ -49,15 +49,10 @@
 <!-- Begin Test: Call PureScript to parse NuttX Logs -->
 <script type=module>
   // Import Main Module
-  import { main, doBoth, doRunParser, parseCSV, exampleContent2, parseException, parseStackDump, explainException } from 'https://lupyuen.github.io/nuttx-purescript-parser/index.js';
+  import { parseException, parseStackDump, explainException } from 'https://lupyuen.github.io/nuttx-purescript-parser/index.js';
   import * as StringParser_Parser from "https://compile.purescript.org/output/StringParser.Parser/index.js";
 
-  // For Testing: Export the PureScript Functions
-  window.main = main;
-  window.doBoth = doBoth;
-  window.doRunParser = doRunParser;
-  window.parseCSV = parseCSV;
-  window.exampleContent2 = exampleContent2;
+  // Export the PureScript Functions
   window.StringParser_Parser = StringParser_Parser;
   window.parseException = parseException;
   window.parseStackDump = parseStackDump;
@@ -89,28 +84,6 @@
     ;
   console.log({result3});
   window.result3 = result3;
-
-  // Run Main Function
-  // console.log('Running main...');
-  // main();
-
-  // Run parseCSV
-  // console.log('Running StringParser_Parser...');
-  // const result = StringParser_Parser
-  //   .runParser
-  //   (parseCSV)
-  //   (exampleContent2)
-  //   ;
-  // console.log({result});
-  // window.result = result;
-
-  // Alternatively
-  // console.log('Running doRunParser...');
-  // doRunParser({show : console.log})
-  //   ("bbbb")
-  //   (parseCSV)
-  //   (exampleContent2)
-  //   ();
 </script>
 <!-- End Test -->
 </html>
